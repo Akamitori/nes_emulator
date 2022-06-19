@@ -10,6 +10,15 @@ mod asl_tests;
 mod bit_tests;
 
 #[cfg(test)]
+mod cmp_tests;
+
+#[cfg(test)]
+mod cpx_tests;
+
+#[cfg(test)]
+mod cpy_tests;
+
+#[cfg(test)]
 mod in_tests;
 
 #[cfg(test)]

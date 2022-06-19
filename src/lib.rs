@@ -1,4 +1,6 @@
 mod opcodes;
+use std::result;
+
 use crate::opcodes::*;
 
 #[cfg(test)]
@@ -219,6 +221,21 @@ impl CPU {
         }
     }
 
+    fn compare(&mut self, mode:&AddressingMode, compare_with:u8){
+        let addr = self.get_operand_address(mode);
+        let mem_data = self.mem_read(addr);
+
+        if compare_with>=mem_data{
+            self.set_carry_flag();
+        }
+        else{
+            self.clear_carry_flag();
+        }
+
+        self.update_zero_and_negative_flag(compare_with.wrapping_sub(mem_data));
+
+    }
+
     fn lda(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let value = self.mem_read(addr);
@@ -356,6 +373,18 @@ impl CPU {
                 0xD8 => self.clear_decimal_flag(),
                 0x58 => self.clear_interrupt_flag(),
                 0xB8 => self.clear_overflow_flag(),
+
+                0xC9 | 0xC5 | 0xD5 | 0xCD | 0xDD | 0xD9 | 0xC1 | 0xD1 => {
+                    self.compare(&op_code_data.addressing_mode,self.register_a);
+                }
+
+                0xE0 | 0xE4 | 0xEC=>{
+                    self.compare(&op_code_data.addressing_mode,self.register_x);
+                }
+
+                0xC0 | 0xC4 | 0xCC=>{
+                    self.compare(&op_code_data.addressing_mode,self.register_y);
+                }
 
                 0xAA => self.tax(),
                 0xA8 => self.tay(),

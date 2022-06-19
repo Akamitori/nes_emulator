@@ -22,6 +22,10 @@ pub mod test_helper {
         assert!(cpu.status & ZERO_FLAG != 0);
     }
 
+    pub fn assert_active_carry_flag(cpu: CPU) {
+        assert!(cpu.status & CARRY_FLAG != 0);
+    }
+
     pub fn assert_inactive_zero_flag(cpu: CPU) {
         assert!(cpu.status & ZERO_FLAG == 0);
     }
