@@ -198,10 +198,7 @@ impl CPU {
         let addr = self.get_operand_address(mode);
         let mut mem_data = self.mem_read(addr);
 
-
-
-
-        if (mem_data >> 6) & 0x1  == 1 {
+        if (mem_data >> 6) & 0x1 == 1 {
             self.set_overflow_flag();
         } else {
             self.clear_overflow_flag();
@@ -240,7 +237,7 @@ impl CPU {
     }
 
     fn inx(&mut self) {
-        self.register_x=self.register_x.wrapping_add(1);
+        self.register_x = self.register_x.wrapping_add(1);
 
         self.update_zero_and_negative_flag(self.register_x);
     }
@@ -306,6 +303,22 @@ impl CPU {
         self.status &= !CPU::ZERO_FLAG;
     }
 
+    fn set_decimal_flag(&mut self) {
+        self.status |= CPU::DECIMAL_MODE_FLAG;
+    }
+
+    fn clear_decimal_flag(&mut self) {
+        self.status &= !CPU::DECIMAL_MODE_FLAG;
+    }
+
+    fn set_interrupt_flag(&mut self) {
+        self.status |= CPU::INTERRUPT_DISABLE_FLAG;
+    }
+
+    fn clear_interrupt_flag(&mut self) {
+        self.status &= !CPU::INTERRUPT_DISABLE_FLAG;
+    }
+
     pub fn run(&mut self) {
         loop {
             let code = self.mem_read(self.program_counter);
@@ -332,12 +345,17 @@ impl CPU {
 
                 0xD0 => self.branch(self.status & CPU::ZERO_FLAG == 0),
                 0xF0 => self.branch(self.status & CPU::ZERO_FLAG != 0),
-                
+
                 0x10 => self.branch(self.status & CPU::NEGATIVE_FLAG == 0),
                 0x30 => self.branch(self.status & CPU::NEGATIVE_FLAG != 0),
-                
+
                 0x50 => self.branch(self.status & CPU::OVERFLOW_FLAG == 0),
                 0x70 => self.branch(self.status & CPU::OVERFLOW_FLAG != 0),
+
+                0x18 => self.clear_carry_flag(),
+                0xD8 => self.clear_decimal_flag(),
+                0x58 => self.clear_interrupt_flag(),
+                0xB8 => self.clear_overflow_flag(),
 
                 0xAA => self.tax(),
                 0xA8 => self.tay(),

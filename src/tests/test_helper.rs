@@ -1,5 +1,5 @@
 #[cfg(test)]
-pub mod test_helper{
+pub mod test_helper {
     use std::mem::zeroed;
 
     use crate::*;
@@ -18,24 +18,24 @@ pub mod test_helper{
         assert!(cpu.status & CARRY_FLAG == 0);
     }
 
-    pub fn assert_active_zero_flag(cpu :CPU){
-        assert!(cpu.status & ZERO_FLAG !=0);
+    pub fn assert_active_zero_flag(cpu: CPU) {
+        assert!(cpu.status & ZERO_FLAG != 0);
     }
 
-    pub fn assert_inactive_zero_flag(cpu :CPU){
+    pub fn assert_inactive_zero_flag(cpu: CPU) {
         assert!(cpu.status & ZERO_FLAG == 0);
     }
 
-    pub fn assert_active_negative_flag(cpu :CPU){
-        assert!(cpu.status & NEGATIVE_FLAG !=0);
+    pub fn assert_active_negative_flag(cpu: CPU) {
+        assert!(cpu.status & NEGATIVE_FLAG != 0);
     }
 
-    pub fn assert_active_overflow_flag(cpu :CPU){
-        assert!(cpu.status & OVERFLOW_FLAG !=0);
+    pub fn assert_active_overflow_flag(cpu: CPU) {
+        assert!(cpu.status & OVERFLOW_FLAG != 0);
     }
 
-    pub fn set_a_to_value(value_to_set:u8) -> Vec<u8>{
-        let lda_direct_value=0xa9;
-        return vec![lda_direct_value,value_to_set];
+    pub fn set_a_to_value(value_to_set: u8) -> Vec<u8> {
+        let lda_direct_value = 0xa9;
+        return vec![lda_direct_value, value_to_set];
     }
 }

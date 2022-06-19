@@ -83,6 +83,11 @@ impl OPCodes{
         OpCode::new(0x50,"BVC",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
         OpCode::new(0x70,"BVS",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
 
+        OpCode::new(0x18,"CLC",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0xD8,"CLD",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0x58,"CLI",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0xB8,"CLV",1,2,AddressingMode::NoneAddressing),
+
         OpCode::new(0x85,"STA",2,3,AddressingMode::ZeroPage),
         OpCode::new(0x95,"STA",2,4,AddressingMode::ZeroPage_X),
         OpCode::new(0x8D,"STA",3,4,AddressingMode::Absolute),
