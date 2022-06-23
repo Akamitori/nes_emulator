@@ -11,7 +11,7 @@ mod asl_tests {
         cpu.load_and_run(vec![prep[0], prep[1], 0x0a, 0x00]);
 
         assert_eq!(cpu.register_a, 0x1 << 1);
-        test_helper::assert_inactive_zero_carry_flags(cpu);
+        test_helper::assert_inactive_zero_negative_carry_flag(cpu);
     }
 
     #[test]

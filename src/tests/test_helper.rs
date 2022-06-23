@@ -13,8 +13,19 @@ pub mod test_helper {
     const OVERFLOW_FLAG: u8 = 0b0100_0000;
     const NEGATIVE_FLAG: u8 = 0b1000_0000;
 
-    pub fn assert_inactive_zero_carry_flags(cpu: CPU) {
+    pub fn assert_inactive_zero_negative_flags(cpu: CPU) {
         assert!(cpu.status & ZERO_FLAG == 0);
+        assert!(cpu.status & NEGATIVE_FLAG == 0);
+    }
+
+    pub fn assert_inactive_zero_carry_flags(cpu: CPU){
+        assert!(cpu.status & ZERO_FLAG == 0);
+        assert!(cpu.status & CARRY_FLAG == 0);
+    }
+   
+    pub fn assert_inactive_zero_negative_carry_flag(cpu : CPU){
+        assert!(cpu.status & ZERO_FLAG == 0);
+        assert!(cpu.status & NEGATIVE_FLAG == 0);
         assert!(cpu.status & CARRY_FLAG == 0);
     }
 

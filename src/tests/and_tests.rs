@@ -11,7 +11,7 @@ mod and_tests {
         cpu.load_and_run(vec![prep[0], prep[1], 0x29, 0x55, 0x00]);
 
         assert_eq!(cpu.register_a, 0x32 & 0x55);
-        test_helper::assert_inactive_zero_carry_flags(cpu);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
@@ -35,18 +35,19 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x25_lda_from_memory_zero_page() {
+    fn test_0x25_and_zero_page() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0x55);
 
         let prep = test_helper::set_a_to_value(0x32);
         cpu.load_and_run(vec![prep[0], prep[1], 0x25, 0x10, 0x00]);
-
+        
         assert_eq!(cpu.register_a, 0x32 & 0x55);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
-    fn test_0x25_lda_negative_flag() {
+    fn test_0x25_and_negative_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0xF0);
 
@@ -57,7 +58,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x25_lda_zero_flag() {
+    fn test_0x25_and_zero_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0x00);
 
@@ -68,7 +69,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x35_from_memory_zero_page_x() {
+    fn test_0x35_and_zero_page_x() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0x55);
 
@@ -78,10 +79,11 @@ mod and_tests {
         cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x35, 0x0F, 0x00]);
 
         assert_eq!(cpu.register_a, 0x11 & 0x55);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
-    fn test_0x35_zero_flag() {
+    fn test_0x35_and_zero_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0x00);
 
@@ -94,7 +96,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x35_negative_flag() {
+    fn test_0x35_and_negative_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0xF5);
 
@@ -107,7 +109,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x2d_from_memory_absolute() {
+    fn test_0x2d_and_absolute() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x55);
 
@@ -115,10 +117,11 @@ mod and_tests {
         cpu.load_and_run(vec![prep[0], prep[1], 0x2d, 0x00, 0x10, 0x00]);
 
         assert_eq!(cpu.register_a, 0x55 & 0x19);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
-    fn test_0x2d_zero_flag() {
+    fn test_0x2d_and_zero_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x01);
 
@@ -129,7 +132,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x2d_negative_flag() {
+    fn test_0x2d_and_negative_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0xFF);
 
@@ -140,7 +143,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x3d_from_memory_absolute_x() {
+    fn test_0x3d_and_absolute_x() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x55);
 
@@ -150,10 +153,11 @@ mod and_tests {
         cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x3d, 0xFF, 0x0F, 0x00]);
 
         assert_eq!(cpu.register_a, 0x55 & 0x01);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
-    fn test_0x3d_zero_flag() {
+    fn test_0x3d_and_zero_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x00);
 
@@ -166,7 +170,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x3d_negative_flag() {
+    fn test_0x3d_and_negative_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0xF9);
 
@@ -179,7 +183,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x39_from_memory_absolute_y() {
+    fn test_0x39_and_absolute_y() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x55);
 
@@ -189,10 +193,11 @@ mod and_tests {
         cpu.load_and_run(vec![prep[0], prep[1], set_y_to_one, 0x39, 0xFF, 0x0F, 0x00]);
 
         assert_eq!(cpu.register_a, 0x55 & 0x91);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
-    fn test_0x39_zero_flag() {
+    fn test_0x39_and_zero_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x00);
 
@@ -205,7 +210,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x39_negative_flag() {
+    fn test_0x39_and_negative_flag() {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0xF1);
 
@@ -218,7 +223,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x21_from_memory_indirect_x() {
+    fn test_0x21_and_indirect_x() {
         let mut cpu = CPU::new();
         let mem_to_load: u8 = 0x40;
 
@@ -238,10 +243,11 @@ mod and_tests {
         ]);
 
         assert_eq!(cpu.register_a, 0x55 & 0x90);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
-    fn test_0x21_zero_flag() {
+    fn test_0x21_and_zero_flag() {
         let mut cpu = CPU::new();
         let mem_to_load: u8 = 0x40;
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
@@ -263,7 +269,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x21_negative_flag() {
+    fn test_0x21_and_negative_flag() {
         let mut cpu = CPU::new();
         let mem_to_load: u8 = 0x40;
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
@@ -285,7 +291,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x31_from_memory_indirect_y() {
+    fn test_0x31_and_indirect_y() {
         let mut cpu = CPU::new();
         let mem_to_load: u8 = 0x40;
         cpu.mem_write_u16(mem_to_load as u16, 0x0010);
@@ -304,10 +310,11 @@ mod and_tests {
         ]);
 
         assert_eq!(cpu.register_a, 0x5 & 0x6);
+        test_helper::assert_inactive_zero_negative_flags(cpu);
     }
 
     #[test]
-    fn test_0x31_zero_flag() {
+    fn test_0x31_and_zero_flag() {
         let mut cpu = CPU::new();
         let mem_to_load: u8 = 0x40;
         cpu.mem_write_u16(mem_to_load as u16, 0x0010);
@@ -329,7 +336,7 @@ mod and_tests {
     }
 
     #[test]
-    fn test_0x31_negative_flag() {
+    fn test_0x31_and_negative_flag() {
         let mut cpu = CPU::new();
         let mem_to_load: u8 = 0x40;
         cpu.mem_write_u16(mem_to_load as u16, 0x0010);
