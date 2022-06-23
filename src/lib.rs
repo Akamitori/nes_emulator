@@ -232,8 +232,28 @@ impl CPU {
             self.clear_carry_flag();
         }
 
+        println!("This is our sub {}-{}",compare_with,mem_data);
+
         self.update_zero_and_negative_flag(compare_with.wrapping_sub(mem_data));
 
+    }
+
+    fn dec(&mut self, mode:&AddressingMode){
+        let addr = self.get_operand_address(mode);
+        let mut data = self.mem_read(addr);
+        data=data.wrapping_sub(1);
+        self.mem_write(addr, data);
+        self.update_zero_and_negative_flag(data);
+    }
+    
+    fn dex(&mut self){
+        self.register_x=self.register_x.wrapping_sub(1);
+        self.update_zero_and_negative_flag(self.register_x);
+    }
+
+    fn dey(&mut self){
+        self.register_y=self.register_y.wrapping_sub(1);
+        self.update_zero_and_negative_flag(self.register_y);
     }
 
     fn lda(&mut self, mode: &AddressingMode) {
@@ -384,6 +404,18 @@ impl CPU {
 
                 0xC0 | 0xC4 | 0xCC=>{
                     self.compare(&op_code_data.addressing_mode,self.register_y);
+                }
+
+                0xC6 | 0xD6 | 0xCE | 0xDE =>{
+                    self.dec(&op_code_data.addressing_mode);
+                }
+
+                0xCA=>{
+                    self.dex();
+                }
+
+                0x88=>{
+                    self.dey();
                 }
 
                 0xAA => self.tax(),
