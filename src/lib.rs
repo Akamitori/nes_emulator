@@ -152,9 +152,6 @@ impl CPU {
         let addr = self.get_operand_address(mode);
         let value = self.mem_read(addr);
 
-        println!();
-        println!("the value we use isis {:#02x}", value);
-        println!();
         self.set_register_a(self.register_a & value);
     }
 
@@ -221,38 +218,42 @@ impl CPU {
         }
     }
 
-    fn compare(&mut self, mode:&AddressingMode, compare_with:u8){
+    fn compare(&mut self, mode: &AddressingMode, compare_with: u8) {
         let addr = self.get_operand_address(mode);
         let mem_data = self.mem_read(addr);
 
-        if compare_with>=mem_data{
+        if compare_with >= mem_data {
             self.set_carry_flag();
-        }
-        else{
+        } else {
             self.clear_carry_flag();
         }
 
-        println!("This is our sub {}-{}",compare_with,mem_data);
-
         self.update_zero_and_negative_flag(compare_with.wrapping_sub(mem_data));
-
     }
 
-    fn dec(&mut self, mode:&AddressingMode){
+    fn dec(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let mut data = self.mem_read(addr);
-        data=data.wrapping_sub(1);
+        data = data.wrapping_sub(1);
         self.mem_write(addr, data);
         self.update_zero_and_negative_flag(data);
     }
     
-    fn dex(&mut self){
-        self.register_x=self.register_x.wrapping_sub(1);
+    fn inc(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let mut data = self.mem_read(addr);
+        data = data.wrapping_add(1);
+        self.mem_write(addr, data);
+        self.update_zero_and_negative_flag(data);
+    }
+
+    fn dex(&mut self) {
+        self.register_x = self.register_x.wrapping_sub(1);
         self.update_zero_and_negative_flag(self.register_x);
     }
 
-    fn dey(&mut self){
-        self.register_y=self.register_y.wrapping_sub(1);
+    fn dey(&mut self) {
+        self.register_y = self.register_y.wrapping_sub(1);
         self.update_zero_and_negative_flag(self.register_y);
     }
 
@@ -286,6 +287,13 @@ impl CPU {
             self.register_y += 1;
         }
         self.update_zero_and_negative_flag(self.register_y);
+    }
+
+    fn eor(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+
+        self.set_register_a(self.register_a ^ value);
     }
 
     fn sta(&mut self, mode: &AddressingMode) {
@@ -395,27 +403,35 @@ impl CPU {
                 0xB8 => self.clear_overflow_flag(),
 
                 0xC9 | 0xC5 | 0xD5 | 0xCD | 0xDD | 0xD9 | 0xC1 | 0xD1 => {
-                    self.compare(&op_code_data.addressing_mode,self.register_a);
+                    self.compare(&op_code_data.addressing_mode, self.register_a);
                 }
 
-                0xE0 | 0xE4 | 0xEC=>{
-                    self.compare(&op_code_data.addressing_mode,self.register_x);
+                0xE0 | 0xE4 | 0xEC => {
+                    self.compare(&op_code_data.addressing_mode, self.register_x);
                 }
 
-                0xC0 | 0xC4 | 0xCC=>{
-                    self.compare(&op_code_data.addressing_mode,self.register_y);
+                0xC0 | 0xC4 | 0xCC => {
+                    self.compare(&op_code_data.addressing_mode, self.register_y);
                 }
 
-                0xC6 | 0xD6 | 0xCE | 0xDE =>{
+                0xC6 | 0xD6 | 0xCE | 0xDE => {
                     self.dec(&op_code_data.addressing_mode);
                 }
 
-                0xCA=>{
+                0xE6 |0xF6 |0xEE |0xFE =>{
+                    self.inc(&op_code_data.addressing_mode);
+                }
+
+                0xCA => {
                     self.dex();
                 }
 
-                0x88=>{
+                0x88 => {
                     self.dey();
+                }
+
+                0x49 | 0x45 | 0x55 | 0x4D | 0x5D | 0x59 | 0x41 | 0x51 => {
+                    self.eor(&op_code_data.addressing_mode);
                 }
 
                 0xAA => self.tax(),

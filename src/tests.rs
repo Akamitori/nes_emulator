@@ -19,9 +19,6 @@ mod cpx_tests;
 mod cpy_tests;
 
 #[cfg(test)]
-mod in_tests;
-
-#[cfg(test)]
 mod dec_tests;
 
 #[cfg(test)]
@@ -29,6 +26,18 @@ mod dex_tests;
 
 #[cfg(test)]
 mod dey_tests;
+
+#[cfg(test)]
+mod eor_tests;
+
+#[cfg(test)]
+mod inc_tests;
+
+#[cfg(test)]
+mod inx_tests;
+
+#[cfg(test)]
+mod iny_tests;
 
 #[cfg(test)]
 mod lda_tests;
