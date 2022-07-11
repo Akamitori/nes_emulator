@@ -193,6 +193,28 @@ impl CPU {
         }
     }
 
+    fn jmp(&mut self, mode: &AddressingMode) {
+        let address_to_jump = self.get_operand_address(mode);
+        self.program_counter = address_to_jump;
+    }
+
+    fn jmp_indirect(&mut self) {
+        let address_to_read = self.mem_read_u16(self.program_counter);
+        let on_page_boundary = address_to_read & 0x00FF == 0x00FF;
+
+        let address_to_jump = if on_page_boundary{
+            let lsb = self.mem_read(address_to_read);
+            let msb = self.mem_read(address_to_read & 0xFF00);
+
+            let a = [lsb, msb];
+            u16::from_le_bytes(a)
+        } else {
+            self.mem_read_u16(address_to_read)
+        };
+        
+        self.program_counter = address_to_jump;
+    }
+
     fn bit(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let mut mem_data = self.mem_read(addr);
@@ -238,7 +260,7 @@ impl CPU {
         self.mem_write(addr, data);
         self.update_zero_and_negative_flag(data);
     }
-    
+
     fn inc(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let mut data = self.mem_read(addr);
@@ -377,29 +399,43 @@ impl CPU {
 
             match code {
                 0x00 => return,
-                0x0A => self.asl_accumulator(),
-                0x06 | 0x16 | 0x0E | 0x1E => {
-                    self.asl(&op_code_data.addressing_mode);
-                }
+
                 0x29 | 0x25 | 0x35 | 0x2D | 0x3D | 0x39 | 0x21 | 0x31 => {
                     self.and(&op_code_data.addressing_mode);
                 }
 
+                0x06 | 0x16 | 0x0E | 0x1E => {
+                    self.asl(&op_code_data.addressing_mode);
+                }
+
+                0x0A => self.asl_accumulator(),
+
+                0x24 | 0x2C => {
+                    self.bit(&op_code_data.addressing_mode);
+                }
+
                 0x90 => self.branch(self.status & CPU::CARRY_FLAG == 0),
+
                 0xB0 => self.branch(self.status & CPU::CARRY_FLAG != 0),
 
                 0xD0 => self.branch(self.status & CPU::ZERO_FLAG == 0),
+
                 0xF0 => self.branch(self.status & CPU::ZERO_FLAG != 0),
 
                 0x10 => self.branch(self.status & CPU::NEGATIVE_FLAG == 0),
+
                 0x30 => self.branch(self.status & CPU::NEGATIVE_FLAG != 0),
 
                 0x50 => self.branch(self.status & CPU::OVERFLOW_FLAG == 0),
+
                 0x70 => self.branch(self.status & CPU::OVERFLOW_FLAG != 0),
 
                 0x18 => self.clear_carry_flag(),
+
                 0xD8 => self.clear_decimal_flag(),
+
                 0x58 => self.clear_interrupt_flag(),
+
                 0xB8 => self.clear_overflow_flag(),
 
                 0xC9 | 0xC5 | 0xD5 | 0xCD | 0xDD | 0xD9 | 0xC1 | 0xD1 => {
@@ -418,10 +454,6 @@ impl CPU {
                     self.dec(&op_code_data.addressing_mode);
                 }
 
-                0xE6 |0xF6 |0xEE |0xFE =>{
-                    self.inc(&op_code_data.addressing_mode);
-                }
-
                 0xCA => {
                     self.dex();
                 }
@@ -434,19 +466,28 @@ impl CPU {
                     self.eor(&op_code_data.addressing_mode);
                 }
 
-                0xAA => self.tax(),
-                0xA8 => self.tay(),
-                0x24 | 0x2C => {
-                    self.bit(&op_code_data.addressing_mode);
+                0xE6 | 0xF6 | 0xEE | 0xFE => {
+                    self.inc(&op_code_data.addressing_mode);
                 }
-                0xA9 | 0xA5 | 0xB5 | 0xAD | 0xBD | 0xB9 | 0xA1 | 0xB1 => {
-                    self.lda(&op_code_data.addressing_mode);
-                }
+
+                0xE8 => self.inx(),
+                0xC8 => self.iny(),
+
+                0x4C => self.jmp(&op_code_data.addressing_mode),
+
+                0x6C => self.jmp_indirect(),
+
                 0x85 | 0x95 | 0x8D | 0x9D | 0x99 | 0x81 | 0x91 => {
                     self.sta(&op_code_data.addressing_mode);
                 }
-                0xE8 => self.inx(),
-                0xC8 => self.iny(),
+
+                0xAA => self.tax(),
+                0xA8 => self.tay(),
+
+                0xA9 | 0xA5 | 0xB5 | 0xAD | 0xBD | 0xB9 | 0xA1 | 0xB1 => {
+                    self.lda(&op_code_data.addressing_mode);
+                }
+
                 _ => todo!(),
             }
 

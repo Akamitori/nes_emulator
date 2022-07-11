@@ -67,24 +67,32 @@ impl OPCodes{
         OpCode::new(0x31,"AND",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
 
         OpCode::new(0x90,"BCC",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
+        
         OpCode::new(0x90,"BCS",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
+        
         OpCode::new(0xF0,"BEQ",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
 
         OpCode::new(0x24,"BIT",2,3,AddressingMode::ZeroPage),
         OpCode::new(0x2C,"BIT",3,4,AddressingMode::Absolute),
 
         OpCode::new(0x30,"BMI",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
+        
         OpCode::new(0xD0,"BNE",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
+        
         OpCode::new(0x10,"BPL",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
 
         OpCode::new(0x00,"BRK",1,7,AddressingMode::NoneAddressing),
 
         OpCode::new(0x50,"BVC",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
+       
         OpCode::new(0x70,"BVS",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
 
         OpCode::new(0x18,"CLC",1,2,AddressingMode::NoneAddressing),
+        
         OpCode::new(0xD8,"CLD",1,2,AddressingMode::NoneAddressing),
+        
         OpCode::new(0x58,"CLI",1,2,AddressingMode::NoneAddressing),
+        
         OpCode::new(0xB8,"CLV",1,2,AddressingMode::NoneAddressing),
 
         OpCode::new(0xC9,"CMP",2,2,AddressingMode::Immediate),
@@ -126,6 +134,9 @@ impl OPCodes{
         OpCode::new(0xF6,"INC",2,6,AddressingMode::ZeroPage_X),
         OpCode::new(0xEE,"INC",3,6,AddressingMode::Absolute),
         OpCode::new(0xFE,"INC",3,7,AddressingMode::Absolute_X),
+
+        OpCode::new(0x4C,"JMP",3,3,AddressingMode::Absolute),
+        OpCode::new(0x6C,"JMP",3,5,AddressingMode::NoneAddressing),
 
         OpCode::new(0xE8,"INX",1,2,AddressingMode::NoneAddressing),
         OpCode::new(0xC8,"INY",1,2,AddressingMode::NoneAddressing),
