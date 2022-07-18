@@ -138,6 +138,9 @@ impl OPCodes{
         OpCode::new(0x4C,"JMP",3,3,AddressingMode::Absolute),
         OpCode::new(0x6C,"JMP",3,5,AddressingMode::NoneAddressing),
 
+        OpCode::new(0x20,"JSR",3,6,AddressingMode::Absolute),
+        OpCode::new(0x60,"RTS ",1,6,AddressingMode::NoneAddressing),
+
         OpCode::new(0xE8,"INX",1,2,AddressingMode::NoneAddressing),
         OpCode::new(0xC8,"INY",1,2,AddressingMode::NoneAddressing),
 
@@ -158,7 +161,6 @@ impl OPCodes{
             codes.insert(c.op_code, c);
         }
         
-        //let codes=HashMap::from();
         OPCodes{
             codes
         }

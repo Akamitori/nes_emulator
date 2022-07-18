@@ -14,6 +14,7 @@ pub struct CPU {
     pub register_y: u8,
     memory: [u8; 0xFFFF],
     op_codes: OPCodes,
+    stack_pointer:u8
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -41,6 +42,7 @@ impl CPU {
             register_y: 0,
             memory: [0; 0xFFFF],
             op_codes: OPCodes::new(),
+            stack_pointer:CPU::STACK_RESET
         }
     }
 
@@ -52,6 +54,10 @@ impl CPU {
     const BREAK_COMMAND_FLAG_2: u8 = 0b0010_0000;
     const OVERFLOW_FLAG: u8 = 0b0100_0000;
     const NEGATIVE_FLAG: u8 = 0b1000_0000;
+
+    const STACK_BOTTOM:u16=0x0100;
+    const STACK_RESET:u8=0xFD;
+    
 
     fn mem_read(&self, addr: u16) -> u8 {
         self.memory[addr as usize]
@@ -137,6 +143,7 @@ impl CPU {
         self.register_a = value;
         self.update_zero_and_negative_flag(self.register_a);
     }
+    
     pub fn load_and_run(&mut self, program: Vec<u8>) {
         self.load(program);
         self.reset();
@@ -213,6 +220,41 @@ impl CPU {
         };
         
         self.program_counter = address_to_jump;
+    }
+
+    fn jsr(&mut self,mode:&AddressingMode){
+        let address_to_jump = self.get_operand_address(mode);
+        self.stack_push_u16(self.program_counter+1);
+        self.program_counter=address_to_jump;
+    }
+
+    fn rts(&mut self){
+        let address_to_return=self.stack_pop_u16()+1;
+        self.program_counter=address_to_return;
+    }
+
+    fn stack_push(&mut self,value:u8){
+        self.mem_write(CPU::STACK_BOTTOM+self.stack_pointer as u16, value);
+        self.stack_pointer=self.stack_pointer.wrapping_sub(1);
+    }
+
+    fn stack_pop(&mut self)-> u8{
+        self.stack_pointer=self.stack_pointer.wrapping_add(1);
+        let data=self.mem_read(CPU::STACK_BOTTOM+self.stack_pointer as u16);
+        return data;
+    }
+
+    fn stack_push_u16(&mut self, data :u16){
+        let bytes=data.to_le_bytes();
+        self.stack_push(bytes[0]);
+        self.stack_push(bytes[1]);
+    }
+
+    fn stack_pop_u16(&mut self)->u16{
+        let hi=self.stack_pop();
+        let lo=self.stack_pop();
+        let bytes=[hi,lo];
+        u16::from_le_bytes(bytes)
     }
 
     fn bit(&mut self, mode: &AddressingMode) {
@@ -477,6 +519,10 @@ impl CPU {
 
                 0x6C => self.jmp_indirect(),
 
+                0x20 => self.jsr(&op_code_data.addressing_mode),
+
+                0x60 => self.rts(),
+
                 0x85 | 0x95 | 0x8D | 0x9D | 0x99 | 0x81 | 0x91 => {
                     self.sta(&op_code_data.addressing_mode);
                 }
@@ -502,6 +548,7 @@ impl CPU {
         self.register_x = 0;
         self.register_y = 0;
         self.status = 0;
+        self.stack_pointer=CPU::STACK_RESET;
 
         self.program_counter = self.mem_read_u16(0xFFFC);
     }
