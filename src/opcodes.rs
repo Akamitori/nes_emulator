@@ -40,23 +40,6 @@ impl OPCodes{
         OpCode::new(0xAA,"TAX",1,2,AddressingMode::NoneAddressing),
         OpCode::new(0xA8,"TAY",1,2,AddressingMode::NoneAddressing),
 
-        
-
-        OpCode::new(0xA9,"LDA",2,2,AddressingMode::Immediate),
-        OpCode::new(0xA5,"LDA",2,3,AddressingMode::ZeroPage),
-        OpCode::new(0xB5,"LDA",2,4,AddressingMode::ZeroPage_X),
-        OpCode::new(0xAD,"LDA",3,4,AddressingMode::Absolute),
-        OpCode::new(0xBD,"LDA",3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),
-        OpCode::new(0xB9,"LDA",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
-        OpCode::new(0xA1,"LDA",2,6,AddressingMode::Indirect_X),
-        OpCode::new(0xB1,"LDA",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
-
-        OpCode::new(0x0A,"ASL",1,2,AddressingMode::NoneAddressing),
-        OpCode::new(0x06,"ASL",2,5,AddressingMode::ZeroPage),
-        OpCode::new(0x16,"ASL",2,6,AddressingMode::ZeroPage_X),
-        OpCode::new(0x0E,"ASL",3,6,AddressingMode::Absolute),
-        OpCode::new(0x1E,"ASL",3,7,AddressingMode::Absolute_X),
-        
         OpCode::new(0x29,"AND",2,2,AddressingMode::Immediate),
         OpCode::new(0x25,"AND",2,3,AddressingMode::ZeroPage),
         OpCode::new(0x35,"AND",2,4,AddressingMode::ZeroPage_X),
@@ -65,6 +48,12 @@ impl OPCodes{
         OpCode::new(0x39,"AND",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
         OpCode::new(0x21,"AND",2,6,AddressingMode::Indirect_X),
         OpCode::new(0x31,"AND",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
+        
+        OpCode::new(0x0A,"ASL",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0x06,"ASL",2,5,AddressingMode::ZeroPage),
+        OpCode::new(0x16,"ASL",2,6,AddressingMode::ZeroPage_X),
+        OpCode::new(0x0E,"ASL",3,6,AddressingMode::Absolute),
+        OpCode::new(0x1E,"ASL",3,7,AddressingMode::Absolute_X),
 
         OpCode::new(0x90,"BCC",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
         
@@ -135,14 +124,44 @@ impl OPCodes{
         OpCode::new(0xEE,"INC",3,6,AddressingMode::Absolute),
         OpCode::new(0xFE,"INC",3,7,AddressingMode::Absolute_X),
 
+        OpCode::new(0xE8,"INX",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0xC8,"INY",1,2,AddressingMode::NoneAddressing),
+
         OpCode::new(0x4C,"JMP",3,3,AddressingMode::Absolute),
         OpCode::new(0x6C,"JMP",3,5,AddressingMode::NoneAddressing),
 
         OpCode::new(0x20,"JSR",3,6,AddressingMode::Absolute),
-        OpCode::new(0x60,"RTS ",1,6,AddressingMode::NoneAddressing),
 
-        OpCode::new(0xE8,"INX",1,2,AddressingMode::NoneAddressing),
-        OpCode::new(0xC8,"INY",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0xA9,"LDA",2,2,AddressingMode::Immediate),
+        OpCode::new(0xA5,"LDA",2,3,AddressingMode::ZeroPage),
+        OpCode::new(0xB5,"LDA",2,4,AddressingMode::ZeroPage_X),
+        OpCode::new(0xAD,"LDA",3,4,AddressingMode::Absolute),
+        OpCode::new(0xBD,"LDA",3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),
+        OpCode::new(0xB9,"LDA",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
+        OpCode::new(0xA1,"LDA",2,6,AddressingMode::Indirect_X),
+        OpCode::new(0xB1,"LDA",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
+
+        OpCode::new(0xA2,"LDX",2,2,AddressingMode::Immediate),
+        OpCode::new(0xA6,"LDX",2,3,AddressingMode::ZeroPage),
+        OpCode::new(0xB6,"LDX",2,4,AddressingMode::ZeroPage_Y),
+        OpCode::new(0xAE,"LDX",3,4,AddressingMode::Absolute),
+        OpCode::new(0xBE,"LDX",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
+
+        OpCode::new(0xA0,"LDY",2,2,AddressingMode::Immediate),
+        OpCode::new(0xA4,"LDY",2,3,AddressingMode::ZeroPage),
+        OpCode::new(0xB4,"LDY",2,4,AddressingMode::ZeroPage_X),
+        OpCode::new(0xAC,"LDY",3,4,AddressingMode::Absolute),
+        OpCode::new(0xBB,"LDY",3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),
+
+        OpCode::new(0x4A,"LSR",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0x46,"LSR",2,5,AddressingMode::ZeroPage),
+        OpCode::new(0x56,"LSR",2,6,AddressingMode::ZeroPage_X),
+        OpCode::new(0x4E,"LSR",3,6,AddressingMode::Absolute),
+        OpCode::new(0x5E,"LSR",3,7,AddressingMode::Absolute_X),
+
+        OpCode::new(0xEA,"NOP",1,2,AddressingMode::NoneAddressing),
+
+        OpCode::new(0x60,"RTS ",1,6,AddressingMode::NoneAddressing),
 
         OpCode::new(0x85,"STA",2,3,AddressingMode::ZeroPage),
         OpCode::new(0x95,"STA",2,4,AddressingMode::ZeroPage_X),

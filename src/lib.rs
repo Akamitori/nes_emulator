@@ -144,6 +144,16 @@ impl CPU {
         self.update_zero_and_negative_flag(self.register_a);
     }
     
+    fn set_register_x(&mut self,value: u8){
+        self.register_x = value;
+        self.update_zero_and_negative_flag(self.register_x);
+    }
+
+    fn set_register_y(&mut self,value: u8){
+        self.register_y = value;
+        self.update_zero_and_negative_flag(self.register_y);
+    }
+
     pub fn load_and_run(&mut self, program: Vec<u8>) {
         self.load(program);
         self.reset();
@@ -312,13 +322,11 @@ impl CPU {
     }
 
     fn dex(&mut self) {
-        self.register_x = self.register_x.wrapping_sub(1);
-        self.update_zero_and_negative_flag(self.register_x);
+        self.set_register_x(self.register_x.wrapping_sub(1));
     }
 
     fn dey(&mut self) {
-        self.register_y = self.register_y.wrapping_sub(1);
-        self.update_zero_and_negative_flag(self.register_y);
+        self.set_register_y(self.register_y.wrapping_sub(1));
     }
 
     fn lda(&mut self, mode: &AddressingMode) {
@@ -328,29 +336,60 @@ impl CPU {
         self.set_register_a(value);
     }
 
+    fn ldx(&mut self, mode: &AddressingMode){
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+
+        self.set_register_x(value);
+    }
+
+    fn ldy(&mut self, mode: &AddressingMode){
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+
+        self.set_register_y(value);
+    }
+
+    fn lsr_accumulator(&mut self){
+        let mut data = self.register_a;
+        if data >> 7 == 1 {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+        data >>= 1;
+        self.set_register_a(data);
+    }
+
+    fn lsr(&mut self, mode: &AddressingMode){
+        let addr = self.get_operand_address(mode);
+        let mut value = self.mem_read(addr);
+
+        if value >> 7 == 1 {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+
+        value >>= 1;
+        self.mem_write(addr, value);
+        self.update_zero_and_negative_flag(value);
+    }
+
     fn tax(&mut self) {
-        self.register_x = self.register_a;
-        self.update_zero_and_negative_flag(self.register_x);
+        self.set_register_x(self.register_a);
     }
 
     fn tay(&mut self) {
-        self.register_y = self.register_a;
-        self.update_zero_and_negative_flag(self.register_y);
+        self.set_register_y(self.register_a);
     }
 
     fn inx(&mut self) {
-        self.register_x = self.register_x.wrapping_add(1);
-
-        self.update_zero_and_negative_flag(self.register_x);
+        self.set_register_x(self.register_x.wrapping_add(1));
     }
 
     fn iny(&mut self) {
-        if self.register_y == 0xFF {
-            self.register_y = 0;
-        } else {
-            self.register_y += 1;
-        }
-        self.update_zero_and_negative_flag(self.register_y);
+        self.set_register_y(self.register_y.wrapping_add(1));
     }
 
     fn eor(&mut self, mode: &AddressingMode) {
@@ -520,6 +559,27 @@ impl CPU {
                 0x6C => self.jmp_indirect(),
 
                 0x20 => self.jsr(&op_code_data.addressing_mode),
+
+                0xA2 | 0xA6 | 0xB6 | 0xAE | 0xBE=>{
+                    self.ldx(&op_code_data.addressing_mode);
+                }
+
+                0xA0 |0xA4 |0xB4 |0xAC | 0xBB =>{
+                    self.ldy(&op_code_data.addressing_mode);
+                }
+
+                0x4A =>{
+                    self.lsr_accumulator();
+                }
+
+                0x46 | 0x56 | 0x4E | 0x5E=>{
+                    self.lsr(&op_code_data.addressing_mode);
+                }
+
+                // NOP
+                0xEA=>{
+                    
+                }
 
                 0x60 => self.rts(),
 
