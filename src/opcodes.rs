@@ -57,7 +57,7 @@ impl OPCodes{
 
         OpCode::new(0x90,"BCC",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
         
-        OpCode::new(0x90,"BCS",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
+        OpCode::new(0xB0,"BCS",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
         
         OpCode::new(0xF0,"BEQ",2,2/*+1 if branch succeeds OR +2 if to a new page*/,AddressingMode::NoneAddressing),
 
@@ -161,6 +161,23 @@ impl OPCodes{
 
         OpCode::new(0xEA,"NOP",1,2,AddressingMode::NoneAddressing),
 
+        OpCode::new(0x09,"ORA",2,2,AddressingMode::Immediate),
+        OpCode::new(0x05,"ORA",2,3,AddressingMode::ZeroPage),
+        OpCode::new(0x15,"ORA",2,4,AddressingMode::ZeroPage_X),
+        OpCode::new(0x0D,"ORA",3,4,AddressingMode::Absolute),
+        OpCode::new(0x1D,"ORA",3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),
+        OpCode::new(0x19,"ORA",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
+        OpCode::new(0x01,"ORA",2,6,AddressingMode::Indirect_X),
+        OpCode::new(0x11,"ORA",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
+
+        OpCode::new(0x48,"PHA",1,3,AddressingMode::NoneAddressing),
+
+        OpCode::new(0x08,"PHP",1,3,AddressingMode::NoneAddressing),
+
+        OpCode::new(0x68,"PLA",1,4,AddressingMode::NoneAddressing),
+
+        OpCode::new(0x28,"PLP",1,4,AddressingMode::NoneAddressing),
+
         OpCode::new(0x60,"RTS ",1,6,AddressingMode::NoneAddressing),
 
         OpCode::new(0x85,"STA",2,3,AddressingMode::ZeroPage),
@@ -177,6 +194,9 @@ impl OPCodes{
         let mut codes=HashMap::new();
 
         for c in code_table{
+            if codes.contains_key(&c.op_code) {
+                panic!("Duplicate key {}",c.op_code);
+            }
             codes.insert(c.op_code, c);
         }
         

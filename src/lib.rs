@@ -14,7 +14,7 @@ pub struct CPU {
     pub register_y: u8,
     memory: [u8; 0xFFFF],
     op_codes: OPCodes,
-    stack_pointer:u8
+    stack_pointer: u8,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -42,7 +42,7 @@ impl CPU {
             register_y: 0,
             memory: [0; 0xFFFF],
             op_codes: OPCodes::new(),
-            stack_pointer:CPU::STACK_RESET
+            stack_pointer: CPU::STACK_RESET,
         }
     }
 
@@ -55,9 +55,8 @@ impl CPU {
     const OVERFLOW_FLAG: u8 = 0b0100_0000;
     const NEGATIVE_FLAG: u8 = 0b1000_0000;
 
-    const STACK_BOTTOM:u16=0x0100;
-    const STACK_RESET:u8=0xFD;
-    
+    const STACK_BOTTOM: u16 = 0x0100;
+    const STACK_RESET: u8 = 0xFD;
 
     fn mem_read(&self, addr: u16) -> u8 {
         self.memory[addr as usize]
@@ -143,13 +142,13 @@ impl CPU {
         self.register_a = value;
         self.update_zero_and_negative_flag(self.register_a);
     }
-    
-    fn set_register_x(&mut self,value: u8){
+
+    fn set_register_x(&mut self, value: u8) {
         self.register_x = value;
         self.update_zero_and_negative_flag(self.register_x);
     }
 
-    fn set_register_y(&mut self,value: u8){
+    fn set_register_y(&mut self, value: u8) {
         self.register_y = value;
         self.update_zero_and_negative_flag(self.register_y);
     }
@@ -198,6 +197,54 @@ impl CPU {
         self.update_zero_and_negative_flag(value);
     }
 
+    fn bcc(&mut self) {
+        self.branch(self.status & CPU::CARRY_FLAG == 0);
+    }
+
+    fn bcs(&mut self) {
+        self.branch(self.status & CPU::CARRY_FLAG != 0);
+    }
+
+    fn beq(&mut self) {
+        self.branch(self.status & CPU::ZERO_FLAG != 0);
+    }
+
+    fn bmi(&mut self) {
+        self.branch(self.status & CPU::NEGATIVE_FLAG != 0);
+    }
+
+    fn bne(&mut self) {
+        self.branch(self.status & CPU::ZERO_FLAG == 0);
+    }
+
+    fn bpl(&mut self) {
+        self.branch(self.status & CPU::NEGATIVE_FLAG == 0);
+    }
+
+    fn bvc(&mut self) {
+        self.branch(self.status & CPU::OVERFLOW_FLAG == 0);
+    }
+
+    fn bvs(&mut self) {
+        self.branch(self.status & CPU::OVERFLOW_FLAG != 0);
+    }
+
+    fn clc(&mut self) {
+        self.clear_carry_flag();
+    }
+
+    fn cld(&mut self) {
+        self.clear_decimal_flag();
+    }
+
+    fn cli(&mut self) {
+        self.clear_interrupt_flag();
+    }
+
+    fn clv(&mut self) {
+        self.clear_overflow_flag();
+    }
+
     fn branch(&mut self, condition: bool) {
         if condition {
             let jump: i8 = self.mem_read(self.program_counter) as i8;
@@ -219,7 +266,7 @@ impl CPU {
         let address_to_read = self.mem_read_u16(self.program_counter);
         let on_page_boundary = address_to_read & 0x00FF == 0x00FF;
 
-        let address_to_jump = if on_page_boundary{
+        let address_to_jump = if on_page_boundary {
             let lsb = self.mem_read(address_to_read);
             let msb = self.mem_read(address_to_read & 0xFF00);
 
@@ -228,42 +275,42 @@ impl CPU {
         } else {
             self.mem_read_u16(address_to_read)
         };
-        
+
         self.program_counter = address_to_jump;
     }
 
-    fn jsr(&mut self,mode:&AddressingMode){
+    fn jsr(&mut self, mode: &AddressingMode) {
         let address_to_jump = self.get_operand_address(mode);
-        self.stack_push_u16(self.program_counter+1);
-        self.program_counter=address_to_jump;
+        self.stack_push_u16(self.program_counter + 1);
+        self.program_counter = address_to_jump;
     }
 
-    fn rts(&mut self){
-        let address_to_return=self.stack_pop_u16()+1;
-        self.program_counter=address_to_return;
+    fn rts(&mut self) {
+        let address_to_return = self.stack_pop_u16() + 1;
+        self.program_counter = address_to_return;
     }
 
-    fn stack_push(&mut self,value:u8){
-        self.mem_write(CPU::STACK_BOTTOM+self.stack_pointer as u16, value);
-        self.stack_pointer=self.stack_pointer.wrapping_sub(1);
+    fn stack_push(&mut self, value: u8) {
+        self.mem_write(CPU::STACK_BOTTOM + self.stack_pointer as u16, value);
+        self.stack_pointer = self.stack_pointer.wrapping_sub(1);
     }
 
-    fn stack_pop(&mut self)-> u8{
-        self.stack_pointer=self.stack_pointer.wrapping_add(1);
-        let data=self.mem_read(CPU::STACK_BOTTOM+self.stack_pointer as u16);
+    fn stack_pop(&mut self) -> u8 {
+        self.stack_pointer = self.stack_pointer.wrapping_add(1);
+        let data = self.mem_read(CPU::STACK_BOTTOM + self.stack_pointer as u16);
         return data;
     }
 
-    fn stack_push_u16(&mut self, data :u16){
-        let bytes=data.to_le_bytes();
+    fn stack_push_u16(&mut self, data: u16) {
+        let bytes = data.to_le_bytes();
         self.stack_push(bytes[0]);
         self.stack_push(bytes[1]);
     }
 
-    fn stack_pop_u16(&mut self)->u16{
-        let hi=self.stack_pop();
-        let lo=self.stack_pop();
-        let bytes=[hi,lo];
+    fn stack_pop_u16(&mut self) -> u16 {
+        let hi = self.stack_pop();
+        let lo = self.stack_pop();
+        let bytes = [hi, lo];
         u16::from_le_bytes(bytes)
     }
 
@@ -290,6 +337,18 @@ impl CPU {
         } else {
             self.clear_zero_flag();
         }
+    }
+
+    fn cmp(&mut self, mode: &AddressingMode) {
+        self.compare(mode, self.register_a);
+    }
+
+    fn cpx(&mut self, mode: &AddressingMode) {
+        self.compare(mode, self.register_x);
+    }
+
+    fn cpy(&mut self, mode: &AddressingMode) {
+        self.compare(mode, self.register_y);
     }
 
     fn compare(&mut self, mode: &AddressingMode, compare_with: u8) {
@@ -336,21 +395,21 @@ impl CPU {
         self.set_register_a(value);
     }
 
-    fn ldx(&mut self, mode: &AddressingMode){
+    fn ldx(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let value = self.mem_read(addr);
 
         self.set_register_x(value);
     }
 
-    fn ldy(&mut self, mode: &AddressingMode){
+    fn ldy(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let value = self.mem_read(addr);
 
         self.set_register_y(value);
     }
 
-    fn lsr_accumulator(&mut self){
+    fn lsr_accumulator(&mut self) {
         let mut data = self.register_a;
         if data >> 7 == 1 {
             self.set_carry_flag();
@@ -361,7 +420,7 @@ impl CPU {
         self.set_register_a(data);
     }
 
-    fn lsr(&mut self, mode: &AddressingMode){
+    fn lsr(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let mut value = self.mem_read(addr);
 
@@ -374,6 +433,13 @@ impl CPU {
         value >>= 1;
         self.mem_write(addr, value);
         self.update_zero_and_negative_flag(value);
+    }
+
+    fn ora(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+
+        self.set_register_a(self.register_a | value);
     }
 
     fn tax(&mut self) {
@@ -495,40 +561,40 @@ impl CPU {
                     self.bit(&op_code_data.addressing_mode);
                 }
 
-                0x90 => self.branch(self.status & CPU::CARRY_FLAG == 0),
+                0x90 => self.bcc(),
 
-                0xB0 => self.branch(self.status & CPU::CARRY_FLAG != 0),
+                0xB0 => self.bcs(),
 
-                0xD0 => self.branch(self.status & CPU::ZERO_FLAG == 0),
+                0xD0 => self.bne(),
 
-                0xF0 => self.branch(self.status & CPU::ZERO_FLAG != 0),
+                0xF0 => self.beq(),
 
-                0x10 => self.branch(self.status & CPU::NEGATIVE_FLAG == 0),
+                0x10 => self.bpl(),
 
-                0x30 => self.branch(self.status & CPU::NEGATIVE_FLAG != 0),
+                0x30 => self.bmi(),
 
-                0x50 => self.branch(self.status & CPU::OVERFLOW_FLAG == 0),
+                0x50 => self.bvc(),
 
-                0x70 => self.branch(self.status & CPU::OVERFLOW_FLAG != 0),
+                0x70 => self.bvs(),
 
-                0x18 => self.clear_carry_flag(),
+                0x18 => self.clc(),
 
-                0xD8 => self.clear_decimal_flag(),
+                0xD8 => self.cld(),
 
-                0x58 => self.clear_interrupt_flag(),
+                0x58 => self.cli(),
 
-                0xB8 => self.clear_overflow_flag(),
+                0xB8 => self.clv(),
 
                 0xC9 | 0xC5 | 0xD5 | 0xCD | 0xDD | 0xD9 | 0xC1 | 0xD1 => {
-                    self.compare(&op_code_data.addressing_mode, self.register_a);
+                    self.cmp(&op_code_data.addressing_mode);
                 }
 
                 0xE0 | 0xE4 | 0xEC => {
-                    self.compare(&op_code_data.addressing_mode, self.register_x);
+                    self.cpx(&op_code_data.addressing_mode);
                 }
 
                 0xC0 | 0xC4 | 0xCC => {
-                    self.compare(&op_code_data.addressing_mode, self.register_y);
+                    self.cpy(&op_code_data.addressing_mode);
                 }
 
                 0xC6 | 0xD6 | 0xCE | 0xDE => {
@@ -560,25 +626,27 @@ impl CPU {
 
                 0x20 => self.jsr(&op_code_data.addressing_mode),
 
-                0xA2 | 0xA6 | 0xB6 | 0xAE | 0xBE=>{
+                0xA2 | 0xA6 | 0xB6 | 0xAE | 0xBE => {
                     self.ldx(&op_code_data.addressing_mode);
                 }
 
-                0xA0 |0xA4 |0xB4 |0xAC | 0xBB =>{
+                0xA0 | 0xA4 | 0xB4 | 0xAC | 0xBB => {
                     self.ldy(&op_code_data.addressing_mode);
                 }
 
-                0x4A =>{
+                0x4A => {
                     self.lsr_accumulator();
                 }
 
-                0x46 | 0x56 | 0x4E | 0x5E=>{
+                0x46 | 0x56 | 0x4E | 0x5E => {
                     self.lsr(&op_code_data.addressing_mode);
                 }
 
                 // NOP
-                0xEA=>{
-                    
+                0xEA => {}
+
+                0x09 | 0x05 | 0x15 | 0x0D | 0x1D | 0x19 | 0x01 | 0x11 => {
+                    self.ora(&op_code_data.addressing_mode);
                 }
 
                 0x60 => self.rts(),
@@ -608,7 +676,7 @@ impl CPU {
         self.register_x = 0;
         self.register_y = 0;
         self.status = 0;
-        self.stack_pointer=CPU::STACK_RESET;
+        self.stack_pointer = CPU::STACK_RESET;
 
         self.program_counter = self.mem_read_u16(0xFFFC);
     }
