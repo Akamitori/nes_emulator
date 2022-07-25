@@ -1,5 +1,4 @@
 mod opcodes;
-use std::result;
 
 use crate::opcodes::*;
 
@@ -442,6 +441,23 @@ impl CPU {
         self.set_register_a(self.register_a | value);
     }
 
+    fn pha(&mut self){
+        self.stack_push(self.register_a);
+    }
+
+    fn php(&mut self){
+        self.stack_push(self.status);
+    }
+
+    fn pla(&mut self){
+        let value=self.stack_pop();
+        self.set_register_a(value);
+    }
+
+    fn plp(&mut self){
+        self.status=self.stack_pop();
+    }
+
     fn tax(&mut self) {
         self.set_register_x(self.register_a);
     }
@@ -647,6 +663,22 @@ impl CPU {
 
                 0x09 | 0x05 | 0x15 | 0x0D | 0x1D | 0x19 | 0x01 | 0x11 => {
                     self.ora(&op_code_data.addressing_mode);
+                }
+
+                0x48=>{
+                    self.pha();
+                }
+
+                0x08=>{
+                    self.php();
+                }
+
+                0x68=>{
+                    self.pla();
+                }
+
+                0x28=>{
+                    self.plp();
                 }
 
                 0x60 => self.rts(),
