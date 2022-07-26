@@ -482,7 +482,7 @@ impl CPU {
 
     fn lsr_accumulator(&mut self) {
         let mut data = self.register_a;
-        if data >> 7 == 1 {
+        if data & 1 == 1 {
             self.set_carry_flag();
         } else {
             self.clear_carry_flag();
@@ -495,7 +495,7 @@ impl CPU {
         let addr = self.get_operand_address(mode);
         let mut value = self.mem_read(addr);
 
-        if value >> 7 == 1 {
+        if value & 1 == 1 {
             self.set_carry_flag();
         } else {
             self.clear_carry_flag();
