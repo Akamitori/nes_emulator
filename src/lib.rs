@@ -289,6 +289,18 @@ impl CPU {
         self.program_counter = address_to_return;
     }
 
+    fn sec(&mut self){
+        self.set_carry_flag();
+    }
+
+    fn sed(&mut self){
+        self.set_decimal_flag();
+    }
+
+    fn sei(&mut self){
+        self.set_interrupt_flag();
+    }
+
     fn stack_push(&mut self, value: u8) {
         self.mem_write(CPU::STACK_BOTTOM + self.stack_pointer as u16, value);
         self.stack_pointer = self.stack_pointer.wrapping_sub(1);
@@ -441,21 +453,21 @@ impl CPU {
         self.set_register_a(self.register_a | value);
     }
 
-    fn pha(&mut self){
+    fn pha(&mut self) {
         self.stack_push(self.register_a);
     }
 
-    fn php(&mut self){
+    fn php(&mut self) {
         self.stack_push(self.status);
     }
 
-    fn pla(&mut self){
-        let value=self.stack_pop();
+    fn pla(&mut self) {
+        let value = self.stack_pop();
         self.set_register_a(value);
     }
 
-    fn plp(&mut self){
-        self.status=self.stack_pop();
+    fn plp(&mut self) {
+        self.status = self.stack_pop();
     }
 
     fn tax(&mut self) {
@@ -665,23 +677,29 @@ impl CPU {
                     self.ora(&op_code_data.addressing_mode);
                 }
 
-                0x48=>{
+                0x48 => {
                     self.pha();
                 }
 
-                0x08=>{
+                0x08 => {
                     self.php();
                 }
 
-                0x68=>{
+                0x68 => {
                     self.pla();
                 }
 
-                0x28=>{
+                0x28 => {
                     self.plp();
                 }
 
                 0x60 => self.rts(),
+
+                0x38 => self.sec(),
+
+                0xF8=> self.sed(),
+
+                0x78=> self.sei(),
 
                 0x85 | 0x95 | 0x8D | 0x9D | 0x99 | 0x81 | 0x91 => {
                     self.sta(&op_code_data.addressing_mode);
