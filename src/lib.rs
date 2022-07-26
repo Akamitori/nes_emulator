@@ -518,7 +518,9 @@ impl CPU {
     }
 
     fn php(&mut self) {
-        self.stack_push(self.status);
+        let mut status=self.status;
+        status |= CPU::BREAK_COMMAND_FLAG | CPU::BREAK_COMMAND_FLAG_2;
+        self.stack_push(status);
     }
 
     fn pla(&mut self) {
@@ -527,7 +529,10 @@ impl CPU {
     }
 
     fn plp(&mut self) {
-        self.status = self.stack_pop();
+        let mut status=self.stack_pop();
+        status &= !CPU::BREAK_COMMAND_FLAG;
+        status &= !CPU::BREAK_COMMAND_FLAG_2;
+        self.status = status;
     }
 
     fn tax(&mut self) {
