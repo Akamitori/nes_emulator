@@ -289,15 +289,75 @@ impl CPU {
         self.program_counter = address_to_return;
     }
 
-    fn sec(&mut self){
+    fn rol_accumulator(&mut self) {
+        let mut data = self.register_a;
+        let bit_0 = self.get_carry_flag();
+        if data >> 7 == 1 {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+        data <<= 1;
+        data |= bit_0;
+        self.set_register_a(data);
+    }
+
+    fn rol(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let mut value = self.mem_read(addr);
+
+        let bit_0 = self.get_carry_flag();
+        if value >> 7 == 1 {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+
+        value <<= 1;
+        value |= bit_0;
+        self.mem_write(addr, value);
+        self.update_zero_and_negative_flag(value);
+    }
+
+    fn ror_accumulator(&mut self) {
+        let mut data = self.register_a;
+        let bit_7 = self.get_carry_flag() << 7;
+        if data & 1 == 1 {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+        data >>= 1;
+        data |= bit_7;
+        self.set_register_a(data);
+    }
+
+    fn ror(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let mut value = self.mem_read(addr);
+
+        let bit_7 = self.get_carry_flag() << 7;
+        if value & 1 == 1 {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+
+        value >>= 1;
+        value |= bit_7;
+        self.mem_write(addr, value);
+        self.update_zero_and_negative_flag(value);
+    }
+
+    fn sec(&mut self) {
         self.set_carry_flag();
     }
 
-    fn sed(&mut self){
+    fn sed(&mut self) {
         self.set_decimal_flag();
     }
 
-    fn sei(&mut self){
+    fn sei(&mut self) {
         self.set_interrupt_flag();
     }
 
@@ -513,6 +573,10 @@ impl CPU {
         }
     }
 
+    fn get_carry_flag(&mut self) -> u8 {
+        self.status & CPU::CARRY_FLAG
+    }
+
     fn set_carry_flag(&mut self) {
         self.status |= CPU::CARRY_FLAG;
     }
@@ -695,11 +759,23 @@ impl CPU {
 
                 0x60 => self.rts(),
 
+                0x2A => self.rol_accumulator(),
+
+                0x26 | 0x36 | 0x2E | 0x3E => {
+                    self.rol(&op_code_data.addressing_mode);
+                }
+
+                0x6A => self.ror_accumulator(),
+
+                0x66 | 0x76 | 0x6E | 0x7E => {
+                    self.ror(&op_code_data.addressing_mode);
+                }
+
                 0x38 => self.sec(),
 
-                0xF8=> self.sed(),
+                0xF8 => self.sed(),
 
-                0x78=> self.sei(),
+                0x78 => self.sei(),
 
                 0x85 | 0x95 | 0x8D | 0x9D | 0x99 | 0x81 | 0x91 => {
                     self.sta(&op_code_data.addressing_mode);
