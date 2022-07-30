@@ -7,9 +7,12 @@ mod dex_tests {
     fn test_0xca_dex() {
         let mut cpu = CPU::new();
 
-        let set_x_to_one = 0xe8;
-
-        cpu.load_and_run(vec![set_x_to_one, set_x_to_one, 0xca, 0x00]);
+        cpu.load_and_run(vec![
+            test_helper::increase_x_by_one(),
+            test_helper::increase_x_by_one(),
+            0xca,
+            0x00,
+        ]);
 
         assert_eq!(cpu.register_x, 1);
         test_helper::assert_inactive_zero_negative_flags(cpu);
@@ -19,9 +22,7 @@ mod dex_tests {
     fn test_0xca_dex_zero_flag() {
         let mut cpu = CPU::new();
 
-        let set_x_to_one = 0xe8;
-
-        cpu.load_and_run(vec![set_x_to_one, 0xca, 0x00]);
+        cpu.load_and_run(vec![test_helper::increase_x_by_one(), 0xca, 0x00]);
 
         assert_eq!(cpu.register_x, 0);
         test_helper::assert_active_zero_flag(cpu);

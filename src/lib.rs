@@ -518,7 +518,7 @@ impl CPU {
     }
 
     fn php(&mut self) {
-        let mut status=self.status;
+        let mut status = self.status;
         status |= CPU::BREAK_COMMAND_FLAG | CPU::BREAK_COMMAND_FLAG_2;
         self.stack_push(status);
     }
@@ -529,7 +529,7 @@ impl CPU {
     }
 
     fn plp(&mut self) {
-        let mut status=self.stack_pop();
+        let mut status = self.stack_pop();
         status &= !CPU::BREAK_COMMAND_FLAG;
         status &= !CPU::BREAK_COMMAND_FLAG_2;
         self.status = status;
@@ -727,7 +727,7 @@ impl CPU {
                     self.ldx(&op_code_data.addressing_mode);
                 }
 
-                0xA0 | 0xA4 | 0xB4 | 0xAC | 0xBB => {
+                0xA0 | 0xA4 | 0xB4 | 0xAC | 0xBC => {
                     self.ldy(&op_code_data.addressing_mode);
                 }
 

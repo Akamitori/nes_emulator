@@ -93,13 +93,11 @@ mod cmp_tests {
         let mem_to_write: u8 = 0x10;
         cpu.mem_write(mem_to_write as u16, 0x05);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(4);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xd5,
             mem_to_write - 1,
             0x00,
@@ -115,13 +113,11 @@ mod cmp_tests {
         let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
         cpu.mem_write(mem_to_write, 0x05);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xd5,
             mem_to_write_bytes[0],
             mem_to_write_bytes[1],
@@ -138,13 +134,11 @@ mod cmp_tests {
         let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
         cpu.mem_write(mem_to_write, 0x05);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xd5,
             mem_to_write_bytes[0],
             mem_to_write_bytes[1],
@@ -161,13 +155,11 @@ mod cmp_tests {
         let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
         cpu.mem_write(mem_to_write, 0x05);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(3);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xd5,
             mem_to_write_bytes[0],
             mem_to_write_bytes[1],
@@ -264,12 +256,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(4);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xdd,
             mem_bytes[0],
             mem_bytes[1],
@@ -286,12 +277,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xdd,
             mem_bytes[0],
             mem_bytes[1],
@@ -308,12 +298,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(6);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xdd,
             mem_bytes[0],
             mem_bytes[1],
@@ -330,12 +319,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(3);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xdd,
             mem_bytes[0],
             mem_bytes[1],
@@ -352,12 +340,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(4);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd9,
             mem_bytes[0],
             mem_bytes[1],
@@ -374,12 +361,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd9,
             mem_bytes[0],
             mem_bytes[1],
@@ -396,12 +382,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(6);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd9,
             mem_bytes[0],
             mem_bytes[1],
@@ -418,12 +403,11 @@ mod cmp_tests {
         let mem_bytes = (mem - 1 as u16).to_le_bytes();
         cpu.mem_write(mem, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(3);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd9,
             mem_bytes[0],
             mem_bytes[1],
@@ -440,12 +424,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
         cpu.mem_write(0x0001, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(4);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xc1,
             mem_to_load - 1,
             0x00,
@@ -461,12 +444,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
         cpu.mem_write(0x0001, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xc1,
             mem_to_load - 1,
             0x00,
@@ -482,12 +464,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
         cpu.mem_write(0x0001, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xc1,
             mem_to_load - 1,
             0x00,
@@ -503,12 +484,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
         cpu.mem_write(0x0001, 0x5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(3);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0xc1,
             mem_to_load - 1,
             0x00,
@@ -524,12 +504,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0010);
         cpu.mem_write(0x0011, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(4);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd1,
             mem_to_load,
             0x00,
@@ -546,12 +525,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
         cpu.mem_write(mem_indirect + 1, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd1,
             mem_to_load,
             0x00,
@@ -568,12 +546,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
         cpu.mem_write(mem_indirect + 1, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(5);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd1,
             mem_to_load,
             0x00,
@@ -590,12 +567,11 @@ mod cmp_tests {
         cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
         cpu.mem_write(mem_indirect + 1, 0x5);
 
-        let set_y_to_one = 0xc8;
         let prep = test_helper::set_a_to_value(3);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0xd1,
             mem_to_load,
             0x00,

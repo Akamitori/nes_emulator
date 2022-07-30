@@ -1,6 +1,6 @@
 #[cfg(test)]
 pub mod test_helper {
-    use std::mem::zeroed;
+    use std::{mem::zeroed, vec};
 
     use crate::*;
 
@@ -18,12 +18,12 @@ pub mod test_helper {
         assert!(cpu.status & NEGATIVE_FLAG == 0);
     }
 
-    pub fn assert_inactive_zero_carry_flags(cpu: CPU){
+    pub fn assert_inactive_zero_carry_flags(cpu: CPU) {
         assert!(cpu.status & ZERO_FLAG == 0);
         assert!(cpu.status & CARRY_FLAG == 0);
     }
-   
-    pub fn assert_inactive_zero_negative_carry_flag(cpu : CPU){
+
+    pub fn assert_inactive_zero_negative_carry_flag(cpu: CPU) {
         assert!(cpu.status & ZERO_FLAG == 0);
         assert!(cpu.status & NEGATIVE_FLAG == 0);
         assert!(cpu.status & CARRY_FLAG == 0);
@@ -52,5 +52,13 @@ pub mod test_helper {
     pub fn set_a_to_value(value_to_set: u8) -> Vec<u8> {
         let lda_direct_value = 0xa9;
         return vec![lda_direct_value, value_to_set];
+    }
+
+    pub fn increase_x_by_one() -> u8 {
+        return 0xe8;
+    }
+
+    pub fn increase_y_by_one() -> u8 {
+        return 0xc8;
     }
 }

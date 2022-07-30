@@ -70,9 +70,12 @@ mod asl_tests {
         let mem_to_access = 0x10;
         cpu.mem_write(mem_to_access, 0x55);
 
-        let set_x_to_one = 0xe8;
-
-        cpu.load_and_run(vec![set_x_to_one, 0x16, mem_to_access as u8 - 1, 0x00]);
+        cpu.load_and_run(vec![
+            test_helper::increase_x_by_one(),
+            0x16,
+            mem_to_access as u8 - 1,
+            0x00,
+        ]);
 
         assert_eq!(cpu.mem_read(mem_to_access), 0x55 << 1);
     }
@@ -83,9 +86,12 @@ mod asl_tests {
         let mem_to_access: u8 = 0x10;
         cpu.mem_write(mem_to_access as u16, 0x80);
 
-        let set_x_to_one = 0xe8;
-
-        cpu.load_and_run(vec![set_x_to_one, 0x16, mem_to_access - 1, 0x00]);
+        cpu.load_and_run(vec![
+            test_helper::increase_x_by_one(),
+            0x16,
+            mem_to_access - 1,
+            0x00,
+        ]);
 
         test_helper::assert_active_zero_flag(cpu);
     }
@@ -96,9 +102,12 @@ mod asl_tests {
         let mem_to_access: u8 = 0x10;
         cpu.mem_write(mem_to_access as u16, 0x7F);
 
-        let set_x_to_one = 0xe8;
-
-        cpu.load_and_run(vec![set_x_to_one, 0x16, mem_to_access - 1, 0x00]);
+        cpu.load_and_run(vec![
+            test_helper::increase_x_by_one(),
+            0x16,
+            mem_to_access - 1,
+            0x00,
+        ]);
 
         test_helper::assert_active_negative_flag(cpu);
     }
@@ -161,17 +170,15 @@ mod asl_tests {
         let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
         cpu.mem_write(mem_to_write, 0x55);
 
-        let set_x_to_one = 0xe8;
-
         cpu.load_and_run(vec![
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0x1e,
             mem_to_write_bytes[0],
             mem_to_write_bytes[1],
             0x00,
         ]);
 
-        assert_eq!(cpu.mem_read(mem_to_write), 0x55<<1);
+        assert_eq!(cpu.mem_read(mem_to_write), 0x55 << 1);
     }
 
     #[test]
@@ -181,10 +188,8 @@ mod asl_tests {
         let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
         cpu.mem_write(mem_to_write, 0x80);
 
-        let set_x_to_one = 0xe8;
-
         cpu.load_and_run(vec![
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0x1e,
             mem_to_write_bytes[0],
             mem_to_write_bytes[1],
@@ -201,10 +206,8 @@ mod asl_tests {
         let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
         cpu.mem_write(mem_to_write, 0xF7);
 
-        let set_x_to_one = 0xe8;
-
         cpu.load_and_run(vec![
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0x1e,
             mem_to_write_bytes[0],
             mem_to_write_bytes[1],

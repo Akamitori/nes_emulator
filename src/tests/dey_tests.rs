@@ -7,9 +7,12 @@ mod dey_tests {
     fn test_0x88_dey() {
         let mut cpu = CPU::new();
 
-        let set_y_to_one = 0xc8;
-
-        cpu.load_and_run(vec![set_y_to_one, set_y_to_one, 0x88, 0x00]);
+        cpu.load_and_run(vec![
+            test_helper::increase_y_by_one(),
+            test_helper::increase_y_by_one(),
+            0x88,
+            0x00,
+        ]);
 
         assert_eq!(cpu.register_y, 1);
         test_helper::assert_inactive_zero_negative_flags(cpu);
@@ -19,9 +22,7 @@ mod dey_tests {
     fn test_0x88_dey_zero_flag() {
         let mut cpu = CPU::new();
 
-        let set_y_to_one = 0xc8;
-
-        cpu.load_and_run(vec![set_y_to_one, 0x88, 0x00]);
+        cpu.load_and_run(vec![test_helper::increase_y_by_one(), 0x88, 0x00]);
 
         assert_eq!(cpu.register_y, 0);
         test_helper::assert_active_zero_flag(cpu);

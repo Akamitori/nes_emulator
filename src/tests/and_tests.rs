@@ -41,7 +41,7 @@ mod and_tests {
 
         let prep = test_helper::set_a_to_value(0x32);
         cpu.load_and_run(vec![prep[0], prep[1], 0x25, 0x10, 0x00]);
-        
+
         assert_eq!(cpu.register_a, 0x32 & 0x55);
         test_helper::assert_inactive_zero_negative_flags(cpu);
     }
@@ -73,10 +73,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0x55);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(0x11);
 
-        cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x35, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_x_by_one(),
+            0x35,
+            0x0F,
+            0x00,
+        ]);
 
         assert_eq!(cpu.register_a, 0x11 & 0x55);
         test_helper::assert_inactive_zero_negative_flags(cpu);
@@ -87,10 +93,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0x00);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(0x11);
 
-        cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x35, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_x_by_one(),
+            0x35,
+            0x0F,
+            0x00,
+        ]);
 
         test_helper::assert_active_zero_flag(cpu);
     }
@@ -100,10 +112,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x10, 0xF5);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(0xF1);
 
-        cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x35, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_x_by_one(),
+            0x35,
+            0x0F,
+            0x00,
+        ]);
 
         test_helper::assert_active_negative_flag(cpu);
     }
@@ -147,10 +165,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x55);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(0x01);
-        cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x3d, 0xFF, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_x_by_one(),
+            0x3d,
+            0xFF,
+            0x0F,
+            0x00,
+        ]);
 
         assert_eq!(cpu.register_a, 0x55 & 0x01);
         test_helper::assert_inactive_zero_negative_flags(cpu);
@@ -161,10 +185,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x00);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(0x11);
-        cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x3d, 0xFF, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_x_by_one(),
+            0x3d,
+            0xFF,
+            0x0F,
+            0x00,
+        ]);
 
         test_helper::assert_active_zero_flag(cpu);
     }
@@ -174,10 +204,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0xF9);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(0xF1);
-        cpu.load_and_run(vec![prep[0], prep[1], set_x_to_one, 0x3d, 0xFF, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_x_by_one(),
+            0x3d,
+            0xFF,
+            0x0F,
+            0x00,
+        ]);
 
         test_helper::assert_active_negative_flag(cpu);
     }
@@ -187,10 +223,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x55);
 
-        let set_y_to_one = 0xc8;
-
         let prep = test_helper::set_a_to_value(0x91);
-        cpu.load_and_run(vec![prep[0], prep[1], set_y_to_one, 0x39, 0xFF, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_y_by_one(),
+            0x39,
+            0xFF,
+            0x0F,
+            0x00,
+        ]);
 
         assert_eq!(cpu.register_a, 0x55 & 0x91);
         test_helper::assert_inactive_zero_negative_flags(cpu);
@@ -201,10 +243,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0x00);
 
-        let set_y_to_one = 0xc8;
-
         let prep = test_helper::set_a_to_value(0xF1);
-        cpu.load_and_run(vec![prep[0], prep[1], set_y_to_one, 0x39, 0xFF, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_y_by_one(),
+            0x39,
+            0xFF,
+            0x0F,
+            0x00,
+        ]);
 
         test_helper::assert_active_zero_flag(cpu);
     }
@@ -214,10 +262,16 @@ mod and_tests {
         let mut cpu = CPU::new();
         cpu.mem_write(0x1000, 0xF1);
 
-        let set_y_to_one = 0xc8;
-
         let prep = test_helper::set_a_to_value(0xF1);
-        cpu.load_and_run(vec![prep[0], prep[1], set_y_to_one, 0x39, 0xFF, 0x0F, 0x00]);
+        cpu.load_and_run(vec![
+            prep[0],
+            prep[1],
+            test_helper::increase_y_by_one(),
+            0x39,
+            0xFF,
+            0x0F,
+            0x00,
+        ]);
 
         test_helper::assert_active_negative_flag(cpu);
     }
@@ -230,13 +284,11 @@ mod and_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
         cpu.mem_write(0x0001, 0x55);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(0x90);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0x21,
             mem_to_load - 1,
             0x00,
@@ -253,13 +305,12 @@ mod and_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
         cpu.mem_write(0x0001, 0);
 
-        let set_x_to_one = 0xe8;
         let prep = test_helper::set_a_to_value(0xF1);
 
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0x21,
             mem_to_load - 1,
             0x00,
@@ -275,13 +326,11 @@ mod and_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0001);
         cpu.mem_write(0x0001, 0xFF);
 
-        let set_x_to_one = 0xe8;
-
         let prep = test_helper::set_a_to_value(0xF1);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_x_to_one,
+            test_helper::increase_x_by_one(),
             0x21,
             mem_to_load - 1,
             0x00,
@@ -297,13 +346,11 @@ mod and_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0010);
         cpu.mem_write(0x0011, 0x5);
 
-        let set_y_to_one = 0xc8;
-
         let prep = test_helper::set_a_to_value(0x6);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0x31,
             mem_to_load,
             0x00,
@@ -320,13 +367,11 @@ mod and_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0010);
         cpu.mem_write(0x0011, 0);
 
-        let set_y_to_one = 0xc8;
-
         let prep = test_helper::set_a_to_value(0x6);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0x31,
             mem_to_load,
             0x00,
@@ -342,13 +387,11 @@ mod and_tests {
         cpu.mem_write_u16(mem_to_load as u16, 0x0010);
         cpu.mem_write(0x0011, 0xFF);
 
-        let set_y_to_one = 0xc8;
-
         let prep = test_helper::set_a_to_value(0xF1);
         cpu.load_and_run(vec![
             prep[0],
             prep[1],
-            set_y_to_one,
+            test_helper::increase_y_by_one(),
             0x31,
             mem_to_load,
             0x00,
