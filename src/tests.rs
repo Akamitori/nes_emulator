@@ -43,6 +43,12 @@ mod iny_tests;
 mod lda_tests;
 
 #[cfg(test)]
+mod ldx_tests;
+
+#[cfg(test)]
+mod ldy_tests;
+
+#[cfg(test)]
 mod sta_tests;
 
 #[cfg(test)]
