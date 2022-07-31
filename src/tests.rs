@@ -32,6 +32,8 @@ mod ldx_tests;
 
 mod ldy_tests;
 
+mod lsr_tests;
+
 mod sta_tests;
 
 mod ta_tests;
