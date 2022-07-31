@@ -34,6 +34,10 @@ mod ldy_tests;
 
 mod lsr_tests;
 
+mod rol_tests;
+
+mod ror_tests;
+
 mod sta_tests;
 
 mod ta_tests;
