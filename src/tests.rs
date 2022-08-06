@@ -34,6 +34,8 @@ mod ldy_tests;
 
 mod lsr_tests;
 
+mod ora_tests;
+
 mod rol_tests;
 
 mod ror_tests;
