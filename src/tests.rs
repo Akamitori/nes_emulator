@@ -36,6 +36,10 @@ mod lsr_tests;
 
 mod ora_tests;
 
+mod pha_tests;
+
+mod pla_tests;
+
 mod rol_tests;
 
 mod ror_tests;
