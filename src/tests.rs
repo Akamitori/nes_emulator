@@ -58,7 +58,9 @@ mod sei_tests;
 
 mod sta_tests;
 
-mod ta_tests;
+mod tax_tests;
+
+mod tay_tests;
 
 mod test_helper;
 
