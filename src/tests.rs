@@ -6,6 +6,12 @@ mod asl_tests;
 
 mod bit_tests;
 
+mod clc_tests;
+
+mod cld_tests;
+
+mod cli_tests;
+
 mod cmp_tests;
 
 mod cpx_tests;
