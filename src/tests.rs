@@ -44,6 +44,12 @@ mod rol_tests;
 
 mod ror_tests;
 
+mod sec_tests;
+
+mod sed_tests;
+
+mod sei_tests;
+
 mod sta_tests;
 
 mod ta_tests;
