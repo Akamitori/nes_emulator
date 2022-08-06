@@ -5,7 +5,7 @@ fn test_0x09_ora_immediate() {
     let mut cpu = CPU::new();
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     let immediate_value = 0x0;
     cpu.load_and_run(vec![prep[0], prep[1], 0x09, immediate_value, 0x00]);
 
@@ -18,7 +18,7 @@ fn test_0x09_ora_immediate_zero_flag() {
     let mut cpu = CPU::new();
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     let immediate_value = 0x0;
 
     cpu.load_and_run(vec![prep[0], prep[1], 0x09, immediate_value, 0x00]);
@@ -32,7 +32,7 @@ fn test_0x09_ora_immediate_negative_flag() {
     let mut cpu = CPU::new();
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     let immediate_value = 0x1;
     cpu.load_and_run(vec![prep[0], prep[1], 0x09, immediate_value, 0x00]);
 
@@ -49,7 +49,7 @@ fn test_0x05_ora_zero_page() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0x05, mem_pos as u8, 0x00]);
 
     assert_eq!(cpu.register_a, mem_value | a_value);
@@ -65,7 +65,7 @@ fn test_0x05_ora_zero_page_zero_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0x05, mem_pos as u8, 0x00]);
 
     assert_eq!(cpu.register_a, mem_value | a_value);
@@ -81,7 +81,7 @@ fn test_0x05_ora_zero_page_negative_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0x05, mem_pos as u8, 0x00]);
 
     assert_eq!(cpu.register_a, mem_value | a_value);
@@ -96,7 +96,7 @@ fn test_0x15_ora_zero_page_x() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -119,7 +119,7 @@ fn test_0x15_ora_zero_page_x_zero_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -142,7 +142,7 @@ fn test_0x15_ora_zero_page_x_negative_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -166,7 +166,7 @@ fn test_0x0d_ora_absolute() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -189,7 +189,7 @@ fn test_0x0d_ora_absolute_zero_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -212,7 +212,7 @@ fn test_0x0d_ora_absolute_negative_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -235,7 +235,7 @@ fn test_0x1d_ora_absolute_x() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -259,7 +259,7 @@ fn test_0x1d_ora_absolute_x_zero_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -283,7 +283,7 @@ fn test_0x1d_ora_absolute_x_negative_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -307,7 +307,7 @@ fn test_0x19_ora_absolute_y() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -331,7 +331,7 @@ fn test_0x19_ora_absolute_y_zero_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -355,7 +355,7 @@ fn test_0x19_ora_absolute_y_negative_flag() {
     cpu.mem_write(mem_pos, mem_value);
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -381,7 +381,7 @@ fn test_0x01_ora_indirect_x() {
     cpu.mem_write(mem_indirect, mem_value);
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -406,7 +406,7 @@ fn test_0x01_ora_indirect_x_zero_flag() {
     cpu.mem_write(mem_indirect, mem_value);
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -431,7 +431,7 @@ fn test_0x01_ora_indirect_x_negative_flag() {
     cpu.mem_write(mem_indirect, mem_value);
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -456,7 +456,7 @@ fn test_0x11_ora_indirect_y() {
     cpu.mem_write(mem_indirect, mem_value);
 
     let a_value = 0x1;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -481,7 +481,7 @@ fn test_0x11_ora_indirect_y_zero_flag() {
     cpu.mem_write(mem_indirect, mem_value);
 
     let a_value = 0x0;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -506,7 +506,7 @@ fn test_0x11_ora_indirect_y_negative_flag() {
     cpu.mem_write(mem_indirect, mem_value);
 
     let a_value = 0xFF;
-    let prep = test_helper::set_a_to_value(a_value);
+    let prep = test_helper::set_register_a_to_value(a_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],

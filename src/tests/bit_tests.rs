@@ -5,7 +5,7 @@ fn test_0x24_bit_from_memory_zero_page() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x55);
 
-    let prep = test_helper::set_a_to_value(0x55);
+    let prep = test_helper::set_register_a_to_value(0x55);
     cpu.load_and_run(vec![prep[0], prep[1], 0x24, 0x10, 0x00]);
 
     test_helper::assert_inactive_zero_flag(&cpu);
@@ -26,7 +26,7 @@ fn test_0x24_bit_zero_flag() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x80);
 
-    let prep = test_helper::set_a_to_value(0);
+    let prep = test_helper::set_register_a_to_value(0);
 
     cpu.load_and_run(vec![prep[0], prep[1], 0x24, 0x10, 0x00]);
 
@@ -50,7 +50,7 @@ fn test_0x2c_bit_from_memory_absolute() {
     let mem_to_access_bytes = mem_to_access.to_le_bytes();
     cpu.mem_write(0x1000, 0x55);
 
-    let prep = test_helper::set_a_to_value(0x55);
+    let prep = test_helper::set_register_a_to_value(0x55);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],

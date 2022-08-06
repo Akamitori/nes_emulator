@@ -89,7 +89,7 @@ fn test_0xec_cpx_absolute() {
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x1);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],

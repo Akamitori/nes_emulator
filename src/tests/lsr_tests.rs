@@ -5,7 +5,7 @@ fn test_0x4a_lsr_accumulator() {
     let mut cpu = CPU::new();
     let value = 0x50;
 
-    let load_value_to_a = test_helper::set_a_to_value(value);
+    let load_value_to_a = test_helper::set_register_a_to_value(value);
 
     cpu.load_and_run(vec![load_value_to_a[0], load_value_to_a[1], 0x4a, 0x00]);
 
@@ -18,7 +18,7 @@ fn test_0x4a_lsr_accumulator_carry_flag_zero_flag() {
     let mut cpu = CPU::new();
     let value = 0x01;
 
-    let load_value_to_a = test_helper::set_a_to_value(value);
+    let load_value_to_a = test_helper::set_register_a_to_value(value);
 
     cpu.load_and_run(vec![load_value_to_a[0], load_value_to_a[1], 0x4a, 0x00]);
 
@@ -33,7 +33,7 @@ fn test_0x4a_lsr_accumulator_carry_flag() {
     let mut cpu = CPU::new();
     let value = 0xFF;
 
-    let load_value_to_a = test_helper::set_a_to_value(value);
+    let load_value_to_a = test_helper::set_register_a_to_value(value);
 
     cpu.load_and_run(vec![load_value_to_a[0], load_value_to_a[1], 0x4a, 0x00]);
 

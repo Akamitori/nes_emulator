@@ -4,7 +4,7 @@ use crate::{tests::test_helper, CPU};
 fn test_0xc9_cmp_immediate_access() {
     let mut cpu = CPU::new();
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
 
     test_helper::assert_inactive_zero_carry_flags(&cpu);
@@ -14,7 +14,7 @@ fn test_0xc9_cmp_immediate_access() {
 fn test_0xc9_cmp_zero_flag() {
     let mut cpu = CPU::new();
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
 
     test_helper::assert_active_zero_flag(&cpu);
@@ -24,7 +24,7 @@ fn test_0xc9_cmp_zero_flag() {
 fn test_0xc9_cmp_carry_flag() {
     let mut cpu = CPU::new();
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
 
     test_helper::assert_active_carry_flag(&cpu);
@@ -34,7 +34,7 @@ fn test_0xc9_cmp_carry_flag() {
 fn test_0xc9_cmp_negative_flag() {
     let mut cpu = CPU::new();
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
 
     test_helper::assert_active_negative_flag(&cpu);
@@ -45,7 +45,7 @@ fn test_0xc5_cmp_zero_page() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x5);
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc5, 0x10, 0x00]);
 
     test_helper::assert_inactive_zero_carry_flags(&cpu);
@@ -56,7 +56,7 @@ fn test_0xc5_cmp_zero_flag() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc5, 0x10, 0x00]);
 
     test_helper::assert_active_zero_flag(&cpu);
@@ -67,7 +67,7 @@ fn test_0xc5_cmp_carry_flag() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc5, 0x10, 0x00]);
 
     test_helper::assert_active_zero_flag(&cpu);
@@ -78,7 +78,7 @@ fn test_0xc5_cmp_negative_flag() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x5);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc5, 0x10, 0x00]);
 
     test_helper::assert_active_negative_flag(&cpu);
@@ -90,7 +90,7 @@ fn test_0xd5_cmp_zero_page_x() {
     let mem_to_write: u8 = 0x10;
     cpu.mem_write(mem_to_write as u16, 0x05);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -110,7 +110,7 @@ fn test_0xd5_cmp_zero_flag() {
     let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
     cpu.mem_write(mem_to_write, 0x05);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -131,7 +131,7 @@ fn test_0xd5_cmp_carry_flag() {
     let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
     cpu.mem_write(mem_to_write, 0x05);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -152,7 +152,7 @@ fn test_0xd5_cmp_negative_flag() {
     let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
     cpu.mem_write(mem_to_write, 0x05);
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -173,7 +173,7 @@ fn test_0xcd_cmp_absolute() {
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -193,7 +193,7 @@ fn test_0xcd_cmp_zero_flag() {
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -213,7 +213,7 @@ fn test_0xcd_cmp_carry_flag() {
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -233,7 +233,7 @@ fn test_0xcd_cmp_negative_flag() {
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -253,7 +253,7 @@ fn test_0xdd_cmp_absolute_x() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -274,7 +274,7 @@ fn test_0xdd_cmp_zero_flag() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -295,7 +295,7 @@ fn test_0xdd_cmp_carry_flag() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(6);
+    let prep = test_helper::set_register_a_to_value(6);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -316,7 +316,7 @@ fn test_0xdd_cmp_negative_flag() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -337,7 +337,7 @@ fn test_0xd9_cmp_absolute_y() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -358,7 +358,7 @@ fn test_0xd9_cmp_zero_flag() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -379,7 +379,7 @@ fn test_0xd9_cmp_carry_flag() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(6);
+    let prep = test_helper::set_register_a_to_value(6);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -400,7 +400,7 @@ fn test_0xd9_cmp_negative_flag() {
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -421,7 +421,7 @@ fn test_0xc1_cmp_indirect_x() {
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -441,7 +441,7 @@ fn test_0xc1_cmp_zero_flag() {
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -461,7 +461,7 @@ fn test_0xc1_cmp_carry_flag() {
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -481,7 +481,7 @@ fn test_0xc1_cmp_negative_flag() {
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -501,7 +501,7 @@ fn test_0xd1_cmp_indirect_y() {
     cpu.mem_write_u16(mem_to_load as u16, 0x0010);
     cpu.mem_write(0x0011, 0x5);
 
-    let prep = test_helper::set_a_to_value(4);
+    let prep = test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -522,7 +522,7 @@ fn test_0xd1_cmp_zero_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
     cpu.mem_write(mem_indirect + 1, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -543,7 +543,7 @@ fn test_0xd1_cmp_carry_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
     cpu.mem_write(mem_indirect + 1, 0x5);
 
-    let prep = test_helper::set_a_to_value(5);
+    let prep = test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -564,7 +564,7 @@ fn test_0xd1_cmp_negative_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
     cpu.mem_write(mem_indirect + 1, 0x5);
 
-    let prep = test_helper::set_a_to_value(3);
+    let prep = test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],

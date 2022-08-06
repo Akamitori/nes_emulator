@@ -57,7 +57,7 @@ pub fn assert_active_overflow_flag(cpu: &CPU) {
     assert!(cpu.status & OVERFLOW_FLAG != 0);
 }
 
-pub fn set_a_to_value(value_to_set: u8) -> [u8; 2] {
+pub fn set_register_a_to_value(value_to_set: u8) -> [u8; 2] {
     let lda_direct_value = 0xa9;
     return [lda_direct_value, value_to_set];
 }

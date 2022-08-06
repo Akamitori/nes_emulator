@@ -5,7 +5,7 @@ fn test_0x2a_rol_accumulator_base() {
     let mut cpu = CPU::new();
     let value = 0x51;
 
-    let load_value_to_a = test_helper::set_a_to_value(value);
+    let load_value_to_a = test_helper::set_register_a_to_value(value);
 
     cpu.load_and_run(vec![
         load_value_to_a[0],
@@ -31,7 +31,7 @@ fn test_0x2a_rol_accumulator_carry_flag_zero_flag() {
     let mut cpu = CPU::new();
     let value = 0x80;
 
-    let load_value_to_a = test_helper::set_a_to_value(value);
+    let load_value_to_a = test_helper::set_register_a_to_value(value);
 
     cpu.load_and_run(vec![load_value_to_a[0], load_value_to_a[1], 0x2a, 0x00]);
 
@@ -46,7 +46,7 @@ fn test_0x2a_rol_accumulator_carry_flag_negative_flag() {
     let mut cpu = CPU::new();
     let value = 0xF0;
 
-    let load_value_to_a = test_helper::set_a_to_value(value);
+    let load_value_to_a = test_helper::set_register_a_to_value(value);
 
     cpu.load_and_run(vec![load_value_to_a[0], load_value_to_a[1], 0x2a, 0x00]);
 
@@ -61,7 +61,7 @@ fn test_0x2a_rol_accumulator_negative_flag() {
     let mut cpu = CPU::new();
     let value = 0x50;
 
-    let load_value_to_a = test_helper::set_a_to_value(value);
+    let load_value_to_a = test_helper::set_register_a_to_value(value);
 
     cpu.load_and_run(vec![load_value_to_a[0], load_value_to_a[1], 0x2a, 0x00]);
 

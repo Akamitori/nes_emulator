@@ -298,10 +298,8 @@ impl CPU {
             self.clear_carry_flag();
         }
 
-        println!("before rol {:#010b}",data);
         data <<= 1;
         data |= bit_0;
-        println!("after rol {:#010b}",data);
         self.set_register_a(data);
     }
 

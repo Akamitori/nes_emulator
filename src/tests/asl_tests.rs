@@ -4,7 +4,7 @@ use crate::{tests::test_helper, CPU};
 fn test_0x0a_asl_accumulator() {
     let mut cpu = CPU::new();
 
-    let prep = test_helper::set_a_to_value(0x1);
+    let prep = test_helper::set_register_a_to_value(0x1);
     cpu.load_and_run(vec![prep[0], prep[1], 0x0a, 0x00]);
 
     assert_eq!(cpu.register_a, 0x1 << 1);
@@ -15,7 +15,7 @@ fn test_0x0a_asl_accumulator() {
 fn test_0x0a_asl_zero_flag() {
     let mut cpu = CPU::new();
 
-    let prep = test_helper::set_a_to_value(0x80);
+    let prep = test_helper::set_register_a_to_value(0x80);
     cpu.load_and_run(vec![prep[0], prep[1], 0x0a, 0x00]);
 
     test_helper::assert_active_zero_flag(&cpu);
@@ -25,7 +25,7 @@ fn test_0x0a_asl_zero_flag() {
 fn test_0x0a_asl_negative_flag() {
     let mut cpu = CPU::new();
 
-    let prep = test_helper::set_a_to_value(0x7F);
+    let prep = test_helper::set_register_a_to_value(0x7F);
     cpu.load_and_run(vec![prep[0], prep[1], 0x0a, 0x00]);
 
     test_helper::assert_active_negative_flag(&cpu);
