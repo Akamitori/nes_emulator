@@ -4,7 +4,7 @@ const CARRY_FLAG: u8 = 0b0000_0001;
 const ZERO_FLAG: u8 = 0b0000_0010;
 const INTERRUPT_DISABLE_FLAG: u8 = 0b0000_0100;
 const DECIMAL_MODE_FLAG: u8 = 0b0000_1000;
-const BREAK_COMMAND_FLAG: u8 = 0b0001_0000;
+const BREAK_COMMAND_FLAG_1: u8 = 0b0001_0000;
 const BREAK_COMMAND_FLAG_2: u8 = 0b0010_0000;
 const OVERFLOW_FLAG: u8 = 0b0100_0000;
 const NEGATIVE_FLAG: u8 = 0b1000_0000;
@@ -57,6 +57,10 @@ pub fn assert_active_overflow_flag(cpu: &CPU) {
     assert!(cpu.status & OVERFLOW_FLAG != 0);
 }
 
+pub fn assert_inactive_overflow_flag(cpu: &CPU) {
+    assert!(cpu.status & OVERFLOW_FLAG == 0);
+}
+
 pub fn assert_inactive_decimal_flag(cpu: &CPU) {
     assert!(cpu.status & DECIMAL_MODE_FLAG == 0);
 }
@@ -71,6 +75,22 @@ pub fn assert_inactive_interrupt_flag(cpu: &CPU) {
 
 pub fn assert_active_interrupt_flag(cpu: &CPU) {
     assert!(cpu.status & INTERRUPT_DISABLE_FLAG != 0);
+}
+
+pub fn assert_inactive_break_1_flag(cpu: &CPU) {
+    assert!(cpu.status & BREAK_COMMAND_FLAG_1 == 0);
+}
+
+pub fn assert_active_break_1_flag(cpu: &CPU) {
+    assert!(cpu.status & BREAK_COMMAND_FLAG_1 != 0);
+}
+
+pub fn assert_inactive_break_2_flag(cpu: &CPU) {
+    assert!(cpu.status & BREAK_COMMAND_FLAG_2 == 0);
+}
+
+pub fn assert_active_break_2_flag(cpu: &CPU) {
+    assert!(cpu.status & BREAK_COMMAND_FLAG_2 != 0);
 }
 
 pub fn set_register_a_to_value(value_to_set: u8) -> [u8; 2] {

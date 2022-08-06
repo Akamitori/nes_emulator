@@ -12,6 +12,8 @@ mod cld_tests;
 
 mod cli_tests;
 
+mod clv_tests;
+
 mod cmp_tests;
 
 mod cpx_tests;
@@ -44,7 +46,11 @@ mod ora_tests;
 
 mod pha_tests;
 
+mod php_tests;
+
 mod pla_tests;
+
+mod plp_tests;
 
 mod rol_tests;
 

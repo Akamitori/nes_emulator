@@ -49,7 +49,7 @@ impl CPU {
     const ZERO_FLAG: u8 = 0b0000_0010;
     const INTERRUPT_DISABLE_FLAG: u8 = 0b0000_0100;
     const DECIMAL_MODE_FLAG: u8 = 0b0000_1000;
-    const BREAK_COMMAND_FLAG: u8 = 0b0001_0000;
+    const BREAK_COMMAND_FLAG_1: u8 = 0b0001_0000;
     const BREAK_COMMAND_FLAG_2: u8 = 0b0010_0000;
     const OVERFLOW_FLAG: u8 = 0b0100_0000;
     const NEGATIVE_FLAG: u8 = 0b1000_0000;
@@ -520,7 +520,7 @@ impl CPU {
 
     fn php(&mut self) {
         let mut status = self.status;
-        status |= CPU::BREAK_COMMAND_FLAG | CPU::BREAK_COMMAND_FLAG_2;
+        status |= CPU::BREAK_COMMAND_FLAG_1 | CPU::BREAK_COMMAND_FLAG_2;
         self.stack_push(status);
     }
 
@@ -531,7 +531,7 @@ impl CPU {
 
     fn plp(&mut self) {
         let mut status = self.stack_pop();
-        status &= !CPU::BREAK_COMMAND_FLAG;
+        status &= !CPU::BREAK_COMMAND_FLAG_1;
         status &= !CPU::BREAK_COMMAND_FLAG_2;
         self.status = status;
     }
