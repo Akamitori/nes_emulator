@@ -1,4 +1,4 @@
-
+mod adc_tests;
 
 mod and_tests;
 
