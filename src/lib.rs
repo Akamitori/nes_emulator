@@ -1,5 +1,4 @@
 mod opcodes;
-
 use crate::opcodes::*;
 
 #[cfg(test)]
@@ -161,6 +160,43 @@ impl CPU {
     pub fn load(&mut self, program: Vec<u8>) {
         self.memory[0x8000..(0x8000 + program.len())].copy_from_slice(&program[..]);
         self.mem_write_u16(0xFFFC, 0x8000);
+    }
+
+    fn adc(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+        self.add_to_register_a(value);
+    }
+
+    fn sbc(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+        self.add_to_register_a(((value as i8).wrapping_neg().wrapping_sub(1)) as u8);
+    }
+
+    fn add_to_register_a(&mut self, value: u8) {
+        let accum_value = self.register_a;
+        let carry = self.get_carry_flag();
+        let sum = value as u16 + accum_value as u16 + carry as u16;
+
+        let set_carry = sum > 0xff;
+        if set_carry {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+
+        let result = sum as u8;
+
+        let bit_7_mask = 0x80;
+
+        if (value ^ result) & (accum_value ^ result) & bit_7_mask != 0 {
+            self.set_overflow_flag();
+        } else {
+            self.clear_overflow_flag();
+        }
+
+        self.set_register_a(result);
     }
 
     fn and(&mut self, mode: &AddressingMode) {
@@ -644,6 +680,10 @@ impl CPU {
 
             match code {
                 0x00 => return,
+
+                0x69 | 0x65 | 0x75 | 0x6D | 0x7D | 0x79 | 0x61 | 0x71 => {
+                    self.adc(&op_code_data.addressing_mode)
+                }
 
                 0x29 | 0x25 | 0x35 | 0x2D | 0x3D | 0x39 | 0x21 | 0x31 => {
                     self.and(&op_code_data.addressing_mode);

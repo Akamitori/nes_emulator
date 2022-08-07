@@ -36,9 +36,14 @@ pub struct OPCodes{
 impl OPCodes{
     pub fn new()-> Self{
         let mut code_table=vec![
-        
-        OpCode::new(0xAA,"TAX",1,2,AddressingMode::NoneAddressing),
-        OpCode::new(0xA8,"TAY",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0x69,"ADC",2,2,AddressingMode::Immediate),
+        OpCode::new(0x65,"ADC",2,3,AddressingMode::ZeroPage),
+        OpCode::new(0x75,"ADC",2,4,AddressingMode::ZeroPage_X),
+        OpCode::new(0x6D,"ADC",3,4,AddressingMode::Absolute),
+        OpCode::new(0x7D,"ADC",3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),
+        OpCode::new(0x79,"ADC",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
+        OpCode::new(0x61,"ADC",2,6,AddressingMode::Indirect_X),
+        OpCode::new(0x71,"ADC",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
 
         OpCode::new(0x29,"AND",2,2,AddressingMode::Immediate),
         OpCode::new(0x25,"AND",2,3,AddressingMode::ZeroPage),
@@ -192,6 +197,15 @@ impl OPCodes{
         OpCode::new(0x6E,"ROR ",3,6,AddressingMode::Absolute),
         OpCode::new(0x7E,"ROR ",3,7,AddressingMode::Absolute_X),
 
+        OpCode::new(0xE9,"SBC",2,2,AddressingMode::Immediate),
+        OpCode::new(0xE5,"SBC",2,3,AddressingMode::ZeroPage),
+        OpCode::new(0xF5,"SBC",2,4,AddressingMode::ZeroPage_X),
+        OpCode::new(0xED,"SBC",3,4,AddressingMode::Absolute),
+        OpCode::new(0xFD,"SBC",3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),
+        OpCode::new(0xF9,"SBC",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
+        OpCode::new(0xE1,"SBC",2,6,AddressingMode::Indirect_X),
+        OpCode::new(0xF1,"SBC",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
+
         OpCode::new(0x38,"SEC ",1,2,AddressingMode::NoneAddressing),
 
         OpCode::new(0xF8,"SED ",1,2,AddressingMode::NoneAddressing),
@@ -205,6 +219,9 @@ impl OPCodes{
         OpCode::new(0x99,"STA",3,5,AddressingMode::Absolute_Y),
         OpCode::new(0x81,"STA",2,6,AddressingMode::Indirect_X),
         OpCode::new(0x91,"STA",2,6,AddressingMode::Indirect_Y),
+
+        OpCode::new(0xAA,"TAX",1,2,AddressingMode::NoneAddressing),
+        OpCode::new(0xA8,"TAY",1,2,AddressingMode::NoneAddressing)
         ];
         
         code_table.sort_by(|a,b| a.op_code.cmp(&b.op_code) );
