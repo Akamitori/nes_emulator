@@ -10,15 +10,13 @@ fn test_0x68_pla() {
     let load_value_a_to_a = test_helper::set_register_a_to_value(value_a);
     let load_value_b_to_a = test_helper::set_register_a_to_value(value_b);
 
-    let push_accumulator_to_stack=0x48;
-
     cpu.load_and_run(vec![
         load_value_a_to_a[0],
         load_value_a_to_a[1],
-        push_accumulator_to_stack,
+        test_helper::push_accumulator_to_stack(),
         load_value_b_to_a[0],
         load_value_b_to_a[1],
-        push_accumulator_to_stack,
+        test_helper::push_accumulator_to_stack(),
         0x68,
         0x00,
     ]);
@@ -38,15 +36,13 @@ fn test_0x68_pla_zero_flag() {
     let load_value_a_to_a = test_helper::set_register_a_to_value(value_a);
     let load_value_b_to_a = test_helper::set_register_a_to_value(value_b);
 
-    let push_accumulator_to_stack=0x48;
-
     cpu.load_and_run(vec![
         load_value_a_to_a[0],
         load_value_a_to_a[1],
-        push_accumulator_to_stack,
+        test_helper::push_accumulator_to_stack(),
         load_value_b_to_a[0],
         load_value_b_to_a[1],
-        push_accumulator_to_stack,
+        test_helper::push_accumulator_to_stack(),
         0x68,
         0x00,
     ]);
@@ -66,15 +62,13 @@ fn test_0x68_pla_negative_flag() {
     let load_value_a_to_a = test_helper::set_register_a_to_value(value_a);
     let load_value_b_to_a = test_helper::set_register_a_to_value(value_b);
 
-    let push_accumulator_to_stack=0x48;
-
     cpu.load_and_run(vec![
         load_value_a_to_a[0],
         load_value_a_to_a[1],
-        push_accumulator_to_stack,
+        test_helper::push_accumulator_to_stack(),
         load_value_b_to_a[0],
         load_value_b_to_a[1],
-        push_accumulator_to_stack,
+        test_helper::push_accumulator_to_stack(),
         0x68,
         0x00,
     ]);

@@ -98,6 +98,23 @@ pub fn set_register_a_to_value(value_to_set: u8) -> [u8; 2] {
     return [lda_direct_value, value_to_set];
 }
 
+pub fn set_carry()->u8{
+    return  0x38;
+}
+
+pub fn push_accumulator_to_stack()-> u8{
+     return 0x48;
+}
+
+pub fn store_register_to_address_zero_page(address_to_store : u8) -> [u8;2]{
+    let sta_zero_page=0x85;
+    return [sta_zero_page,address_to_store];
+}
+
+pub fn pull_stack_into_accumulator()->u8{
+    return 0x68;
+}
+
 pub fn increase_x_by_one() -> u8 {
     return 0xe8;
 }

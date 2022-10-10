@@ -190,7 +190,7 @@ impl CPU {
 
         let bit_7_mask = 0x80;
 
-        if (value ^ result) & (accum_value ^ result) & bit_7_mask != 0 {
+        if ((value ^ result) & (accum_value ^ result) & bit_7_mask) != 0 {
             self.set_overflow_flag();
         } else {
             self.clear_overflow_flag();
@@ -804,6 +804,10 @@ impl CPU {
                 }
 
                 0x60 => self.rts(),
+
+                0xe9 | 0xe5 | 0xf5 | 0xed | 0xfd | 0xf9 | 0xe1 | 0xf1 => {
+                    self.sbc(&op_code_data.addressing_mode);
+                }
 
                 0x2A => self.rol_accumulator(),
 

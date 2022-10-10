@@ -56,6 +56,8 @@ mod rol_tests;
 
 mod ror_tests;
 
+mod sbc_tests;
+
 mod sec_tests;
 
 mod sed_tests;
