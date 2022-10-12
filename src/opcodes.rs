@@ -21,7 +21,7 @@ impl OpCode {
     ) -> Self {
         OpCode {
             op_code,
-            command_name: command_name,
+            command_name,
             bytes,
             cycles,
             addressing_mode,
