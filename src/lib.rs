@@ -1,8 +1,10 @@
 mod opcodes;
+
 use crate::opcodes::*;
 
 #[cfg(test)]
 mod tests;
+
 
 pub struct CPU {
     pub register_a: u8,
