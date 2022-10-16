@@ -5,7 +5,6 @@ use crate::opcodes::*;
 #[cfg(test)]
 mod tests;
 
-
 pub struct CPU {
     pub register_a: u8,
     pub status: u8,
@@ -318,13 +317,22 @@ impl CPU {
 
     fn jsr(&mut self, mode: &AddressingMode) {
         let address_to_jump = self.get_operand_address(mode);
-        self.stack_push_u16(self.program_counter + 1);
+        self.stack_push_u16(self.program_counter + 2 - 1);
         self.program_counter = address_to_jump;
     }
 
     fn rts(&mut self) {
         let address_to_return = self.stack_pop_u16() + 1;
         self.program_counter = address_to_return;
+    }
+
+    fn rti(&mut self) {
+        let mut status = self.stack_pop();
+        status &= !CPU::BREAK_COMMAND_FLAG_1;
+        status &= !CPU::BREAK_COMMAND_FLAG_2;
+        self.status = status;
+        let program_counter = self.stack_pop_u16();
+        self.program_counter = program_counter;
     }
 
     fn rol_accumulator(&mut self) {
@@ -697,21 +705,21 @@ impl CPU {
 
                 0x0A => self.asl_accumulator(),
 
-                0x24 | 0x2C => {
-                    self.bit(&op_code_data.addressing_mode);
-                }
-
                 0x90 => self.bcc(),
 
                 0xB0 => self.bcs(),
 
-                0xD0 => self.bne(),
-
                 0xF0 => self.beq(),
 
-                0x10 => self.bpl(),
+                0x24 | 0x2C => {
+                    self.bit(&op_code_data.addressing_mode);
+                }
 
                 0x30 => self.bmi(),
+
+                0xD0 => self.bne(),
+
+                0x10 => self.bpl(),
 
                 0x50 => self.bvc(),
 
@@ -758,6 +766,7 @@ impl CPU {
                 }
 
                 0xE8 => self.inx(),
+
                 0xC8 => self.iny(),
 
                 0x4C => self.jmp(&op_code_data.addressing_mode),
@@ -765,6 +774,10 @@ impl CPU {
                 0x6C => self.jmp_indirect(),
 
                 0x20 => self.jsr(&op_code_data.addressing_mode),
+
+                0xA9 | 0xA5 | 0xB5 | 0xAD | 0xBD | 0xB9 | 0xA1 | 0xB1 => {
+                    self.lda(&op_code_data.addressing_mode);
+                }
 
                 0xA2 | 0xA6 | 0xB6 | 0xAE | 0xBE => {
                     self.ldx(&op_code_data.addressing_mode);
@@ -805,12 +818,6 @@ impl CPU {
                     self.plp();
                 }
 
-                0x60 => self.rts(),
-
-                0xe9 | 0xe5 | 0xf5 | 0xed | 0xfd | 0xf9 | 0xe1 | 0xf1 => {
-                    self.sbc(&op_code_data.addressing_mode);
-                }
-
                 0x2A => self.rol_accumulator(),
 
                 0x26 | 0x36 | 0x2E | 0x3E => {
@@ -821,6 +828,14 @@ impl CPU {
 
                 0x66 | 0x76 | 0x6E | 0x7E => {
                     self.ror(&op_code_data.addressing_mode);
+                }
+
+                0x40 => self.rti(),
+
+                0x60 => self.rts(),
+
+                0xe9 | 0xe5 | 0xf5 | 0xed | 0xfd | 0xf9 | 0xe1 | 0xf1 => {
+                    self.sbc(&op_code_data.addressing_mode);
                 }
 
                 0x38 => self.sec(),
@@ -835,10 +850,6 @@ impl CPU {
 
                 0xAA => self.tax(),
                 0xA8 => self.tay(),
-
-                0xA9 | 0xA5 | 0xB5 | 0xAD | 0xBD | 0xB9 | 0xA1 | 0xB1 => {
-                    self.lda(&op_code_data.addressing_mode);
-                }
 
                 _ => todo!(),
             }
