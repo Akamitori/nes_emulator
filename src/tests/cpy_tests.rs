@@ -13,8 +13,7 @@ fn test_0xc0_cpy_immediate_access() {
 fn test_0xc0_cpy_zero_flag() {
     let mut cpu = CPU::new();
 
-    let increase_y_to_one = 0xc8;
-    cpu.load_and_run(vec![increase_y_to_one, 0xc0, 0x01, 0x00]);
+    cpu.load_and_run(vec![test_helper::increase_y_by_one(), 0xc0, 0x01, 0x00]);
 
     test_helper::assert_active_zero_flag(&cpu);
 }
@@ -23,8 +22,7 @@ fn test_0xc0_cpy_zero_flag() {
 fn test_0xc0_cpy_carry_flag() {
     let mut cpu = CPU::new();
 
-    let increase_y_to_one = 0xc8;
-    cpu.load_and_run(vec![increase_y_to_one, 0xc0, 0x01, 0x00]);
+    cpu.load_and_run(vec![test_helper::increase_y_by_one(), 0xc0, 0x01, 0x00]);
 
     test_helper::assert_active_carry_flag(&cpu);
 }
@@ -33,8 +31,7 @@ fn test_0xc0_cpy_carry_flag() {
 fn test_0xc0_cpy_negative_flag() {
     let mut cpu = CPU::new();
 
-    let increase_y_to_one = 0xc8;
-    cpu.load_and_run(vec![increase_y_to_one, 0xc0, 0x05, 0x00]);
+    cpu.load_and_run(vec![test_helper::increase_y_by_one(), 0xc0, 0x05, 0x00]);
 
     test_helper::assert_active_negative_flag(&cpu);
 }
@@ -53,9 +50,8 @@ fn test_0xc4_cpy_zero_page() {
 fn test_0xc4_cpy_zero_flag() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x1);
-
-    let increase_y_to_one = 0xc8;
-    cpu.load_and_run(vec![increase_y_to_one, 0xc4, 0x10, 0x00]);
+    
+    cpu.load_and_run(vec![test_helper::increase_y_by_one(), 0xc4, 0x10, 0x00]);
 
     test_helper::assert_active_zero_flag(&cpu);
 }
@@ -65,8 +61,7 @@ fn test_0xc4_cpy_carry_flag() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x1);
 
-    let increase_y_to_one = 0xc8;
-    cpu.load_and_run(vec![increase_y_to_one, 0xc4, 0x10, 0x00]);
+    cpu.load_and_run(vec![test_helper::increase_y_by_one(), 0xc4, 0x10, 0x00]);
 
     test_helper::assert_active_zero_flag(&cpu);
 }
@@ -75,9 +70,8 @@ fn test_0xc4_cpy_carry_flag() {
 fn test_0xc4_cpy_negative_flag() {
     let mut cpu = CPU::new();
     cpu.mem_write(0x10, 0x5);
-
-    let increase_y_to_one = 0xc8;
-    cpu.load_and_run(vec![increase_y_to_one, 0xc4, 0x10, 0x00]);
+    
+    cpu.load_and_run(vec![test_helper::increase_y_by_one(), 0xc4, 0x10, 0x00]);
 
     test_helper::assert_active_negative_flag(&cpu);
 }
@@ -108,10 +102,9 @@ fn test_0xcc_cpy_zero_flag() {
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x1);
-
-    let increase_y_to_one = 0xc8;
+    
     cpu.load_and_run(vec![
-        increase_y_to_one,
+        test_helper::increase_y_by_one(),
         0xcc,
         mem_bytes[0],
         mem_bytes[1],
@@ -127,10 +120,9 @@ fn test_0xcc_cpy_carry_flag() {
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x1);
-
-    let increase_y_to_one = 0xc8;
+    
     cpu.load_and_run(vec![
-        increase_y_to_one,
+        test_helper::increase_y_by_one(),
         0xcc,
         mem_bytes[0],
         mem_bytes[1],
@@ -146,10 +138,9 @@ fn test_0xcc_cpy_negative_flag() {
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
-
-    let increase_y_to_one = 0xc8;
+    
     cpu.load_and_run(vec![
-        increase_y_to_one,
+        test_helper::increase_y_by_one(),
         0xcc,
         mem_bytes[0],
         mem_bytes[1],

@@ -4,12 +4,10 @@ use crate::{tests::test_helper, CPU};
 fn test_0xe8_inx_negative_flag() {
     let mut cpu = CPU::new();
     cpu.register_x = 0xFE;
-    let set_a_to_negative = [0xa9, 0xf1];
-    let transfer_a_to_x = 0xaa;
+    let set_x_to_negative =test_helper::set_register_x_to_value(0xf1);
     cpu.load_and_run(vec![
-        set_a_to_negative[0],
-        set_a_to_negative[1],
-        transfer_a_to_x,
+        set_x_to_negative[0],
+        set_x_to_negative[1],
         0xe8,
         0x00,
     ]);
@@ -20,12 +18,10 @@ fn test_0xe8_inx_negative_flag() {
 #[test]
 fn test_0xe8_inx_zero_flag() {
     let mut cpu = CPU::new();
-    let set_a_to_max = [0xa9, 0xff];
-    let transfer_a_to_x = 0xaa;
+    let set_x_to_max = test_helper::set_register_x_to_value(0xff);
     cpu.load_and_run(vec![
-        set_a_to_max[0],
-        set_a_to_max[1],
-        transfer_a_to_x,
+        set_x_to_max[0],
+        set_x_to_max[1],
         0xe8,
         0x00,
     ]);
@@ -36,16 +32,14 @@ fn test_0xe8_inx_zero_flag() {
 #[test]
 fn test_0xe8_inx_overflow() {
     let mut cpu = CPU::new();
-    let set_a_to_max = [0xa9, 0xff];
-    let transfer_a_to_x = 0xaa;
+    let set_x_to_max = test_helper::set_register_x_to_value(0xff);
     cpu.load_and_run(vec![
-        set_a_to_max[0],
-        set_a_to_max[1],
-        transfer_a_to_x,
+        set_x_to_max[0],
+        set_x_to_max[1],
         0xe8,
         0xe8,
         0x00,
     ]);
 
-    assert_eq!(cpu.register_x, 1)
+    assert_eq!(cpu.register_x, 1);
 }
