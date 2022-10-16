@@ -66,6 +66,10 @@ mod sei_tests;
 
 mod sta_tests;
 
+mod stx_tests;
+
+mod sty_tests;
+
 mod tax_tests;
 
 mod tay_tests;

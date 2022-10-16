@@ -98,6 +98,16 @@ pub fn set_register_a_to_value(value_to_set: u8) -> [u8; 2] {
     return [lda_direct_value, value_to_set];
 }
 
+pub fn set_register_x_to_value(value_to_set: u8) -> [u8; 2] {
+    let ldx_direct_value = 0xa2;
+    return [ldx_direct_value, value_to_set];
+}
+
+pub fn set_register_y_to_value(value_to_set: u8) -> [u8; 2] {
+    let ldy_direct_value = 0xa0;
+    return [ldy_direct_value, value_to_set];
+}
+
 pub fn set_carry()->u8{
     return  0x38;
 }
