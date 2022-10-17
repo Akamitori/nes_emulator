@@ -231,7 +231,12 @@ impl OPCodes{
             OpCode::new(0x8C,"STY",3,4,AddressingMode::Absolute),
     
             OpCode::new(0xAA,"TAX",1,2,AddressingMode::NoneAddressing),
-            OpCode::new(0xA8,"TAY",1,2,AddressingMode::NoneAddressing)
+            
+            OpCode::new(0xA8,"TAY",1,2,AddressingMode::NoneAddressing),
+
+            OpCode::new(0xBA,"TSX",1,2,AddressingMode::NoneAddressing),
+
+            OpCode::new(0x8A,"TXA",1,2,AddressingMode::NoneAddressing),
         ];
         
         code_table.sort_by(|a,b| a.op_code.cmp(&b.op_code) );

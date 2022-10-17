@@ -32,7 +32,7 @@ fn test_0x94_sty_zero_page_x() {
 }
 
 #[test]
-fn test_0x8C_sty_absolute() {
+fn test_0x8c_sty_absolute() {
     let mut cpu = CPU::new();
     let set_y_to_5 = test_helper::set_register_y_to_value(0x05);
     let address_to_test: u16 = 0x1234;

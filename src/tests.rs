@@ -76,6 +76,10 @@ mod tay_tests;
 
 mod test_helper;
 
+mod tsx_tests;
+
+mod  txa_tests;
+
 mod test {
     use crate::*;
     
