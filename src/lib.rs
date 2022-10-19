@@ -633,6 +633,16 @@ impl CPU {
         self.set_register_a(value);
     }
 
+    fn txs(&mut self) {
+        let  value=self.register_x;
+        self.stack_pointer=value;
+    }
+
+    fn tya(&mut self) {
+        let  value=self.register_y;
+        self.set_register_a(value);
+    }
+
     fn update_zero_and_negative_flag(&mut self, result: u8) {
         if result == 0 {
             self.status = self.status | CPU::ZERO_FLAG;
@@ -884,6 +894,10 @@ impl CPU {
                 0xBA => self.tsx(),
                 
                 0x8A => self.txa(),
+                
+                0x9A => self.txs(),
+
+                0x98 => self.tya(),
 
                 _ => todo!(),
             }
