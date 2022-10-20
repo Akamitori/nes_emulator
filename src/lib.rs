@@ -234,11 +234,11 @@ impl CPU {
     }
 
     fn bcc(&mut self) {
-        self.branch(self.status & CPU::CARRY_FLAG == 0);
+        self.branch(self.get_carry_flag() == 0);
     }
 
     fn bcs(&mut self) {
-        self.branch(self.status & CPU::CARRY_FLAG != 0);
+        self.branch(self.get_carry_flag() != 0);
     }
 
     fn beq(&mut self) {
@@ -610,36 +610,36 @@ impl CPU {
 
         self.mem_write(addr, self.register_a);
     }
-    
-    fn stx(&mut self, mode: &AddressingMode){
+
+    fn stx(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
 
         self.mem_write(addr, self.register_x);
     }
-    
-    fn sty(&mut self, mode: &AddressingMode){
+
+    fn sty(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
 
         self.mem_write(addr, self.register_y);
     }
 
-    fn tsx(&mut self){
-        let  value=self.stack_pointer;
+    fn tsx(&mut self) {
+        let value = self.stack_pointer;
         self.set_register_x(value);
     }
 
     fn txa(&mut self) {
-        let  value=self.register_x;
+        let value = self.register_x;
         self.set_register_a(value);
     }
 
     fn txs(&mut self) {
-        let  value=self.register_x;
-        self.stack_pointer=value;
+        let value = self.register_x;
+        self.stack_pointer = value;
     }
 
     fn tya(&mut self) {
-        let  value=self.register_y;
+        let value = self.register_y;
         self.set_register_a(value);
     }
 
@@ -657,7 +657,7 @@ impl CPU {
         }
     }
 
-    fn get_carry_flag(&mut self) -> u8 {
+    fn get_carry_flag(&self) -> u8 {
         self.status & CPU::CARRY_FLAG
     }
 
@@ -878,23 +878,23 @@ impl CPU {
 
                 0x85 | 0x95 | 0x8D | 0x9D | 0x99 | 0x81 | 0x91 => {
                     self.sta(&op_code_data.addressing_mode);
-                },
+                }
 
-                0x86 | 0x96 | 0x8E=> {
+                0x86 | 0x96 | 0x8E => {
                     self.stx(&op_code_data.addressing_mode);
-                },
+                }
 
-                0x84 | 0x94 | 0x8C=> {
+                0x84 | 0x94 | 0x8C => {
                     self.sty(&op_code_data.addressing_mode);
                 }
 
                 0xAA => self.tax(),
                 0xA8 => self.tay(),
-                
+
                 0xBA => self.tsx(),
-                
+
                 0x8A => self.txa(),
-                
+
                 0x9A => self.txs(),
 
                 0x98 => self.tya(),

@@ -84,6 +84,8 @@ mod txs_tests;
 
 mod  tya_tests;
 
+mod bcs_tests;
+
 mod test {
     use crate::*;
     
