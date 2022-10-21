@@ -113,14 +113,12 @@ pub fn store_register_x_to_zero_page(address: u8) -> [u8; 2] {
     return [0x86, address];
 }
 
-pub fn set_carry() -> u8 {
-    return 0x38;
-}
+pub fn set_carry() -> u8 { return 0x38; }
 
 pub fn clear_carry() -> u8 { return 0x18; }
 
-pub fn add_with_carry_zero_page_value_to_register_a(value_to_add: u8) -> [u8; 2] {
-    return [0x65, value_to_add];
+pub fn add_with_carry_to_register_a(value_to_add: u8) -> [u8; 2] {
+    return [0x69, value_to_add];
 }
 
 pub fn push_accumulator_to_stack() -> u8 {

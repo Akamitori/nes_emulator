@@ -88,6 +88,8 @@ mod bcs_tests;
 
 mod  bcc_tests;
 
+mod beq_tests;
+
 mod test {
     use crate::*;
     
