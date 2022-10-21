@@ -117,6 +117,8 @@ pub fn set_carry() -> u8 {
     return 0x38;
 }
 
+pub fn clear_carry() -> u8 { return 0x18; }
+
 pub fn add_with_carry_zero_page_value_to_register_a(value_to_add: u8) -> [u8; 2] {
     return [0x65, value_to_add];
 }
