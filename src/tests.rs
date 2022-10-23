@@ -100,6 +100,8 @@ mod bvc_tests;
 
 mod bvs_tests;
 
+mod jmp_tests;
+
 mod test {
     use crate::*;
     
