@@ -98,6 +98,8 @@ mod bpl_tests;
 
 mod bvc_tests;
 
+mod bvs_tests;
+
 mod test {
     use crate::*;
     
