@@ -90,6 +90,8 @@ mod  bcc_tests;
 
 mod beq_tests;
 
+mod  bmi_tests;
+
 mod test {
     use crate::*;
     
