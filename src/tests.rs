@@ -96,6 +96,8 @@ mod bne_tests;
 
 mod bpl_tests;
 
+mod bvc_tests;
+
 mod test {
     use crate::*;
     
