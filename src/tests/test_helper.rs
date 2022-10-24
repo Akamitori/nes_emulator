@@ -141,3 +141,13 @@ pub fn increase_x_by_one() -> u8 {
 pub fn increase_y_by_one() -> u8 {
     return 0xc8;
 }
+
+pub  fn  compare_x_to_value(value:u8)->[u8;2]{
+    let  cpx_immediate=0xe0;
+    return [cpx_immediate,value];
+}
+
+pub  fn  branch_not_equal(offset:u8)->[u8;2]{
+    let  bne=0xd0;
+    return [bne,offset];
+}

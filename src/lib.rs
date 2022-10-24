@@ -428,7 +428,7 @@ impl CPU {
     fn stack_pop_u16(&mut self) -> u16 {
         let hi = self.stack_pop();
         let lo = self.stack_pop();
-        let bytes = [hi, lo];
+        let bytes = [lo, hi];
         u16::from_le_bytes(bytes)
     }
 

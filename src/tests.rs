@@ -102,6 +102,8 @@ mod bvs_tests;
 
 mod jmp_tests;
 
+mod jsr_rts_tests;
+
 mod test {
     use crate::*;
     
