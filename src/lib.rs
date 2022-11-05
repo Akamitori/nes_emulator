@@ -31,6 +31,8 @@ pub enum AddressingMode {
     NoneAddressing,
 }
 
+const INITIAL_MEMORY_LOAD_ADDRESS: usize = 0x0600;
+
 impl CPU {
     pub fn new() -> Self {
         CPU {
@@ -57,7 +59,7 @@ impl CPU {
     const STACK_BOTTOM: u16 = 0x0100;
     const STACK_RESET: u8 = 0xFD;
 
-    fn mem_read(&self, addr: u16) -> u8 {
+    pub  fn mem_read(&self, addr: u16) -> u8 {
         self.memory[addr as usize]
     }
 
@@ -73,7 +75,7 @@ impl CPU {
         self.mem_write(pos + 1, le_bytes[1]);
     }
 
-    fn mem_write(&mut self, addr: u16, data: u8) {
+    pub  fn mem_write(&mut self, addr: u16, data: u8) {
         self.memory[addr as usize] = data;
     }
 
@@ -159,8 +161,8 @@ impl CPU {
     }
 
     pub fn load(&mut self, program: Vec<u8>) {
-        self.memory[0x8000..(0x8000 + program.len())].copy_from_slice(&program[..]);
-        self.mem_write_u16(0xFFFC, 0x8000);
+        self.memory[INITIAL_MEMORY_LOAD_ADDRESS..(INITIAL_MEMORY_LOAD_ADDRESS + program.len())].copy_from_slice(&program[..]);
+        self.mem_write_u16(0xFFFC, INITIAL_MEMORY_LOAD_ADDRESS as u16 );
     }
 
     fn adc(&mut self, mode: &AddressingMode) {
@@ -710,12 +712,17 @@ impl CPU {
     }
 
     pub fn run(&mut self) {
+        self.run_with_callback(|_| {});
+    }
+
+    pub fn run_with_callback<F>(&mut self,mut callback:F) where F: FnMut(&mut CPU) {
         loop {
+            callback(self);
             let code = self.mem_read(self.program_counter);
             self.program_counter += 1;
             let pc_temp = self.program_counter;
 
-            println!("the op code is {:#02x}", code);
+            // println!("the op code is {:#02x}", code);
 
             //TO DO  add op code data to the original hashmap
             let op_code_data = self.op_codes.get(&code);

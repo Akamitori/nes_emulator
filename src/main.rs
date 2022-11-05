@@ -1,3 +1,5 @@
+mod snake_game;
+
 fn main() {
-    println!("Hello, world!");
+    snake_game::run();
 }
