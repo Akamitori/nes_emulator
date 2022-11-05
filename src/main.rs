@@ -1,5 +1,5 @@
-mod snake_game;
+use rust_nes::sample;
 
 fn main() {
-    snake_game::run();
+    sample::snake_game::run();
 }
