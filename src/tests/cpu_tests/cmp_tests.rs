@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0xc9_cmp_immediate_access() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     let prep = cpu_test_helper::set_register_a_to_value(4);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
@@ -16,7 +21,9 @@ fn test_0xc9_cmp_immediate_access() {
 
 #[test]
 fn test_0xc9_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     let prep = cpu_test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
@@ -26,7 +33,9 @@ fn test_0xc9_cmp_zero_flag() {
 
 #[test]
 fn test_0xc9_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     let prep = cpu_test_helper::set_register_a_to_value(5);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
@@ -36,7 +45,9 @@ fn test_0xc9_cmp_carry_flag() {
 
 #[test]
 fn test_0xc9_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     let prep = cpu_test_helper::set_register_a_to_value(3);
     cpu.load_and_run(vec![prep[0], prep[1], 0xc9, 0x05, 0x00]);
@@ -46,7 +57,9 @@ fn test_0xc9_cmp_negative_flag() {
 
 #[test]
 fn test_0xc5_cmp_zero_page() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x5);
 
     let prep = cpu_test_helper::set_register_a_to_value(3);
@@ -57,7 +70,9 @@ fn test_0xc5_cmp_zero_page() {
 
 #[test]
 fn test_0xc5_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x5);
 
     let prep = cpu_test_helper::set_register_a_to_value(5);
@@ -68,7 +83,9 @@ fn test_0xc5_cmp_zero_flag() {
 
 #[test]
 fn test_0xc5_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x5);
 
     let prep = cpu_test_helper::set_register_a_to_value(5);
@@ -79,7 +96,9 @@ fn test_0xc5_cmp_carry_flag() {
 
 #[test]
 fn test_0xc5_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x5);
 
     let prep = cpu_test_helper::set_register_a_to_value(4);
@@ -90,7 +109,9 @@ fn test_0xc5_cmp_negative_flag() {
 
 #[test]
 fn test_0xd5_cmp_zero_page_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_write: u8 = 0x10;
     cpu.mem_write(mem_to_write as u16, 0x05);
 
@@ -109,7 +130,9 @@ fn test_0xd5_cmp_zero_page_x() {
 
 #[test]
 fn test_0xd5_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_write: u16 = 0x10;
     let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
     cpu.mem_write(mem_to_write, 0x05);
@@ -130,7 +153,9 @@ fn test_0xd5_cmp_zero_flag() {
 
 #[test]
 fn test_0xd5_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_write: u16 = 0x10;
     let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
     cpu.mem_write(mem_to_write, 0x05);
@@ -151,7 +176,9 @@ fn test_0xd5_cmp_carry_flag() {
 
 #[test]
 fn test_0xd5_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_write: u16 = 0x10;
     let mem_to_write_bytes = (mem_to_write - 1 as u16).to_le_bytes();
     cpu.mem_write(mem_to_write, 0x05);
@@ -172,7 +199,9 @@ fn test_0xd5_cmp_negative_flag() {
 
 #[test]
 fn test_0xcd_cmp_absolute() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -192,7 +221,9 @@ fn test_0xcd_cmp_absolute() {
 
 #[test]
 fn test_0xcd_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -212,7 +243,9 @@ fn test_0xcd_cmp_zero_flag() {
 
 #[test]
 fn test_0xcd_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -232,7 +265,9 @@ fn test_0xcd_cmp_carry_flag() {
 
 #[test]
 fn test_0xcd_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -252,7 +287,9 @@ fn test_0xcd_cmp_negative_flag() {
 
 #[test]
 fn test_0xdd_cmp_absolute_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -273,7 +310,9 @@ fn test_0xdd_cmp_absolute_x() {
 
 #[test]
 fn test_0xdd_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -294,7 +333,9 @@ fn test_0xdd_cmp_zero_flag() {
 
 #[test]
 fn test_0xdd_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -315,7 +356,9 @@ fn test_0xdd_cmp_carry_flag() {
 
 #[test]
 fn test_0xdd_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -336,7 +379,9 @@ fn test_0xdd_cmp_negative_flag() {
 
 #[test]
 fn test_0xd9_cmp_absolute_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -357,7 +402,9 @@ fn test_0xd9_cmp_absolute_y() {
 
 #[test]
 fn test_0xd9_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -378,7 +425,9 @@ fn test_0xd9_cmp_zero_flag() {
 
 #[test]
 fn test_0xd9_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -399,7 +448,9 @@ fn test_0xd9_cmp_carry_flag() {
 
 #[test]
 fn test_0xd9_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = (mem - 1 as u16).to_le_bytes();
     cpu.mem_write(mem, 0x5);
@@ -420,7 +471,9 @@ fn test_0xd9_cmp_negative_flag() {
 
 #[test]
 fn test_0xc1_cmp_indirect_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
@@ -440,7 +493,9 @@ fn test_0xc1_cmp_indirect_x() {
 
 #[test]
 fn test_0xc1_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
@@ -460,7 +515,9 @@ fn test_0xc1_cmp_zero_flag() {
 
 #[test]
 fn test_0xc1_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
@@ -480,7 +537,9 @@ fn test_0xc1_cmp_carry_flag() {
 
 #[test]
 fn test_0xc1_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     cpu.mem_write_u16(mem_to_load as u16, 0x0001);
     cpu.mem_write(0x0001, 0x5);
@@ -500,7 +559,9 @@ fn test_0xc1_cmp_negative_flag() {
 
 #[test]
 fn test_0xd1_cmp_indirect_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     cpu.mem_write_u16(mem_to_load as u16, 0x0010);
     cpu.mem_write(0x0011, 0x5);
@@ -520,7 +581,9 @@ fn test_0xd1_cmp_indirect_y() {
 
 #[test]
 fn test_0xd1_cmp_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_indirect = 0x0010;
     cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
@@ -541,7 +604,9 @@ fn test_0xd1_cmp_zero_flag() {
 
 #[test]
 fn test_0xd1_cmp_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_indirect = 0x0010;
     cpu.mem_write_u16(mem_to_load as u16, mem_indirect);
@@ -562,7 +627,9 @@ fn test_0xd1_cmp_carry_flag() {
 
 #[test]
 fn test_0xd1_cmp_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_indirect = 0x0010;
     cpu.mem_write_u16(mem_to_load as u16, mem_indirect);

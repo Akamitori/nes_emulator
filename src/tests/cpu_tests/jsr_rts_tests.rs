@@ -1,14 +1,20 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 use std::io::Lines;
 
+
 /// Simple test where we increase X till 5 with subroutines
 #[test]
 fn test_0x20_jsr_0x60_rts_subroutines() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let target_value = 5;
 
     let program = build_program(target_value);

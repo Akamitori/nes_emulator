@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0xaa_tax_move_a_to_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_a_to_value = cpu_test_helper::set_register_a_to_value(10);
     
     cpu.load_and_run(vec![
@@ -21,7 +26,9 @@ fn test_0xaa_tax_move_a_to_x() {
 
 #[test]
 fn test_0xaa_tax_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     
     cpu.load_and_run(vec![0xaa, 0x00]);
     
@@ -30,7 +37,9 @@ fn test_0xaa_tax_zero_flag() {
 
 #[test]
 fn test_0xaa_tax_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     
     let set_a_to_max = cpu_test_helper::set_register_a_to_value(0xff);
     

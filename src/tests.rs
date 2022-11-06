@@ -1,7 +1,10 @@
 #[cfg(test)]
-mod  cpu_tests;
+
+mod rom_tests;
 
 mod test_helpers;
+
+mod  cpu_tests;
 
 
 

@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0x85_sta_zero_page() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_a_to_5 = cpu_test_helper::set_register_a_to_value(0x05);
 
     cpu.load_and_run(vec![set_a_to_5[0], set_a_to_5[1], 0x85, 0x40, 0x00]);
@@ -17,7 +22,9 @@ fn test_0x85_sta_zero_page() {
 
 #[test]
 fn test_0x95_sta_zero_page_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_a_to_5 = cpu_test_helper::set_register_a_to_value(0x05);
     let address_to_test: u8 = 0x10;
     cpu.mem_write(address_to_test as u16, 0x1);
@@ -37,7 +44,9 @@ fn test_0x95_sta_zero_page_x() {
 
 #[test]
 fn test_0x8d_sta_absolute() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_a_to_5 = cpu_test_helper::set_register_a_to_value(0x05);
     let address_to_test: u16 = 0x1234;
     let address_to_test_bytes = address_to_test.to_le_bytes();
@@ -58,7 +67,9 @@ fn test_0x8d_sta_absolute() {
 
 #[test]
 fn test_0x9d_sta_from_memory_absolute_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_a_to_5 = cpu_test_helper::set_register_a_to_value(0x05);
     let address_to_test: u16 = 0x1001;
     let address_to_test_bytes = (address_to_test - 1).to_le_bytes();
@@ -80,7 +91,9 @@ fn test_0x9d_sta_from_memory_absolute_x() {
 
 #[test]
 fn test_0x99_sta_from_memory_absolute_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_a_to_5 = cpu_test_helper::set_register_a_to_value(0x05);
     let address_to_test: u16 = 0x1001;
     let address_to_test_bytes = (address_to_test - 1).to_le_bytes();
@@ -102,7 +115,9 @@ fn test_0x99_sta_from_memory_absolute_y() {
 
 #[test]
 fn test_0x81_sta_from_memory_indirect_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let addr_to_write: u8 = 0x40;
     let addr_to_store = 0x33;
     let set_a_to_5 = cpu_test_helper::set_register_a_to_value(0x05);
@@ -124,7 +139,9 @@ fn test_0x81_sta_from_memory_indirect_x() {
 
 #[test]
 fn test_0x91_sta_from_memory_indirect_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let addr_to_write: u8 = 0x40;
     let addr_to_store = 0x33;
     let set_a_to_5 = cpu_test_helper::set_register_a_to_value(0x05);

@@ -22,6 +22,15 @@ impl Bus {
         }
         self.rom.prg_rom[addr as usize]
     }
+
+    fn write_prg_rom(&mut self, mut addr: u16, value: u8) {
+        addr -= 0x8000;
+        if self.rom.prg_rom.len() == 0x4000 && addr >= 0x4000 {
+            //mirror if needed
+            addr = addr % 0x4000;
+        }
+        self.rom.prg_rom[addr as usize] = value;
+    }
 }
 
 const RAM: u16 = 0x0000;
@@ -42,9 +51,7 @@ impl Mem for Bus {
                 let _mirror_down_addr = addr & 0b00100000_00000111;
                 todo!("PPU is not supported yet")
             }
-            ROM_SPACE_START..=ROM_SPACE_END => {
-                self.read_prg_rom(addr)
-            }
+            ROM_SPACE_START..=ROM_SPACE_END => self.read_prg_rom(addr),
             _ => {
                 println!("Ignoring mem access at {}", addr);
                 0
@@ -63,6 +70,7 @@ impl Mem for Bus {
                 todo!("PPU is not supported yet");
             }
             ROM_SPACE_START..=ROM_SPACE_END => {
+                self.write_prg_rom(addr, data);
                 panic!("Attempt to write to Cartridge ROM space")
             }
             _ => {

@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0x88_dey() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     cpu.load_and_run(vec![
         cpu_test_helper::increase_y_by_one(),
@@ -21,7 +26,9 @@ fn test_0x88_dey() {
 
 #[test]
 fn test_0x88_dey_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     cpu.load_and_run(vec![cpu_test_helper::increase_y_by_one(), 0x88, 0x00]);
 
@@ -31,7 +38,9 @@ fn test_0x88_dey_zero_flag() {
 
 #[test]
 fn test_0x88_dey_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     cpu.load_and_run(vec![0x88, 0x00]);
 

@@ -1,4 +1,8 @@
-﻿mod adc_tests;
+﻿use crate::components::bus::Bus;
+use crate::components::cpu::CPU;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
+
+mod adc_tests;
 
 mod and_tests;
 
@@ -105,7 +109,9 @@ mod jsr_rts_tests;
 
 #[test]
 fn test_5_ops_working_together() {
-    let mut cpu = crate::components::cpu::CPU::new();
+    let bus = Bus::new(test_rom());
+
+    let mut cpu = CPU::new(bus);
     cpu.load_and_run(vec![0xa9, 0xc0, 0xaa, 0xe8, 0x00]);
 
     assert_eq!(cpu.register_x, 0xc1)

@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0x4c_jmp_absolute() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
     let initial_program_counter = 0x8000;
     let address = (initial_program_counter + 7 as u16).to_le_bytes();
@@ -30,7 +35,9 @@ fn test_0x4c_jmp_absolute() {
 
 #[test]
 fn test_0x6c_jmp_indirect() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
     let initial_program_counter = 0x8000;
     let address_pointing_to_address: u16 = 0;
@@ -59,7 +66,9 @@ fn test_0x6c_jmp_indirect() {
 
 #[test]
 fn test_0x6c_jmp_indirect_page_boundary() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_initial_value = 0xFF;
     let accum_final_value = 0xF1;
     let initial_program_counter = 0x8000;

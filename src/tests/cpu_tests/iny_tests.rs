@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0xc8_iny_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     cpu.register_y = 0xFE;
     let set_y_to_negative =cpu_test_helper::set_register_y_to_value(0xf1);
     
@@ -22,7 +27,9 @@ fn test_0xc8_iny_negative_flag() {
 
 #[test]
 fn test_0xc8_iny_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_y_to_max = cpu_test_helper::set_register_y_to_value(0xff);
     
     cpu.load_and_run(vec![
@@ -37,7 +44,9 @@ fn test_0xc8_iny_zero_flag() {
 
 #[test]
 fn test_0xc8_iny_overflow() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let set_y_to_max = cpu_test_helper::set_register_y_to_value(0xff);
     
     cpu.load_and_run(vec![

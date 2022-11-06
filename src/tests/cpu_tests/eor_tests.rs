@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0x49_eor_immediate() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     let a_value = 0x1;
     let prep = cpu_test_helper::set_register_a_to_value(a_value);
@@ -19,7 +24,9 @@ fn test_0x49_eor_immediate() {
 
 #[test]
 fn test_0x49_eor_immediate_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     let a_value = 0x32;
     let prep = cpu_test_helper::set_register_a_to_value(a_value);
@@ -33,7 +40,9 @@ fn test_0x49_eor_immediate_zero_flag() {
 
 #[test]
 fn test_0x49_eor_immediate_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
 
     let a_value = 0xFF;
     let prep = cpu_test_helper::set_register_a_to_value(a_value);
@@ -46,7 +55,9 @@ fn test_0x49_eor_immediate_negative_flag() {
 
 #[test]
 fn test_0x45_eor_zero_page() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x10;
 
@@ -62,7 +73,9 @@ fn test_0x45_eor_zero_page() {
 
 #[test]
 fn test_0x45_eor_zero_page_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0xF0;
     let mem_pos = 0x10;
 
@@ -78,7 +91,9 @@ fn test_0x45_eor_zero_page_zero_flag() {
 
 #[test]
 fn test_0x45_eor_zero_page_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0xF0;
     let mem_pos = 0x10;
 
@@ -94,7 +109,9 @@ fn test_0x45_eor_zero_page_negative_flag() {
 
 #[test]
 fn test_0x55_eor_zero_page_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x10;
     cpu.mem_write(mem_pos, mem_value);
@@ -117,7 +134,9 @@ fn test_0x55_eor_zero_page_x() {
 
 #[test]
 fn test_0x55_eor_zero_page_x_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x32;
     let mem_pos = 0x10;
     cpu.mem_write(mem_pos, mem_value);
@@ -140,7 +159,9 @@ fn test_0x55_eor_zero_page_x_zero_flag() {
 
 #[test]
 fn test_0x55_eor_zero_page_x_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0xFF;
     let mem_pos = 0x10;
     cpu.mem_write(mem_pos, mem_value);
@@ -163,7 +184,9 @@ fn test_0x55_eor_zero_page_x_negative_flag() {
 
 #[test]
 fn test_0x4d_eor_absolute() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos as u16).to_le_bytes();
@@ -186,7 +209,9 @@ fn test_0x4d_eor_absolute() {
 
 #[test]
 fn test_0x4d_eor_absolute_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos as u16).to_le_bytes();
@@ -209,7 +234,9 @@ fn test_0x4d_eor_absolute_zero_flag() {
 
 #[test]
 fn test_0x4d_eor_absolute_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0xFF;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos as u16).to_le_bytes();
@@ -232,7 +259,9 @@ fn test_0x4d_eor_absolute_negative_flag() {
 
 #[test]
 fn test_0x5d_eor_absolute_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos - 1 as u16).to_le_bytes();
@@ -256,7 +285,9 @@ fn test_0x5d_eor_absolute_x() {
 
 #[test]
 fn test_0x5d_eor_absolute_x_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos - 1 as u16).to_le_bytes();
@@ -280,7 +311,9 @@ fn test_0x5d_eor_absolute_x_zero_flag() {
 
 #[test]
 fn test_0x5d_eor_absolute_x_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0xFF;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos - 1 as u16).to_le_bytes();
@@ -304,7 +337,9 @@ fn test_0x5d_eor_absolute_x_negative_flag() {
 
 #[test]
 fn test_0x59_eor_absolute_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos - 1 as u16).to_le_bytes();
@@ -328,7 +363,9 @@ fn test_0x59_eor_absolute_y() {
 
 #[test]
 fn test_0x59_eor_absolute_y_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0x1;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos - 1 as u16).to_le_bytes();
@@ -352,7 +389,9 @@ fn test_0x59_eor_absolute_y_zero_flag() {
 
 #[test]
 fn test_0x59_eor_absolute_y_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_value = 0xF1;
     let mem_pos = 0x1000;
     let mem_pos_bytes = (mem_pos - 1 as u16).to_le_bytes();
@@ -376,7 +415,9 @@ fn test_0x59_eor_absolute_y_negative_flag() {
 
 #[test]
 fn test_0x41_eor_indirect_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_value = 0x1;
     let mem_indirect=0x0001;
@@ -401,7 +442,9 @@ fn test_0x41_eor_indirect_x() {
 
 #[test]
 fn test_0x41_eor_indirect_x_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_value = 0x1;
     let mem_indirect=0x0001;
@@ -426,7 +469,9 @@ fn test_0x41_eor_indirect_x_zero_flag() {
 
 #[test]
 fn test_0x41_eor_indirect_x_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_value = 0xF1;
     let mem_indirect=0x0001;
@@ -451,7 +496,9 @@ fn test_0x41_eor_indirect_x_negative_flag() {
 
 #[test]
 fn test_0x51_eor_indirect_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_value = 0x1;
     let mem_indirect=0x0011;
@@ -476,7 +523,9 @@ fn test_0x51_eor_indirect_y() {
 
 #[test]
 fn test_0x51_eor_indirect_y_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_value = 0x1;
     let mem_indirect=0x0011;
@@ -501,7 +550,9 @@ fn test_0x51_eor_indirect_y_zero_flag() {
 
 #[test]
 fn test_0x51_eor_indirect_y_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_value = 0xF1;
     let mem_indirect=0x0011;

@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0xe9_sbc_immediate() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 80;
     let value = 112;
 
@@ -29,7 +34,9 @@ fn test_0xe9_sbc_immediate() {
 
 #[test]
 fn test_0xe9_sbc_immediate_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 10;
     let value = accum_value - 1;
 
@@ -45,7 +52,9 @@ fn test_0xe9_sbc_immediate_zero_flag() {
 
 #[test]
 fn test_0xe9_sbc_immediate_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 10;
     let value = 20;
 
@@ -64,7 +73,9 @@ fn test_0xe9_sbc_immediate_negative_flag() {
 
 #[test]
 fn test_0xe9_sbc_immediate_without_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 80;
     let value = (accum_value + 1 as u8).wrapping_neg();
 
@@ -83,7 +94,9 @@ fn test_0xe9_sbc_immediate_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe9_sbc_immediate_with_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = (48 as u8).wrapping_neg();
     let value = 112;
 
@@ -106,7 +119,9 @@ fn test_0xe9_sbc_immediate_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe5_sbc_zero_page() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 80;
     let mem_value = 112;
@@ -132,7 +147,9 @@ fn test_0xe5_sbc_zero_page() {
 
 #[test]
 fn test_0xe5_sbc_zero_page_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 10;
     let mem_value = accum_value - 1;
@@ -151,7 +168,9 @@ fn test_0xe5_sbc_zero_page_zero_flag() {
 
 #[test]
 fn test_0xe5_sbc_zero_page_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 10;
     let mem_value = 20;
@@ -173,7 +192,9 @@ fn test_0xe5_sbc_zero_page_negative_flag() {
 
 #[test]
 fn test_0xe5_sbc_zero_page_without_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 80;
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
@@ -195,7 +216,9 @@ fn test_0xe5_sbc_zero_page_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe5_sbc_zero_page_with_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = (48 as u8).wrapping_neg();
     let mem_value = 112;
@@ -221,7 +244,9 @@ fn test_0xe5_sbc_zero_page_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf5_sbc_zero_page_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 80;
     let mem_value = 112;
@@ -249,7 +274,9 @@ fn test_0xf5_sbc_zero_page_x() {
 
 #[test]
 fn test_0xf5_sbc_zero_page_x_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 10;
     let mem_value = accum_value - 1;
@@ -275,7 +302,9 @@ fn test_0xf5_sbc_zero_page_x_zero_flag() {
 
 #[test]
 fn test_0xf5_sbc_zero_page_x_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 10;
     let mem_value = 20;
@@ -300,7 +329,9 @@ fn test_0xf5_sbc_zero_page_x_negative_flag() {
 
 #[test]
 fn test_0xf5_sbc_zero_page_x_without_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = 80;
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
@@ -329,7 +360,9 @@ fn test_0xf5_sbc_zero_page_x_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf5_sbc_zero_page_x_with_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
     let accum_value = (48 as u8).wrapping_neg();
     let mem_value = 112;
@@ -356,7 +389,9 @@ fn test_0xf5_sbc_zero_page_x_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xed_sbc_absolute() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 80;
     let mem_value = 112;
@@ -383,7 +418,9 @@ fn test_0xed_sbc_absolute() {
 
 #[test]
 fn test_0xed_sbc_absolute_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 10;
     let mem_value = accum_value - 1;
@@ -409,7 +446,9 @@ fn test_0xed_sbc_absolute_zero_flag() {
 
 #[test]
 fn test_0xed_sbc_absolute_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 10;
     let mem_value = 20;
@@ -438,7 +477,9 @@ fn test_0xed_sbc_absolute_negative_flag() {
 
 #[test]
 fn test_0xed_sbc_absolute_without_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 80;
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
@@ -467,7 +508,9 @@ fn test_0xed_sbc_absolute_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xed_sbc_absolute_with_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = (48 as u8).wrapping_neg();
     let mem_value = 112;
@@ -494,7 +537,9 @@ fn test_0xed_sbc_absolute_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xfd_sbc_absolute_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 80;
     let mem_value = 112;
@@ -522,7 +567,9 @@ fn test_0xfd_sbc_absolute_x() {
 
 #[test]
 fn test_0xfd_sbc_absolute_x_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 10;
     let mem_value = accum_value - 1;
@@ -549,7 +596,9 @@ fn test_0xfd_sbc_absolute_x_zero_flag() {
 
 #[test]
 fn test_0xfd_sbc_absolute_x_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 10;
     let mem_value = 20;
@@ -579,7 +628,9 @@ fn test_0xfd_sbc_absolute_x_negative_flag() {
 
 #[test]
 fn test_0xfd_sbc_absolute_x_without_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 80;
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
@@ -609,7 +660,9 @@ fn test_0xfd_sbc_absolute_x_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xfd_sbc_absolute_x_with_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = (48 as u8).wrapping_neg();
     let mem_value = 112;
@@ -637,7 +690,9 @@ fn test_0xfd_sbc_absolute_x_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf9_sbc_absolute_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 80;
     let mem_value = 112;
@@ -665,7 +720,9 @@ fn test_0xf9_sbc_absolute_y() {
 
 #[test]
 fn test_0xf9_sbc_absolute_y_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 10;
     let mem_value = accum_value - 1;
@@ -692,7 +749,9 @@ fn test_0xf9_sbc_absolute_y_zero_flag() {
 
 #[test]
 fn test_0xf9_sbc_absolute_y_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 10;
     let mem_value = 20;
@@ -722,7 +781,9 @@ fn test_0xf9_sbc_absolute_y_negative_flag() {
 
 #[test]
 fn test_0xf9_sbc_absolute_y_without_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = 80;
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
@@ -752,7 +813,9 @@ fn test_0xf9_sbc_absolute_y_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf9_sbc_absolute_y_with_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
     let accum_value = (48 as u8).wrapping_neg();
     let mem_value = 112;
@@ -780,7 +843,9 @@ fn test_0xf9_sbc_absolute_y_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe1_sbc_indirect_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0001;
     let accum_value = 80;
@@ -808,7 +873,9 @@ fn test_0xe1_sbc_indirect_x() {
 
 #[test]
 fn test_0xe1_sbc_indirect_x_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0001;
     let accum_value = 10;
@@ -835,7 +902,9 @@ fn test_0xe1_sbc_indirect_x_zero_flag() {
 
 #[test]
 fn test_0xe1_sbc_indirect_x_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0001;
     let accum_value = 10;
@@ -865,7 +934,9 @@ fn test_0xe1_sbc_indirect_x_negative_flag() {
 
 #[test]
 fn test_0xe1_sbc_indirect_x_without_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0001;
     let accum_value = 80;
@@ -895,7 +966,9 @@ fn test_0xe1_sbc_indirect_x_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe1_sbc_indirect_x_with_carry_flag_overflow_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0001;
     let accum_value = (48 as u8).wrapping_neg();
@@ -923,7 +996,9 @@ fn test_0xe1_sbc_indirect_x_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf1_sbc_indirect_y() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0010;
     let accum_value = 80;
@@ -951,7 +1026,9 @@ fn test_0xf1_sbc_indirect_y() {
 
 #[test]
 fn test_0xf1_sbc_indirect_y_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0010;
     let accum_value = 10;
@@ -978,7 +1055,9 @@ fn test_0xf1_sbc_indirect_y_zero_flag() {
 
 #[test]
 fn test_0xf1_sbc_indirect_y_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0010;
     let accum_value = 10;
@@ -1008,7 +1087,9 @@ fn test_0xf1_sbc_indirect_y_negative_flag() {
 
 #[test]
 fn test_0xf1_sbc_indirect_y_without_carry_flag_overflow_fla() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0010;
     let accum_value = 80;
@@ -1038,7 +1119,9 @@ fn test_0xf1_sbc_indirect_y_without_carry_flag_overflow_fla() {
 
 #[test]
 fn test_0xf1_sbc_indirect_y_with_carry_flag_overflow_fla() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
     let mem_pos_indirect = 0x0010;
     let accum_value = (48 as u8).wrapping_neg();
@@ -1066,7 +1149,9 @@ fn test_0xf1_sbc_indirect_y_with_carry_flag_overflow_fla() {
 
 // #[test]
 // fn test_0xe5_sbc_zero_page_complex() {
-//     let mut cpu = CPU::new();
+//     let bus = Bus::new(test_rom());
+
+//let mut cpu = CPU::new(bus);
 //     let minuend : u16=30000;
 //     let minuend_bytes=minuend.to_le_bytes();
 

@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0xf0_beq_negative_offset() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
     let value_to_add = 1;
     let offset = (4 as u8).wrapping_neg();
@@ -30,7 +35,9 @@ fn test_0xf0_beq_negative_offset() {
 
 #[test]
 fn test_0xf0_beq_positive_offset() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
     let offset = 2;
     let  value_to_add=1;

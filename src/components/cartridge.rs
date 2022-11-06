@@ -13,9 +13,9 @@ pub struct Rom {
 }
 
 impl Rom {
-    const NES_TAG: [u8; 4] = [0x4E, 0x45, 0x53, 0x1A];
-    const PRG_ROM_PAGE_SIZE: usize = 16384;
-    const CHR_ROM_PAGE_SIZE: usize = 8192;
+    pub const NES_TAG: [u8; 4] = [0x4E, 0x45, 0x53, 0x1A];
+    pub const PRG_ROM_PAGE_SIZE: usize = 16384;
+    pub const CHR_ROM_PAGE_SIZE: usize = 8192;
 
     pub fn new(raw: &Vec<u8>) -> Result<Rom, String> {
         if &raw[0..4] != Rom::NES_TAG {

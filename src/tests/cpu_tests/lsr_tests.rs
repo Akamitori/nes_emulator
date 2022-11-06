@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0x4a_lsr_accumulator() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let value = 0x50;
 
     let load_value_to_a = cpu_test_helper::set_register_a_to_value(value);
@@ -19,7 +24,9 @@ fn test_0x4a_lsr_accumulator() {
 
 #[test]
 fn test_0x4a_lsr_accumulator_carry_flag_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let value = 0x01;
 
     let load_value_to_a = cpu_test_helper::set_register_a_to_value(value);
@@ -34,7 +41,9 @@ fn test_0x4a_lsr_accumulator_carry_flag_zero_flag() {
 
 #[test]
 fn test_0x4a_lsr_accumulator_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let value = 0xFF;
 
     let load_value_to_a = cpu_test_helper::set_register_a_to_value(value);
@@ -48,7 +57,9 @@ fn test_0x4a_lsr_accumulator_carry_flag() {
 
 #[test]
 fn test_0x46_lsr_zero_page() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x50;
 
@@ -61,7 +72,9 @@ fn test_0x46_lsr_zero_page() {
 
 #[test]
 fn test_0x46_lsr_zero_page_carry_flag_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x01;
 
@@ -76,7 +89,9 @@ fn test_0x46_lsr_zero_page_carry_flag_zero_flag() {
 
 #[test]
 fn test_0x46_lsr_zero_page_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0xFF;
 
@@ -90,7 +105,9 @@ fn test_0x46_lsr_zero_page_carry_flag() {
 
 #[test]
 fn test_0x56_lsr_zero_page_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x50;
 
@@ -108,7 +125,9 @@ fn test_0x56_lsr_zero_page_x() {
 
 #[test]
 fn test_0x56_lsr_zero_page_x_carry_flag_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x01;
 
@@ -128,7 +147,9 @@ fn test_0x56_lsr_zero_page_x_carry_flag_zero_flag() {
 
 #[test]
 fn test_0x56_lsr_zero_page_x_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0xFF;
 
@@ -147,7 +168,9 @@ fn test_0x56_lsr_zero_page_x_carry_flag() {
 
 #[test]
 fn test_0x4e_lsr_absolute() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x50;
 
@@ -162,7 +185,9 @@ fn test_0x4e_lsr_absolute() {
 
 #[test]
 fn test_0x4e_lsr_absolute_carry_flag_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x01;
 
@@ -179,7 +204,9 @@ fn test_0x4e_lsr_absolute_carry_flag_zero_flag() {
 
 #[test]
 fn test_0x4e_lsr_absolute_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0xFF;
 
@@ -195,7 +222,9 @@ fn test_0x4e_lsr_absolute_carry_flag() {
 
 #[test]
 fn test_0x5e_lsr_absolute_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x50;
 
@@ -215,7 +244,9 @@ fn test_0x5e_lsr_absolute_x() {
 
 #[test]
 fn test_0x5e_lsr_absolute_x_carry_flag_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x01;
 
@@ -237,7 +268,9 @@ fn test_0x5e_lsr_absolute_x_carry_flag_zero_flag() {
 
 #[test]
 fn test_0x5e_lsr_absolute_x_carry_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0xFF;
 

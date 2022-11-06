@@ -1,12 +1,17 @@
 use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
+use crate::components::cartridge::Rom;
+use crate::components::bus::Bus;
 
 
 
 #[test]
 fn test_0xba_tsx_move_stack_to_x() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let  target_value=0xF;
     
     let  mut program=vec![];
@@ -29,7 +34,9 @@ fn test_0xba_tsx_move_stack_to_x() {
 
 #[test]
 fn test_0xba_tsx_zero_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let  target_value=0;
 
     let  mut program=vec![];
@@ -52,7 +59,9 @@ fn test_0xba_tsx_zero_flag() {
 
 #[test]
 fn test_0xba_tsx_negative_flag() {
-    let mut cpu = CPU::new();
+    let bus = Bus::new(test_rom());
+
+let mut cpu = CPU::new(bus);
     let  target_value=0xFC;
 
     let  mut program=vec![];
