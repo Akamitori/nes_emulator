@@ -1,5 +1,8 @@
 use crate::tests::test_helpers::cpu_test_helper;
 use crate::components::cpu::CPU;
+use crate::components::mem::Mem;
+
+
 use std::io::Lines;
 
 /// Simple test where we increase X till 5 with subroutines

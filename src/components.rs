@@ -1,3 +1,5 @@
 ﻿pub  mod  cpu;
-mod  bus;
+pub mod  bus;
 mod  opcodes;
+pub mod  mem;
+pub mod  cartridge;

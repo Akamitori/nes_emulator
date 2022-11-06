@@ -1,5 +1,5 @@
-use rust_nes::sample;
+use rust_nes::roms;
 
 fn main() {
-    sample::snake_game::run();
+    roms::snake_nes_dump::run();
 }

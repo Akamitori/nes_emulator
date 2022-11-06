@@ -1,5 +1,8 @@
 ﻿use std::collections::hash_map::Values;
 use crate::components::cpu::CPU;
+use crate::components::mem::Mem;
+
+
 
 
 const CARRY_FLAG: u8 = 0b0000_0001;

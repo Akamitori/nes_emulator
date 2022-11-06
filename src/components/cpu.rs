@@ -1,4 +1,6 @@
-﻿use super::opcodes::{OPCodes};
+﻿use crate::components::bus::Bus;
+use crate::components::mem::Mem;
+use crate::components::opcodes::OPCodes;
 
 pub struct CPU {
     pub register_a: u8,
@@ -6,9 +8,9 @@ pub struct CPU {
     pub program_counter: u16,
     pub register_x: u8,
     pub register_y: u8,
-    memory: [u8; 0xFFFF],
     op_codes: OPCodes,
     pub  stack_pointer: u8,
+    pub bus: Bus
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -27,19 +29,36 @@ pub enum AddressingMode {
 }
 
 // 0x0600 for snake game
-const INITIAL_MEMORY_LOAD_ADDRESS: usize = 0x8000;
+const INITIAL_MEMORY_LOAD_ADDRESS: u16 = 0x0600;
+
+impl Mem for CPU {
+    fn mem_read(&self, addr: u16) -> u8 {
+        self.bus.mem_read(addr)
+    }
+
+    fn mem_write(&mut self, addr: u16, data: u8) {
+        self.bus.mem_write(addr, data)
+    }
+    fn mem_read_u16(&self, pos: u16) -> u16 {
+        self.bus.mem_read_u16(pos)
+    }
+
+    fn mem_write_u16(&mut self, pos: u16, data: u16) {
+        self.bus.mem_write_u16(pos, data)
+    }
+}
 
 impl CPU {
-    pub fn new() -> Self {
+    pub fn new(bus : Bus) -> Self {
         CPU {
             register_a: 0,
             status: 0,
             program_counter: 0,
             register_x: 0,
             register_y: 0,
-            memory: [0; 0xFFFF],
             op_codes: OPCodes::new(),
             stack_pointer: CPU::STACK_RESET,
+            bus: bus
         }
     }
 
@@ -54,26 +73,7 @@ impl CPU {
 
     const STACK_BOTTOM: u16 = 0x0100;
     pub  const STACK_RESET: u8 = 0xFD;
-
-    pub  fn mem_read(&self, addr: u16) -> u8 {
-        self.memory[addr as usize]
-    }
-
-    pub  fn mem_read_u16(&mut self, pos: u16) -> u16 {
-        let a = [self.mem_read(pos), self.mem_read(pos + 1)];
-        let result = u16::from_le_bytes(a);
-        return result;
-    }
-
-    pub  fn mem_write_u16(&mut self, pos: u16, data: u16) {
-        let le_bytes = data.to_le_bytes();
-        self.mem_write(pos, le_bytes[0]);
-        self.mem_write(pos + 1, le_bytes[1]);
-    }
-
-    pub  fn mem_write(&mut self, addr: u16, data: u8) {
-        self.memory[addr as usize] = data;
-    }
+    pub  const STATUS_RESET :u8=CPU::INTERRUPT_DISABLE_FLAG | CPU::BREAK_COMMAND_FLAG_2;
 
     fn get_operand_address(&mut self, mode: &AddressingMode) -> u16 {
         match mode {
@@ -157,8 +157,10 @@ impl CPU {
     }
 
     pub fn load(&mut self, program: Vec<u8>) {
-        self.memory[INITIAL_MEMORY_LOAD_ADDRESS..(INITIAL_MEMORY_LOAD_ADDRESS + program.len())].copy_from_slice(&program[..]);
-        self.mem_write_u16(0xFFFC, INITIAL_MEMORY_LOAD_ADDRESS as u16 );
+        for i in 0..(program.len() as u16){
+            self.mem_write(INITIAL_MEMORY_LOAD_ADDRESS+i,program[i as usize]);
+        } 
+        self.mem_write_u16(0xFFFC, INITIAL_MEMORY_LOAD_ADDRESS);
     }
 
     fn adc(&mut self, mode: &AddressingMode) {

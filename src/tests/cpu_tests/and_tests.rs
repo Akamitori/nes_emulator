@@ -1,5 +1,8 @@
 use crate::tests::test_helpers::cpu_test_helper;
 use crate::components::cpu::CPU;
+use crate::components::mem::Mem;
+
+
 
 #[test]
 fn test_0x29_and_immediate_and() {

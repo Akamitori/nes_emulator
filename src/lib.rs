@@ -1,5 +1,6 @@
+#[allow(warnings)]
 mod tests;
 
 pub  mod components;
 
-pub  mod  sample;
+pub  mod roms;
