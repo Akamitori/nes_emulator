@@ -259,7 +259,7 @@ impl OPCodes{
         }
     }
 
-    pub fn get(&self,op_code: &u8)-> OpCode{
-        return *self.codes.get(op_code).unwrap();
+    pub fn get(&self,op_code: u8)-> OpCode{
+        return *self.codes.get(&op_code).unwrap();
     }
 }

@@ -1,19 +1,17 @@
-use crate::tests::test_helpers::cpu_test_helper;
-use crate::tests::test_helpers::rom_test_helper::test_rom;
+use crate::components::bus::Bus;
+use crate::components::cartridge::Rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
-use crate::components::cartridge::Rom;
-use crate::components::bus::Bus;
-
-
+use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x4c_jmp_absolute() {
-    let bus = Bus::new(test_rom());
+    let initial_program_counter = 0x0600;
+    let bus = Bus::new(test_rom(initial_program_counter));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
-    let initial_program_counter = 0x8000;
     let address = (initial_program_counter + 7 as u16).to_le_bytes();
 
     let set_a_to_expected_value = cpu_test_helper::set_register_a_to_value(accum_value);
@@ -35,11 +33,11 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x6c_jmp_indirect() {
-    let bus = Bus::new(test_rom());
+    let initial_program_counter = 0x0600;
+    let bus = Bus::new(test_rom(initial_program_counter));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
-    let initial_program_counter = 0x8000;
     let address_pointing_to_address: u16 = 0;
     let address_pointer = address_pointing_to_address.to_le_bytes();
     let address = (initial_program_counter + 7 as u16).to_le_bytes();
@@ -66,12 +64,12 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x6c_jmp_indirect_page_boundary() {
-    let bus = Bus::new(test_rom());
+    let initial_program_counter = 0x0600;
+    let bus = Bus::new(test_rom(initial_program_counter));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let accum_initial_value = 0xFF;
     let accum_final_value = 0xF1;
-    let initial_program_counter = 0x8000;
     let address_pointing_to_address = 0x10FF;
     let address_pointing_to_address_lsb: u16 = address_pointing_to_address;
     let address_pointing_to_address_msb: u16 = address_pointing_to_address & 0xFF00;

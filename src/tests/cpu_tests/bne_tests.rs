@@ -1,23 +1,21 @@
-use crate::tests::test_helpers::cpu_test_helper;
-use crate::tests::test_helpers::rom_test_helper::test_rom;
+use crate::components::bus::Bus;
+use crate::components::cartridge::Rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
-use crate::components::cartridge::Rom;
-use crate::components::bus::Bus;
-
-
+use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xd0_bne_negative_offset() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let accum_value = 0xF1;
     let value_to_add = 1;
     let offset = (4 as u8).wrapping_neg();
 
     let set_a_to_value = cpu_test_helper::set_register_a_to_value(accum_value);
-    let add_value_to_a =cpu_test_helper::add_with_carry_to_register_a(value_to_add);
+    let add_value_to_a = cpu_test_helper::add_with_carry_to_register_a(value_to_add);
 
     let set_carry = 0x38;
     cpu.load_and_run(vec![
@@ -35,9 +33,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0xd0_bne_positive_offset() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let accum_value = 15;
     let offset = 2;
 

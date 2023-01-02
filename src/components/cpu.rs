@@ -8,7 +8,7 @@ pub struct CPU {
     pub program_counter: u16,
     pub register_x: u8,
     pub register_y: u8,
-    op_codes: OPCodes,
+    pub op_codes: OPCodes,
     pub  stack_pointer: u8,
     pub bus: Bus
 }
@@ -27,9 +27,6 @@ pub enum AddressingMode {
     Indirect_Y,
     NoneAddressing,
 }
-
-// 0x0600 for snake game
-const INITIAL_MEMORY_LOAD_ADDRESS: u16 = 0x0600;
 
 impl Mem for CPU {
     fn mem_read(&self, addr: u16) -> u8 {
@@ -78,63 +75,63 @@ impl CPU {
     fn get_operand_address(&mut self, mode: &AddressingMode) -> u16 {
         match mode {
             AddressingMode::Immediate => self.program_counter,
+            _ => self.get_absolute_address(mode, self.program_counter),
+        }
+    }
 
-            AddressingMode::ZeroPage => self.mem_read(self.program_counter) as u16,
+    pub fn get_absolute_address(&self, mode: &AddressingMode, addr: u16) -> u16 {
+        match mode {
+            AddressingMode::ZeroPage => self.mem_read(addr) as u16,
 
-            AddressingMode::Absolute => self.mem_read_u16(self.program_counter),
+            AddressingMode::Absolute => self.mem_read_u16(addr),
 
             AddressingMode::ZeroPage_X => {
-                let pos = self.mem_read(self.program_counter);
+                let pos = self.mem_read(addr);
                 let addr = pos.wrapping_add(self.register_x) as u16;
                 addr
             }
             AddressingMode::ZeroPage_Y => {
-                let pos = self.mem_read(self.program_counter);
+                let pos = self.mem_read(addr);
                 let addr = pos.wrapping_add(self.register_y) as u16;
                 addr
             }
 
             AddressingMode::Absolute_X => {
-                let base = self.mem_read_u16(self.program_counter);
+                let base = self.mem_read_u16(addr);
                 let addr = base.wrapping_add(self.register_x as u16);
                 addr
             }
             AddressingMode::Absolute_Y => {
-                let base = self.mem_read_u16(self.program_counter);
+                let base = self.mem_read_u16(addr);
                 let addr = base.wrapping_add(self.register_y as u16);
                 addr
             }
 
             AddressingMode::Indirect_X => {
-                let base = self.mem_read(self.program_counter);
+                let base = self.mem_read(addr);
 
                 let ptr: u8 = (base as u8).wrapping_add(self.register_x);
+                let lo = self.mem_read(ptr as u16);
+                let hi = self.mem_read(ptr.wrapping_add(1) as u16);
 
-                let bytes = [
-                    self.mem_read(ptr as u16),
-                    self.mem_read(ptr.wrapping_add(1) as u16),
-                ];
-                u16::from_le_bytes(bytes)
+                (hi as u16) << 8 | (lo as u16)
             }
             AddressingMode::Indirect_Y => {
-                let base = self.mem_read(self.program_counter);
+                let base = self.mem_read(addr);
 
-                let bytes = [
-                    self.mem_read(base as u16),
-                    self.mem_read(base.wrapping_add(1) as u16),
-                ];
-
-                let deref_base = u16::from_le_bytes(bytes);
+                let lo = self.mem_read(base as u16);
+                let hi = self.mem_read((base as u8).wrapping_add(1) as u16);
+                let deref_base = (hi as u16) << 8 | (lo as u16);
                 let deref = deref_base.wrapping_add(self.register_y as u16);
                 deref
             }
 
-            AddressingMode::NoneAddressing => {
+            _ => {
                 panic!("mode {:?} is not supported", mode);
             }
         }
     }
-
+    
     fn set_register_a(&mut self, value: u8) {
         self.register_a = value;
         self.update_zero_and_negative_flag(self.register_a);
@@ -157,10 +154,11 @@ impl CPU {
     }
 
     pub fn load(&mut self, program: Vec<u8>) {
+        let pc_start=self.mem_read_u16(0xFFFC);
         for i in 0..(program.len() as u16){
-            self.mem_write(INITIAL_MEMORY_LOAD_ADDRESS+i,program[i as usize]);
+            self.mem_write(pc_start+i,program[i as usize]);
         } 
-        self.mem_write_u16(0xFFFC, INITIAL_MEMORY_LOAD_ADDRESS);
+        self.mem_read_u16(0xFFFC);
     }
 
     fn adc(&mut self, mode: &AddressingMode) {
@@ -719,11 +717,8 @@ impl CPU {
             let code = self.mem_read(self.program_counter);
             self.program_counter += 1;
             let pc_temp = self.program_counter;
-
-            // println!("the op code is {:#02x}", code);
-
-            //TO DO  add op code data to the original hashmap
-            let op_code_data = self.op_codes.get(&code);
+            println!("the op code is {:#02x}", code);
+            let op_code_data = self.op_codes.get(code);
 
             match code {
                 0x00 => return,
@@ -920,6 +915,8 @@ impl CPU {
         self.status = 0;
         self.stack_pointer = CPU::STACK_RESET;
 
-        self.program_counter = self.mem_read_u16(0xFFFC);
+        self.program_counter =self.mem_read_u16(0xFFFC);
+        
+        // panic!("The program counter at start is {:x}",self.program_counter);
     }
 }

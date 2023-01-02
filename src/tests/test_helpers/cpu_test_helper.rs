@@ -1,9 +1,7 @@
 ﻿use std::collections::hash_map::Values;
+
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
-
-
-
 
 const CARRY_FLAG: u8 = 0b0000_0001;
 const ZERO_FLAG: u8 = 0b0000_0010;
@@ -146,12 +144,12 @@ pub fn increase_y_by_one() -> u8 {
     return 0xc8;
 }
 
-pub  fn  compare_x_to_value(value:u8)->[u8;2]{
-    let  cpx_immediate=0xe0;
-    return [cpx_immediate,value];
+pub fn compare_x_to_value(value: u8) -> [u8; 2] {
+    let cpx_immediate = 0xe0;
+    return [cpx_immediate, value];
 }
 
-pub  fn  branch_not_equal(offset:u8)->[u8;2]{
-    let  bne=0xd0;
-    return [bne,offset];
+pub fn branch_not_equal(offset: u8) -> [u8; 2] {
+    let bne = 0xd0;
+    return [bne, offset];
 }

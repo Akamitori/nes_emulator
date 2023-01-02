@@ -109,7 +109,7 @@ mod jsr_rts_tests;
 
 #[test]
 fn test_5_ops_working_together() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
     let mut cpu = CPU::new(bus);
     cpu.load_and_run(vec![0xa9, 0xc0, 0xaa, 0xe8, 0x00]);

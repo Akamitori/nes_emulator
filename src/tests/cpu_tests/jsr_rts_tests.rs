@@ -1,31 +1,30 @@
-use crate::tests::test_helpers::cpu_test_helper;
-use crate::tests::test_helpers::rom_test_helper::test_rom;
-use crate::components::cpu::CPU;
-use crate::components::mem::Mem;
-use crate::components::cartridge::Rom;
-use crate::components::bus::Bus;
-
-
 use std::io::Lines;
 
+use crate::components::bus::Bus;
+use crate::components::cartridge::Rom;
+use crate::components::cpu::CPU;
+use crate::components::mem::Mem;
+use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 /// Simple test where we increase X till 5 with subroutines
 #[test]
 fn test_0x20_jsr_0x60_rts_subroutines() {
-    let bus = Bus::new(test_rom());
+    let pc_counter_start = 0x0600;
+    let bus = Bus::new(test_rom(pc_counter_start));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let target_value = 5;
 
-    let program = build_program(target_value);
+    let program = build_program(target_value, pc_counter_start);
 
     cpu.load_and_run(program);
 
     assert_eq!(cpu.register_x, target_value);
 }
 
-fn build_program(target_value: u8) -> Vec<u8> {
-    let program_parts = build_program_parts(target_value);
+fn build_program(target_value: u8, pc_start: u16) -> Vec<u8> {
+    let program_parts = build_program_parts(target_value, pc_start);
     let mut program = Vec::new();
 
     for part in program_parts {
@@ -36,9 +35,7 @@ fn build_program(target_value: u8) -> Vec<u8> {
     return program;
 }
 
-fn build_program_parts(target_value: u8) -> Vec<Vec<u8>> {
-    let initial_program_counter = 0x8000;
-
+fn build_program_parts(target_value: u8, initial_program_counter: u16) -> Vec<Vec<u8>> {
     let init_offset = (initial_program_counter + 9 as u16).to_le_bytes();
     let loop_offset = (initial_program_counter + 12 as u16).to_le_bytes();
     let end_offset = (initial_program_counter + 18 as u16).to_le_bytes();
@@ -77,7 +74,7 @@ fn build_program_parts(target_value: u8) -> Vec<Vec<u8>> {
         loop_subroutine,
         end_subroutine,
     ];
-    
+
     program_parts
 }
 

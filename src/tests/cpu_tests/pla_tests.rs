@@ -1,17 +1,15 @@
-use crate::tests::test_helpers::cpu_test_helper;
-use crate::tests::test_helpers::rom_test_helper::test_rom;
+use crate::components::bus::Bus;
+use crate::components::cartridge::Rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
-use crate::components::cartridge::Rom;
-use crate::components::bus::Bus;
-
-
+use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x68_pla() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
 
     let value_a = 0x30;
     let value_b = 0x12;
@@ -30,16 +28,15 @@ let mut cpu = CPU::new(bus);
         0x00,
     ]);
 
-    assert_eq!(cpu.register_a,value_b);
+    assert_eq!(cpu.register_a, value_b);
     cpu_test_helper::assert_inactive_zero_negative_flags(&cpu);
-    
 }
 
 #[test]
 fn test_0x68_pla_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
 
     let value_a = 0x30;
     let value_b = 0x0;
@@ -58,16 +55,15 @@ let mut cpu = CPU::new(bus);
         0x00,
     ]);
 
-    assert_eq!(cpu.register_a,value_b);
+    assert_eq!(cpu.register_a, value_b);
     cpu_test_helper::assert_active_zero_flag(&cpu);
-    
 }
 
 #[test]
 fn test_0x68_pla_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
 
     let value_a = 0x30;
     let value_b = 0xFF;
@@ -86,9 +82,8 @@ let mut cpu = CPU::new(bus);
         0x00,
     ]);
 
-    assert_eq!(cpu.register_a,value_b);
+    assert_eq!(cpu.register_a, value_b);
     cpu_test_helper::assert_active_negative_flag(&cpu);
-    
 }
 
 

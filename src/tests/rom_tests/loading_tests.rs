@@ -1,7 +1,6 @@
 ﻿use crate::components::cartridge::{Mirroring, Rom};
-use crate::tests::test_helpers::rom_test_helper::TestRom;
 use crate::tests::test_helpers::rom_test_helper::create_rom;
-
+use crate::tests::test_helpers::rom_test_helper::TestRom;
 
 #[test]
 fn load_rom_dump() {

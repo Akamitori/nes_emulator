@@ -1,17 +1,15 @@
-use crate::tests::test_helpers::cpu_test_helper;
-use crate::tests::test_helpers::rom_test_helper::test_rom;
+use crate::components::bus::Bus;
+use crate::components::cartridge::Rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
-use crate::components::cartridge::Rom;
-use crate::components::bus::Bus;
-
-
+use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x2a_rol_accumulator_base() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let value = 0x51;
 
     let load_value_to_a = cpu_test_helper::set_register_a_to_value(value);
@@ -37,9 +35,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x2a_rol_accumulator_carry_flag_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let value = 0x80;
 
     let load_value_to_a = cpu_test_helper::set_register_a_to_value(value);
@@ -54,9 +52,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x2a_rol_accumulator_carry_flag_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let value = 0xF0;
 
     let load_value_to_a = cpu_test_helper::set_register_a_to_value(value);
@@ -71,9 +69,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x2a_rol_accumulator_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let value = 0x50;
 
     let load_value_to_a = cpu_test_helper::set_register_a_to_value(value);
@@ -87,9 +85,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x26_rol_zero_page_base() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x51;
 
@@ -122,9 +120,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x26_rol_zero_page_carry_flag_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x80;
 
@@ -139,9 +137,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x26_rol_zero_page_carry_flag_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0xF0;
 
@@ -156,9 +154,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x26_rol_zero_page_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x50;
 
@@ -172,9 +170,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x36_rol_zero_page_x_base() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x51;
 
@@ -208,9 +206,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x36_rol_zero_page_x_carry_flag_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x80;
 
@@ -230,9 +228,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x36_rol_zero_page_x_carry_flag_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0xF0;
 
@@ -252,9 +250,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x36_rol_zero_page_x_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x10;
     let value = 0x50;
 
@@ -273,9 +271,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x2e_rol_absolute_base() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x51;
 
@@ -319,9 +317,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x2e_rol_absolute_carry_flag_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x80;
 
@@ -338,9 +336,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x2e_rol_absolute_carry_flag_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0xF0;
 
@@ -357,9 +355,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x2e_rol_absolute_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x50;
 
@@ -375,9 +373,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x3e_rol_absolute_x_base() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x50;
 
@@ -412,7 +410,7 @@ let mut cpu = CPU::new(bus);
         0x3e,
         mem_bytes[0],
         mem_bytes[1],
-        0x00
+        0x00,
     ]);
 
     cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value);
@@ -421,9 +419,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x3e_rol_absolute_x_carry_flag_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x80;
 
@@ -436,7 +434,7 @@ let mut cpu = CPU::new(bus);
         mem_bytes[1],
         0x00,
     ]);
-    
+
     cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_zero_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
@@ -445,9 +443,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x3e_rol_absolute_x_carry_flag_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0xF0;
 
@@ -469,9 +467,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x3e_rol_absolute_x_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let mem_to_shift = 0x1000;
     let value = 0x50;
 

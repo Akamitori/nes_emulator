@@ -1,17 +1,15 @@
-use crate::tests::test_helpers::cpu_test_helper;
-use crate::tests::test_helpers::rom_test_helper::test_rom;
+use crate::components::bus::Bus;
+use crate::components::cartridge::Rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
-use crate::components::cartridge::Rom;
-use crate::components::bus::Bus;
-
-
+use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x98_tya_move_y_to_accumulator() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let set_y_to_value = cpu_test_helper::set_register_y_to_value(10);
 
     cpu.load_and_run(vec![
@@ -28,9 +26,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x98_tya_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
     let set_y_to_value = cpu_test_helper::set_register_y_to_value(0);
 
     cpu.load_and_run(vec![
@@ -47,10 +45,10 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0x98_tya_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
-    let  value=(10 as u8).wrapping_neg();
+    let mut cpu = CPU::new(bus);
+    let value = (10 as u8).wrapping_neg();
     let set_y_to_value = cpu_test_helper::set_register_y_to_value(value);
 
     cpu.load_and_run(vec![

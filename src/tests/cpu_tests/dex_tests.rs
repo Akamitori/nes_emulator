@@ -1,17 +1,15 @@
-use crate::tests::test_helpers::cpu_test_helper;
-use crate::tests::test_helpers::rom_test_helper::test_rom;
+use crate::components::bus::Bus;
+use crate::components::cartridge::Rom;
 use crate::components::cpu::CPU;
 use crate::components::mem::Mem;
-use crate::components::cartridge::Rom;
-use crate::components::bus::Bus;
-
-
+use crate::tests::test_helpers::cpu_test_helper;
+use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xca_dex() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
 
     cpu.load_and_run(vec![
         cpu_test_helper::increase_x_by_one(),
@@ -26,9 +24,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0xca_dex_zero_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
 
     cpu.load_and_run(vec![cpu_test_helper::increase_x_by_one(), 0xca, 0x00]);
 
@@ -38,9 +36,9 @@ let mut cpu = CPU::new(bus);
 
 #[test]
 fn test_0xca_dex_negative_flag() {
-    let bus = Bus::new(test_rom());
+    let bus = Bus::new(test_rom(0x0600));
 
-let mut cpu = CPU::new(bus);
+    let mut cpu = CPU::new(bus);
 
     cpu.load_and_run(vec![0xca, 0x00]);
 
