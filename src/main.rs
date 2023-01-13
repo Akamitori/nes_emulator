@@ -1,5 +1,5 @@
 use rust_nes::roms;
 
 fn main() {
-    roms::snake_nes_dump::run();
+    roms::runner_with_trace::run();
 }

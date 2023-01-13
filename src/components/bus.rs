@@ -46,7 +46,7 @@ impl Mem for Bus {
                 self.read_prg_rom(addr)
             }
             _ => {
-                println!("Ignoring mem access at {}", addr);
+                // println!("Ignoring mem access at {}", addr);
                 0
             }
         }
@@ -60,7 +60,7 @@ impl Mem for Bus {
             }
             PPU_REGISTERS..=PPU_REGISTERS_MIRRORS_END => {
                 let _mirror_down_addr = addr & 0b00100000_00000111;
-                todo!("PPU is not supported yet");
+                // todo!("PPU is not supported yet");
             }
             ROM_SPACE_START..=ROM_SPACE_END => {
                 panic!("Attempt to write to Cartridge ROM space")
