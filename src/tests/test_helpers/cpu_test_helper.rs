@@ -17,19 +17,23 @@ pub fn assert_address_contains_value(cpu: &CPU, address: u16, value: u8) {
 }
 
 pub fn assert_inactive_zero_negative_flags(cpu: &CPU) {
-    assert_eq!(cpu.status & ZERO_FLAG, 0);
-    assert_eq!(cpu.status & NEGATIVE_FLAG, 0);
+    assert_inactive_zero_flag(cpu);
+    assert_inactive_negative_flag(cpu);
 }
 
 pub fn assert_inactive_zero_carry_flags(cpu: &CPU) {
-    assert_eq!(cpu.status & ZERO_FLAG, 0);
-    assert_eq!(cpu.status & CARRY_FLAG, 0);
+    assert_inactive_zero_flag(cpu);
+    assert_inactive_carry_flag(cpu);
 }
 
 pub fn assert_inactive_zero_negative_carry_flag(cpu: &CPU) {
-    assert_eq!(cpu.status & ZERO_FLAG, 0);
-    assert_eq!(cpu.status & NEGATIVE_FLAG, 0);
-    assert_eq!(cpu.status & CARRY_FLAG, 0);
+    assert_inactive_zero_flag(cpu);
+    assert_inactive_negative_flag(cpu);
+    assert_inactive_carry_flag(cpu);
+}
+
+pub fn assert_flags_unaffected(cpu :&CPU){
+    assert_eq!(cpu.status,CPU::STATUS_RESET);
 }
 
 pub fn assert_active_zero_flag(cpu: &CPU) {

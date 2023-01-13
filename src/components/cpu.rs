@@ -109,11 +109,11 @@ impl CPU {
 
             AddressingMode::Indirect_X => {
                 let base = self.mem_read(addr);
-
+                
                 let ptr: u8 = (base as u8).wrapping_add(self.register_x);
                 let lo = self.mem_read(ptr as u16);
                 let hi = self.mem_read(ptr.wrapping_add(1) as u16);
-
+                
                 (hi as u16) << 8 | (lo as u16)
             }
             AddressingMode::Indirect_Y => {
@@ -642,6 +642,23 @@ impl CPU {
         self.set_register_a(value);
     }
 
+    fn anc(&mut self, mode: &AddressingMode){
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+
+        self.set_register_a(self.register_a & value);
+        if self.register_a>>7 !=0 {
+            self.set_carry_flag();
+        }
+    }
+
+    fn sax(&mut self, mode: &AddressingMode){
+        let addr = self.get_operand_address(mode);
+        let value_to_store=self.register_a & self.register_x;
+        
+        self.mem_write(addr,value_to_store );
+    }
+
     fn update_zero_and_negative_flag(&mut self, result: u8) {
         if result == 0 {
             self.status = self.status | CPU::ZERO_FLAG;
@@ -899,6 +916,10 @@ impl CPU {
                 0x9A => self.txs(),
 
                 0x98 => self.tya(),
+
+                0x0b | 0x2b => self.anc(&op_code_data.addressing_mode),
+                
+                0x8F | 0x87 | 0x97 | 0x83 => self.sax(&op_code_data.addressing_mode),
 
 
                 _ => todo!(),

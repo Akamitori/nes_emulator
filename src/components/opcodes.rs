@@ -35,7 +35,7 @@ pub struct OPCodes{
 
 impl OPCodes{
     pub fn new()-> Self{
-        let mut code_table=vec![
+        let legal_op_code_table =vec![
             OpCode::new(0x69,"ADC",2,2,AddressingMode::Immediate),
             OpCode::new(0x65,"ADC",2,3,AddressingMode::ZeroPage),
             OpCode::new(0x75,"ADC",2,4,AddressingMode::ZeroPage_X),
@@ -242,14 +242,31 @@ impl OPCodes{
 
             OpCode::new(0x98,"TYA",1,2,AddressingMode::NoneAddressing),
         ];
-        
-        code_table.sort_by(|a,b| a.op_code.cmp(&b.op_code) );
+
+        let illegal_op_code_table : Vec<OpCode> =vec![
+            OpCode::new(0x0b,"ANC",2,2,AddressingMode::Immediate),
+            OpCode::new(0x2b,"ANC",2,2,AddressingMode::Immediate),
+
+            
+            OpCode::new(0x87,"SAX",2,3,AddressingMode::ZeroPage),
+            OpCode::new(0x97,"SAX",2,4,AddressingMode::ZeroPage_Y),
+            OpCode::new(0x83,"SAX",2,6,AddressingMode::Indirect_X),
+            OpCode::new(0x8f,"SAX",3,4,AddressingMode::Absolute),
+            
+        ];
 
         let mut codes=HashMap::new();
 
-        for c in code_table{
+        for c in legal_op_code_table {
             if codes.contains_key(&c.op_code) {
-                panic!("Duplicate key {:#02x}",c.op_code);
+                panic!("Duplicate key for legal opcodes {:#02x}",c.op_code);
+            }
+            codes.insert(c.op_code, c);
+        }
+
+        for c in illegal_op_code_table {
+            if codes.contains_key(&c.op_code) {
+                panic!("Duplicate key for illegal opcodes {:#02x}",c.op_code);
             }
             codes.insert(c.op_code, c);
         }
@@ -260,6 +277,6 @@ impl OPCodes{
     }
 
     pub fn get(&self,op_code: u8)-> OpCode{
-        return *self.codes.get(&op_code).unwrap();
+        return *self.codes.get(&op_code).unwrap_or_else(|| panic!("Code \"{op_code:#04x}\" was not found "));
     }
 }
