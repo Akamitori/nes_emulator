@@ -9,8 +9,8 @@ pub struct CPU {
     pub register_x: u8,
     pub register_y: u8,
     pub op_codes: OPCodes,
-    pub  stack_pointer: u8,
-    pub bus: Bus
+    pub stack_pointer: u8,
+    pub bus: Bus,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -46,16 +46,16 @@ impl Mem for CPU {
 }
 
 impl CPU {
-    pub fn new(bus : Bus) -> Self {
+    pub fn new(bus: Bus) -> Self {
         CPU {
             register_a: 0,
-            status: 0,
+            status: CPU::STATUS_RESET,
             program_counter: 0,
             register_x: 0,
             register_y: 0,
             op_codes: OPCodes::new(),
             stack_pointer: CPU::STACK_RESET,
-            bus: bus
+            bus: bus,
         }
     }
 
@@ -68,9 +68,9 @@ impl CPU {
     const OVERFLOW_FLAG: u8 = 0b0100_0000;
     const NEGATIVE_FLAG: u8 = 0b1000_0000;
 
-    const STACK_BOTTOM: u16 = 0x0100;
-    pub  const STACK_RESET: u8 = 0xFD;
-    pub  const STATUS_RESET :u8=CPU::INTERRUPT_DISABLE_FLAG | CPU::BREAK_COMMAND_FLAG_2;
+    pub const STACK_BOTTOM: u16 = 0x0100;
+    pub const STACK_RESET: u8 = 0xFD;
+    pub const STATUS_RESET: u8 = CPU::INTERRUPT_DISABLE_FLAG | CPU::BREAK_COMMAND_FLAG_2;
 
     fn get_operand_address(&mut self, mode: &AddressingMode) -> u16 {
         match mode {
@@ -131,7 +131,7 @@ impl CPU {
             }
         }
     }
-    
+
     fn set_register_a(&mut self, value: u8) {
         self.register_a = value;
         self.update_zero_and_negative_flag(self.register_a);
@@ -154,10 +154,10 @@ impl CPU {
     }
 
     pub fn load(&mut self, program: Vec<u8>) {
-        let pc_start=self.mem_read_u16(0xFFFC);
-        for i in 0..(program.len() as u16){
-            self.mem_write(pc_start+i,program[i as usize]);
-        } 
+        let pc_start = self.mem_read_u16(0xFFFC);
+        for i in 0..(program.len() as u16) {
+            self.mem_write(pc_start + i, program[i as usize]);
+        }
         self.mem_read_u16(0xFFFC);
     }
 
@@ -327,7 +327,7 @@ impl CPU {
     fn rti(&mut self) {
         let mut status = self.stack_pop();
         status &= !CPU::BREAK_COMMAND_FLAG_1;
-        status &= !CPU::BREAK_COMMAND_FLAG_2;
+        status |= CPU::BREAK_COMMAND_FLAG_2;
         self.status = status;
         let program_counter = self.stack_pop_u16();
         self.program_counter = program_counter;
@@ -419,15 +419,16 @@ impl CPU {
 
     fn stack_push_u16(&mut self, data: u16) {
         let bytes = data.to_le_bytes();
-        self.stack_push(bytes[0]);
         self.stack_push(bytes[1]);
+        self.stack_push(bytes[0]);
     }
 
     fn stack_pop_u16(&mut self) -> u16 {
-        let hi = self.stack_pop();
         let lo = self.stack_pop();
+        let hi = self.stack_pop();
         let bytes = [lo, hi];
-        u16::from_le_bytes(bytes)
+        let result=u16::from_le_bytes(bytes);
+        return  result;
     }
 
     fn bit(&mut self, mode: &AddressingMode) {
@@ -576,7 +577,7 @@ impl CPU {
     fn plp(&mut self) {
         let mut status = self.stack_pop();
         status &= !CPU::BREAK_COMMAND_FLAG_1;
-        status &= !CPU::BREAK_COMMAND_FLAG_2;
+        status |= CPU::BREAK_COMMAND_FLAG_2;
         self.status = status;
     }
 
@@ -711,13 +712,13 @@ impl CPU {
         self.run_with_callback(|_| {});
     }
 
-    pub fn run_with_callback<F>(&mut self,mut callback:F) where F: FnMut(&mut CPU) {
+    pub fn run_with_callback<F>(&mut self, mut callback: F) where F: FnMut(&mut CPU) {
         loop {
             callback(self);
             let code = self.mem_read(self.program_counter);
             self.program_counter += 1;
             let pc_temp = self.program_counter;
-            println!("the op code is {:#02x}", code);
+            // println!("the op code is {:#02x}", code);
             let op_code_data = self.op_codes.get(code);
 
             match code {
@@ -899,6 +900,7 @@ impl CPU {
 
                 0x98 => self.tya(),
 
+
                 _ => todo!(),
             }
 
@@ -912,11 +914,11 @@ impl CPU {
         self.register_a = 0;
         self.register_x = 0;
         self.register_y = 0;
-        self.status = 0;
+        self.status = CPU::STATUS_RESET;
         self.stack_pointer = CPU::STACK_RESET;
 
-        self.program_counter =self.mem_read_u16(0xFFFC);
-        
+        self.program_counter = self.mem_read_u16(0xFFFC);
+
         // panic!("The program counter at start is {:x}",self.program_counter);
     }
 }
