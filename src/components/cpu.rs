@@ -109,11 +109,11 @@ impl CPU {
 
             AddressingMode::Indirect_X => {
                 let base = self.mem_read(addr);
-                
+
                 let ptr: u8 = (base as u8).wrapping_add(self.register_x);
                 let lo = self.mem_read(ptr as u16);
                 let hi = self.mem_read(ptr.wrapping_add(1) as u16);
-                
+
                 (hi as u16) << 8 | (lo as u16)
             }
             AddressingMode::Indirect_Y => {
@@ -427,8 +427,8 @@ impl CPU {
         let lo = self.stack_pop();
         let hi = self.stack_pop();
         let bytes = [lo, hi];
-        let result=u16::from_le_bytes(bytes);
-        return  result;
+        let result = u16::from_le_bytes(bytes);
+        return result;
     }
 
     fn bit(&mut self, mode: &AddressingMode) {
@@ -642,21 +642,48 @@ impl CPU {
         self.set_register_a(value);
     }
 
-    fn anc(&mut self, mode: &AddressingMode){
+    fn anc(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let value = self.mem_read(addr);
 
         self.set_register_a(self.register_a & value);
-        if self.register_a>>7 !=0 {
+        if self.register_a >> 7 != 0 {
             self.set_carry_flag();
         }
     }
 
-    fn sax(&mut self, mode: &AddressingMode){
+    fn sax(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
-        let value_to_store=self.register_a & self.register_x;
-        
-        self.mem_write(addr,value_to_store );
+        let value_to_store = self.register_a & self.register_x;
+
+        self.mem_write(addr, value_to_store);
+    }
+
+    fn arr(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let value = self.mem_read(addr);
+
+        let mut data = value & self.register_a;
+        data >>= 1;
+        let bit_7_to_insert = self.get_carry_flag() << 7;
+        data |= bit_7_to_insert;
+
+        let bit_6_result = (data & 0b0100_0000) >> 6;
+        let bit_5_result = (data & 0b0010_0000) >> 5;
+
+        if bit_6_result == 1 {
+            self.set_carry_flag();
+        } else {
+            self.clear_carry_flag();
+        }
+
+        if bit_5_result ^ bit_6_result != 0 {
+            self.set_overflow_flag();
+        } else {
+            self.clear_overflow_flag();
+        }
+
+        self.set_register_a(data);
     }
 
     fn update_zero_and_negative_flag(&mut self, result: u8) {
@@ -918,9 +945,10 @@ impl CPU {
                 0x98 => self.tya(),
 
                 0x0b | 0x2b => self.anc(&op_code_data.addressing_mode),
-                
+
                 0x8F | 0x87 | 0x97 | 0x83 => self.sax(&op_code_data.addressing_mode),
 
+                0x6B => self.arr(&op_code_data.addressing_mode),
 
                 _ => todo!(),
             }
