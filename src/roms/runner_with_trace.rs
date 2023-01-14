@@ -2,7 +2,7 @@
 use crate::components::cartridge::Rom;
 use crate::components::cpu::{AddressingMode, CPU};
 use crate::components::mem::Mem;
-use crate::components::opcodes::{OpCode, OPCodes};
+use crate::components::opcodes::{OpCode};
 
 pub fn run() {
     let game_code = std::fs::read("nestest.nes").unwrap();
@@ -56,8 +56,8 @@ fn get_command_hex(machine_code: &Vec<u8>) -> String {
     command_hex
 }
 
-fn get_command_assembly(cpu: &mut CPU, Opcode: OpCode, machine_code: &mut Vec<u8>) -> String {
-    let mut command_string = format!("{}", Opcode.command_name);
+fn get_command_assembly(cpu: &mut CPU, op_code: OpCode, machine_code: &mut Vec<u8>) -> String {
+    let mut command_string = format!("{}", op_code.command_name);
 
     let mut machine_code_to_work_on = vec![];
 
@@ -68,16 +68,16 @@ fn get_command_assembly(cpu: &mut CPU, Opcode: OpCode, machine_code: &mut Vec<u8
     }
 
     let begin = cpu.program_counter;
-    let (mem_addr, stored_value) = match Opcode.addressing_mode {
+    let (mem_addr, stored_value) = match op_code.addressing_mode {
         AddressingMode::Immediate | AddressingMode::NoneAddressing => (0, 0),
         _ => {
-            let addr = cpu.get_absolute_address(&Opcode.addressing_mode, begin + 1);
+            let addr = cpu.get_absolute_address(&op_code.addressing_mode, begin + 1);
             (addr, cpu.mem_read(addr))
         }
     };
 
 
-    let mut formatted_operands = match (Opcode.addressing_mode, Opcode.bytes) {
+    let formatted_operands = match (op_code.addressing_mode, op_code.bytes) {
         (AddressingMode::Immediate, _) => {
             format!(" #${:02X}", machine_code_to_work_on[0])
         }
@@ -91,7 +91,7 @@ fn get_command_assembly(cpu: &mut CPU, Opcode: OpCode, machine_code: &mut Vec<u8
             format!(" ${:02X},Y @ {:02} = #${:02X}", machine_code_to_work_on[0], mem_addr, stored_value)
         }
         (AddressingMode::Absolute, _) => {
-            match Opcode.command_name {
+            match op_code.command_name {
                 "JSR" | "JMP" => format!(" ${:04X}", mem_addr),
                 _ => format!(" ${:04X} = {:02X}", mem_addr, stored_value)
             }
@@ -110,7 +110,7 @@ fn get_command_assembly(cpu: &mut CPU, Opcode: OpCode, machine_code: &mut Vec<u8
             format!(" (${:02X}),Y", machine_code_to_work_on[0])
         }
         (AddressingMode::NoneAddressing, 2..=3) => {
-            let address_to_operate = match Opcode.command_name {
+            let address_to_operate = match op_code.command_name {
                 "JMP" => {
                     get_from_le_bytes(&machine_code_to_work_on)
                 }
@@ -121,7 +121,7 @@ fn get_command_assembly(cpu: &mut CPU, Opcode: OpCode, machine_code: &mut Vec<u8
             format!(" ${:04X}", address_to_operate)
         }
         (AddressingMode::NoneAddressing, 1) => {
-            match Opcode.op_code {
+            match op_code.op_code {
                 0x0A | 0x4A | 0x2A | 0x6A => {
                     " A".to_string()
                 }
