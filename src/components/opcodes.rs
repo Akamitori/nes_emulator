@@ -260,7 +260,20 @@ impl OPCodes{
             OpCode::new(0x5A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0x7A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0xDA,"NOP",1,2,AddressingMode::NoneAddressing),
-            OpCode::new(0xFA,"NOP",1,2,AddressingMode::NoneAddressing)
+            OpCode::new(0xFA,"NOP",1,2,AddressingMode::NoneAddressing),
+
+            OpCode::new(0x02,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x12,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x22,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x32,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x42,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x52,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x62,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x72,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x92,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0xB2,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0xD2,"KIL",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0xF2,"KIL",1,2,AddressingMode::NoneAddressing),
             
         ];
 

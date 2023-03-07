@@ -551,10 +551,8 @@ impl CPU {
         self.mem_write(addr, value);
         self.update_zero_and_negative_flag(value);
     }
-    
-    fn nop(&mut self){
-        
-    }
+
+    fn nop(&mut self) {}
 
     fn ora(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
@@ -688,6 +686,11 @@ impl CPU {
         }
 
         self.set_register_a(data);
+    }
+
+    fn kil(&self) {
+        println!("KIL was called. System halted");
+        while true {}
     }
 
     fn update_zero_and_negative_flag(&mut self, result: u8) {
@@ -876,7 +879,6 @@ impl CPU {
                     self.lsr(&op_code_data.addressing_mode);
                 }
 
-                
                 0xEA | 0x1A | 0x3A | 0x5A | 0x7A | 0xDA | 0xFA => {
                     self.nop();
                 }
@@ -955,6 +957,10 @@ impl CPU {
                 0x8F | 0x87 | 0x97 | 0x83 => self.sax(&op_code_data.addressing_mode),
 
                 0x6B => self.arr(&op_code_data.addressing_mode),
+
+                0x02 | 0x12 | 0x22 | 0x32 | 0x42 | 0x52 | 0x62 | 0x72 | 0x92 | 0xB2 | 0xD2 | 0xF2 => {
+                    self.kil();
+                }
 
                 _ => todo!(),
             }
