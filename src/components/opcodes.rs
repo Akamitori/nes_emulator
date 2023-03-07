@@ -254,6 +254,13 @@ impl OPCodes{
             OpCode::new(0x8f,"SAX",3,4,AddressingMode::Absolute),
 
             OpCode::new(0x6b,"ARR",2,2,AddressingMode::Immediate),
+
+            OpCode::new(0x1A,"NOP",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x3A,"NOP",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x5A,"NOP",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0x7A,"NOP",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0xDA,"NOP",1,2,AddressingMode::NoneAddressing),
+            OpCode::new(0xFA,"NOP",1,2,AddressingMode::NoneAddressing)
             
         ];
 

@@ -551,6 +551,10 @@ impl CPU {
         self.mem_write(addr, value);
         self.update_zero_and_negative_flag(value);
     }
+    
+    fn nop(&mut self){
+        
+    }
 
     fn ora(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
@@ -872,8 +876,10 @@ impl CPU {
                     self.lsr(&op_code_data.addressing_mode);
                 }
 
-                // NOP
-                0xEA => {}
+                
+                0xEA | 0x1A | 0x3A | 0x5A | 0x7A | 0xDA | 0xFA => {
+                    self.nop();
+                }
 
                 0x09 | 0x05 | 0x15 | 0x0D | 0x1D | 0x19 | 0x01 | 0x11 => {
                     self.ora(&op_code_data.addressing_mode);
