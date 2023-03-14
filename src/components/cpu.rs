@@ -688,9 +688,14 @@ impl CPU {
         self.set_register_a(data);
     }
 
+    fn dcp(&mut self, mode: &AddressingMode) {
+        self.dec(mode);
+        self.cmp(mode);
+    }
+
     fn kil(&self) {
         println!("KIL was called. System halted");
-        while true {}
+        loop {}
     }
 
     fn update_zero_and_negative_flag(&mut self, result: u8) {
@@ -763,7 +768,10 @@ impl CPU {
         self.run_with_callback(|_| {});
     }
 
-    pub fn run_with_callback<F>(&mut self, mut callback: F) where F: FnMut(&mut CPU) {
+    pub fn run_with_callback<F>(&mut self, mut callback: F)
+    where
+        F: FnMut(&mut CPU),
+    {
         loop {
             callback(self);
             let code = self.mem_read(self.program_counter);
@@ -958,8 +966,13 @@ impl CPU {
 
                 0x6B => self.arr(&op_code_data.addressing_mode),
 
-                0x02 | 0x12 | 0x22 | 0x32 | 0x42 | 0x52 | 0x62 | 0x72 | 0x92 | 0xB2 | 0xD2 | 0xF2 => {
+                0x02 | 0x12 | 0x22 | 0x32 | 0x42 | 0x52 | 0x62 | 0x72 | 0x92 | 0xB2 | 0xD2
+                | 0xF2 => {
                     self.kil();
+                }
+
+                0xC7 | 0xD7 | 0xCF | 0xDF | 0xDB | 0xC3 | 0xD3 => {
+                    self.dcp(&op_code_data.addressing_mode);
                 }
 
                 _ => todo!(),

@@ -255,6 +255,14 @@ impl OPCodes{
 
             OpCode::new(0x6b,"ARR",2,2,AddressingMode::Immediate),
 
+            OpCode::new(0xC7,"DCP",2,5,AddressingMode::ZeroPage),
+            OpCode::new(0xD7,"DCP",2,6,AddressingMode::ZeroPage_X),
+            OpCode::new(0xCF,"DCP",3,6,AddressingMode::Absolute),
+            OpCode::new(0xDF,"DCP",3,7,AddressingMode::Absolute_X),
+            OpCode::new(0xDB,"DCP",3,7,AddressingMode::Absolute_Y),
+            OpCode::new(0xC3,"DCP",2,8,AddressingMode::Indirect_X),
+            OpCode::new(0xD3,"DCP",2,8,AddressingMode::Indirect_Y),
+
             OpCode::new(0x1A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0x3A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0x5A,"NOP",1,2,AddressingMode::NoneAddressing),
