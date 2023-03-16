@@ -55,7 +55,7 @@ impl CPU {
             register_y: 0,
             op_codes: OPCodes::new(),
             stack_pointer: CPU::STACK_RESET,
-            bus: bus,
+            bus,
         }
     }
 
@@ -644,6 +644,15 @@ impl CPU {
         self.set_register_a(value);
     }
 
+    fn ahx(&mut self, mode: &AddressingMode, command_byte_size: u8) {
+        let offset_to_high_byte = command_byte_size - 2;
+        let high_byte = self.mem_read(self.program_counter + offset_to_high_byte as u16);
+
+        let address = self.get_operand_address(mode);
+        let result = self.register_a & self.register_x & (high_byte.wrapping_add(1));
+        self.mem_write(address, result);
+    }
+
     fn alr(&mut self, mode: &AddressingMode) {
         self.and(mode);
         self.lsr_accumulator();
@@ -964,6 +973,8 @@ impl CPU {
                 0x9A => self.txs(),
 
                 0x98 => self.tya(),
+
+                0x9F | 0x93 => self.ahx(&op_code_data.addressing_mode, op_code_data.bytes),
 
                 0x4b => self.alr(&op_code_data.addressing_mode),
 
