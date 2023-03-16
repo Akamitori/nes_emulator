@@ -644,6 +644,11 @@ impl CPU {
         self.set_register_a(value);
     }
 
+    fn alr(&mut self, mode: &AddressingMode) {
+        self.and(mode);
+        self.lsr_accumulator();
+    }
+
     fn anc(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let value = self.mem_read(addr);
@@ -769,8 +774,8 @@ impl CPU {
     }
 
     pub fn run_with_callback<F>(&mut self, mut callback: F)
-    where
-        F: FnMut(&mut CPU),
+        where
+            F: FnMut(&mut CPU),
     {
         loop {
             callback(self);
@@ -959,6 +964,8 @@ impl CPU {
                 0x9A => self.txs(),
 
                 0x98 => self.tya(),
+
+                0x4b => self.alr(&op_code_data.addressing_mode),
 
                 0x0b | 0x2b => self.anc(&op_code_data.addressing_mode),
 

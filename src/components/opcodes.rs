@@ -244,9 +244,11 @@ impl OPCodes{
         ];
 
         let illegal_op_code_table : Vec<OpCode> =vec![
+            OpCode::new(0x4b,"ALR",2,2,AddressingMode::Immediate),
+            
             OpCode::new(0x0b,"ANC",2,2,AddressingMode::Immediate),
             OpCode::new(0x2b,"ANC",2,2,AddressingMode::Immediate),
-
+            
             
             OpCode::new(0x87,"SAX",2,3,AddressingMode::ZeroPage),
             OpCode::new(0x97,"SAX",2,4,AddressingMode::ZeroPage_Y),
