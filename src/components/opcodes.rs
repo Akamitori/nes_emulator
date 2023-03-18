@@ -248,6 +248,7 @@ impl OPCodes{
             OpCode::new(0x9f,"AHX",3,5,AddressingMode::Absolute_Y),
             OpCode::new(0x93,"AHX",2,6,AddressingMode::Indirect_Y),
             
+            
             OpCode::new(0x4b,"ALR",2,2,AddressingMode::Immediate),
             
             OpCode::new(0x0b,"ANC",2,2,AddressingMode::Immediate),
@@ -260,6 +261,8 @@ impl OPCodes{
             OpCode::new(0x8f,"SAX",3,4,AddressingMode::Absolute),
 
             OpCode::new(0x6b,"ARR",2,2,AddressingMode::Immediate),
+
+            OpCode::new(0xCB,"AXS",2,2,AddressingMode::Immediate),
 
             OpCode::new(0xC7,"DCP",2,5,AddressingMode::ZeroPage),
             OpCode::new(0xD7,"DCP",2,6,AddressingMode::ZeroPage_X),
