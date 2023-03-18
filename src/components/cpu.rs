@@ -702,8 +702,8 @@ impl CPU {
         self.set_register_a(data);
     }
 
-    fn axs(&mut self, p0: &AddressingMode) {
-        let addr = self.get_operand_address(p0);
+    fn axs(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
         let value = self.mem_read(addr);
 
         let compare_with = self.register_x & self.register_a;
@@ -717,6 +717,12 @@ impl CPU {
         let result = (compare_with).wrapping_sub(value);
         self.register_x = result;
         self.update_zero_and_negative_flag(result);
+    }
+
+    fn ign(&mut self, mode: &AddressingMode) {
+        let addr=self.get_operand_address(mode);
+        self.mem_read(addr);
+        self.nop();
     }
 
     fn dcp(&mut self, mode: &AddressingMode) {
@@ -1002,6 +1008,10 @@ impl CPU {
                 0x6B => self.arr(&op_code_data.addressing_mode),
 
                 0xCB => self.axs(&op_code_data.addressing_mode),
+
+                0x0C | 0x1C | 0x3C | 0x5C | 0x7C | 0xDC | 0xFC | 0x04 | 0x44 | 0x64 | 0x14 | 0x34 | 0x54 | 0x74 | 0xD4 | 0xF4 => {
+                    self.ign(&op_code_data.addressing_mode);
+                }
 
                 0x02 | 0x12 | 0x22 | 0x32 | 0x42 | 0x52 | 0x62 | 0x72 | 0x92 | 0xB2 | 0xD2
                 | 0xF2 => {
