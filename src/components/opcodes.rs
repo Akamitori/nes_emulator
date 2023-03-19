@@ -295,7 +295,8 @@ impl OPCodes{
             OpCode::new(0x7A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0xDA,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0xFA,"NOP",1,2,AddressingMode::NoneAddressing),
-            
+
+            OpCode::new(0xeb,"SBC",2,2,AddressingMode::Immediate),
 
             OpCode::new(0x80,"SKB",2,2,AddressingMode::Immediate),
             OpCode::new(0x82,"SKB",2,2,AddressingMode::Immediate),

@@ -5,3 +5,4 @@ mod axs_tests;
 mod sax_tests;
 mod arr_tests;
 mod dcp_tests;
+mod sbc_tests;
