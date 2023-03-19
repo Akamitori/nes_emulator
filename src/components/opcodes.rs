@@ -272,6 +272,13 @@ impl OPCodes{
             OpCode::new(0xC3,"DCP",2,8,AddressingMode::Indirect_X),
             OpCode::new(0xD3,"DCP",2,8,AddressingMode::Indirect_Y),
 
+            OpCode::new(0xA7,"LAX",2,3,AddressingMode::ZeroPage),
+            OpCode::new(0xB7,"LAX",2,4,AddressingMode::ZeroPage_Y),
+            OpCode::new(0xAF,"LAX",3,4,AddressingMode::Absolute),
+            OpCode::new(0xBF,"LAX",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
+            OpCode::new(0xA3,"LAX",2,6,AddressingMode::Indirect_X),
+            OpCode::new(0xB3,"LAX",2,5/*+1 if page crossed*/,AddressingMode::Indirect_Y),
+
             OpCode::new(0x0C,"IGN" ,3,4,AddressingMode::Absolute),
             OpCode::new(0x1C,"IGN" ,3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),
             OpCode::new(0x3C,"IGN" ,3,4/*+1 if page crossed*/,AddressingMode::Absolute_X),

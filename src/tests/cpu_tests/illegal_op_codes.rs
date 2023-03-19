@@ -7,3 +7,4 @@ mod arr_tests;
 mod dcp_tests;
 mod sbc_tests;
 mod isc_tests;
+mod lax_tests;

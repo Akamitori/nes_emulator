@@ -719,8 +719,13 @@ impl CPU {
         self.update_zero_and_negative_flag(result);
     }
 
+    fn lax(&mut self, mode: &AddressingMode) {
+        self.lda(mode);
+        self.tax();
+    }
+
     fn ign(&mut self, mode: &AddressingMode) {
-        let addr=self.get_operand_address(mode);
+        let addr = self.get_operand_address(mode);
         self.mem_read(addr);
         self.nop();
     }
@@ -1014,11 +1019,15 @@ impl CPU {
 
                 0xCB => self.axs(&op_code_data.addressing_mode),
 
+                0xA7 | 0xB7 | 0xAF | 0xBF | 0xA3 | 0xB3 => {
+                    self.lax(&op_code_data.addressing_mode);
+                }
+
                 0x0C | 0x1C | 0x3C | 0x5C | 0x7C | 0xDC | 0xFC | 0x04 | 0x44 | 0x64 | 0x14 | 0x34 | 0x54 | 0x74 | 0xD4 | 0xF4 => {
                     self.ign(&op_code_data.addressing_mode);
                 }
 
-                0xE7 | 0xF7 |0xEF | 0xFF| 0xFB  | 0xE3| 0xF3=>{
+                0xE7 | 0xF7 | 0xEF | 0xFF | 0xFB | 0xE3 | 0xF3 => {
                     self.isc(&op_code_data.addressing_mode);
                 }
 
