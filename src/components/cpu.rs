@@ -725,6 +725,11 @@ impl CPU {
         self.nop();
     }
 
+    fn isc(&mut self, mode: &AddressingMode) {
+        self.inc(mode);
+        self.sbc(mode);
+    }
+
     fn dcp(&mut self, mode: &AddressingMode) {
         self.dec(mode);
         self.cmp(mode);
@@ -1011,6 +1016,10 @@ impl CPU {
 
                 0x0C | 0x1C | 0x3C | 0x5C | 0x7C | 0xDC | 0xFC | 0x04 | 0x44 | 0x64 | 0x14 | 0x34 | 0x54 | 0x74 | 0xD4 | 0xF4 => {
                     self.ign(&op_code_data.addressing_mode);
+                }
+
+                0xE7 | 0xF7 |0xEF | 0xFF| 0xFB  | 0xE3| 0xF3=>{
+                    self.isc(&op_code_data.addressing_mode);
                 }
 
                 0x02 | 0x12 | 0x22 | 0x32 | 0x42 | 0x52 | 0x62 | 0x72 | 0x92 | 0xB2 | 0xD2

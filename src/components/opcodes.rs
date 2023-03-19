@@ -288,6 +288,14 @@ impl OPCodes{
             OpCode::new(0x74,"IGN" ,2,4,AddressingMode::ZeroPage_X),
             OpCode::new(0xD4,"IGN" ,2,4,AddressingMode::ZeroPage_X),
             OpCode::new(0xF4,"IGN" ,2,4,AddressingMode::ZeroPage_X),
+            
+            OpCode::new(0xE7,"ISC",2,5,AddressingMode::ZeroPage),
+            OpCode::new(0xF7,"ISC",2,6,AddressingMode::ZeroPage_X),
+            OpCode::new(0xEF,"ISC",3,6,AddressingMode::Absolute),
+            OpCode::new(0xFF,"ISC",3,7,AddressingMode::Absolute_X),
+            OpCode::new(0xFB,"ISC",3,7,AddressingMode::Absolute_Y),
+            OpCode::new(0xE3,"ISC",2,8,AddressingMode::Indirect_X),
+            OpCode::new(0xF3,"ISC",2,8,AddressingMode::Indirect_Y),
 
             OpCode::new(0x1A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0x3A,"NOP",1,2,AddressingMode::NoneAddressing),
