@@ -10,3 +10,4 @@ mod isc_tests;
 mod lax_tests;
 mod las_tests;
 mod tas_tests;
+mod shy_tests;

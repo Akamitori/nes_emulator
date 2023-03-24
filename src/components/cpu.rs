@@ -752,6 +752,15 @@ impl CPU {
 
         self.mem_write(addr, result);
     }
+    
+    fn shy(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+        let high_byte = self.mem_read(self.program_counter + 1 as u16);
+
+        let result = self.register_y & high_byte.wrapping_add(1);
+
+        self.mem_write(addr, result);
+    }
 
     fn isc(&mut self, mode: &AddressingMode) {
         self.inc(mode);
@@ -1056,6 +1065,10 @@ impl CPU {
 
                 0x9B => {
                     self.tas(&op_code_data.addressing_mode);
+                }
+
+                0x9C => {
+                    self.shy(&op_code_data.addressing_mode);
                 }
 
                 0xE7 | 0xF7 | 0xEF | 0xFF | 0xFB | 0xE3 | 0xF3 => {
