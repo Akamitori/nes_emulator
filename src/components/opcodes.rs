@@ -304,6 +304,8 @@ impl OPCodes{
             OpCode::new(0xE3,"ISC",2,8,AddressingMode::Indirect_X),
             OpCode::new(0xF3,"ISC",2,8,AddressingMode::Indirect_Y),
 
+            OpCode::new(0xbb,"LAS",3,4/*+1 if page crossed*/,AddressingMode::Absolute_Y),
+
             OpCode::new(0x1A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0x3A,"NOP",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0x5A,"NOP",1,2,AddressingMode::NoneAddressing),

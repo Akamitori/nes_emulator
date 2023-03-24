@@ -730,6 +730,18 @@ impl CPU {
         self.nop();
     }
 
+    fn las(&mut self, mode: &AddressingMode) {
+        let addr = self.get_operand_address(mode);
+
+        let value = self.mem_read(addr);
+
+        let result = value & self.stack_pointer;
+
+        self.set_register_a(result);
+        self.set_register_x(result);
+        self.stack_pointer = result;
+    }
+
     fn isc(&mut self, mode: &AddressingMode) {
         self.inc(mode);
         self.sbc(mode);
@@ -1025,6 +1037,10 @@ impl CPU {
 
                 0x0C | 0x1C | 0x3C | 0x5C | 0x7C | 0xDC | 0xFC | 0x04 | 0x44 | 0x64 | 0x14 | 0x34 | 0x54 | 0x74 | 0xD4 | 0xF4 => {
                     self.ign(&op_code_data.addressing_mode);
+                }
+
+                0xBB => {
+                    self.las(&op_code_data.addressing_mode);
                 }
 
                 0xE7 | 0xF7 | 0xEF | 0xFF | 0xFB | 0xE3 | 0xF3 => {
