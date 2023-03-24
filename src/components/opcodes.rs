@@ -318,6 +318,7 @@ impl OPCodes{
             OpCode::new(0x9B,"TAS",3,5,AddressingMode::Absolute_Y),
 
             OpCode::new(0x9C,"SHY",3,5,AddressingMode::Absolute_X),
+            OpCode::new(0x9E,"SHX",3,5,AddressingMode::Absolute_Y),
 
             OpCode::new(0x80,"SKB",2,2,AddressingMode::Immediate),
             OpCode::new(0x82,"SKB",2,2,AddressingMode::Immediate),

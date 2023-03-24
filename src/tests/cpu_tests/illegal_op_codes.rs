@@ -11,3 +11,4 @@ mod lax_tests;
 mod las_tests;
 mod tas_tests;
 mod shy_tests;
+mod shx_tests;
