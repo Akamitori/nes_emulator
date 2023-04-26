@@ -338,27 +338,30 @@ impl OPCodes{
             OpCode::new(0xB2,"KIL",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0xD2,"KIL",1,2,AddressingMode::NoneAddressing),
             OpCode::new(0xF2,"KIL",1,2,AddressingMode::NoneAddressing),
-            
+        ];
+        
+        let unsupported_op_code_table=vec![
+            OpCode::new(0xAB,"ATX/LAX immediate",2,2, AddressingMode::Immediate),
+            OpCode::new(0x8B,"XAA/ANE",2,2, AddressingMode::Immediate)
         ];
 
         let mut codes=HashMap::new();
 
-        for c in legal_op_code_table {
+        OPCodes::add_op_codes_to_instruction_set(legal_op_code_table, &mut codes);
+        OPCodes::add_op_codes_to_instruction_set(illegal_op_code_table, &mut codes);
+        OPCodes::add_op_codes_to_instruction_set(unsupported_op_code_table, &mut codes);
+        
+        OPCodes{
+            codes
+        }
+    }
+    
+    fn add_op_codes_to_instruction_set(op_codes:Vec<OpCode>, codes: &mut HashMap<u8,OpCode>){
+        for c in op_codes {
             if codes.contains_key(&c.op_code) {
                 panic!("Duplicate key for legal opcodes {:#02x}",c.op_code);
             }
             codes.insert(c.op_code, c);
-        }
-
-        for c in illegal_op_code_table {
-            if codes.contains_key(&c.op_code) {
-                panic!("Duplicate key for illegal opcodes {:#02x}",c.op_code);
-            }
-            codes.insert(c.op_code, c);
-        }
-        
-        OPCodes{
-            codes
         }
     }
 

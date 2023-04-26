@@ -752,7 +752,7 @@ impl CPU {
 
         self.mem_write(addr, result);
     }
-    
+
     fn shy(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let high_byte = self.mem_read(self.program_counter + 1 as u16);
@@ -781,9 +781,8 @@ impl CPU {
         self.cmp(mode);
     }
 
-    fn kil(&self) {
-        println!("KIL was called. System halted");
-        loop {}
+    fn unsupported_command(&self, op_code: &str) -> () {
+        panic!("{} was called which is unsupported.", op_code);
     }
 
     fn update_zero_and_negative_flag(&mut self, result: u8) {
@@ -1089,8 +1088,8 @@ impl CPU {
                 }
 
                 0x02 | 0x12 | 0x22 | 0x32 | 0x42 | 0x52 | 0x62 | 0x72 | 0x92 | 0xB2 | 0xD2
-                | 0xF2 => {
-                    self.kil();
+                | 0xF2 | 0xAB | 0x8B => {
+                    self.unsupported_command(&op_code_data.command_name);
                 }
 
                 0xC7 | 0xD7 | 0xCF | 0xDF | 0xDB | 0xC3 | 0xD3 => {
