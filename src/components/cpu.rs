@@ -747,6 +747,11 @@ impl CPU {
         self.and(mode);
     }
 
+    fn sre(&mut self, mode: &AddressingMode) {
+        self.lsr(mode);
+        self.eor(mode);
+    }
+
     fn tas(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let high_byte = self.mem_read(self.program_counter + 1 as u16);
@@ -1078,6 +1083,10 @@ impl CPU {
 
                 0x27 | 0x37 | 0x2F | 0x3F | 0x3B | 0x23 | 0x33 => {
                     self.rla(&op_code_data.addressing_mode);
+                }
+
+                0x47 | 0x57 | 0x4F | 0x5F | 0x5B | 0x43 | 0x53 => {
+                    self.sre(&op_code_data.addressing_mode);
                 }
 
                 0x9B => {
