@@ -747,6 +747,11 @@ impl CPU {
         self.and(mode);
     }
 
+    fn rra(&mut self, mode: &AddressingMode) {
+        self.ror(mode);
+        self.adc(mode);
+    }
+
     fn sre(&mut self, mode: &AddressingMode) {
         self.lsr(mode);
         self.eor(mode);
@@ -1088,6 +1093,10 @@ impl CPU {
 
                 0x27 | 0x37 | 0x2F | 0x3F | 0x3B | 0x23 | 0x33 => {
                     self.rla(&op_code_data.addressing_mode);
+                }
+
+                0x67 | 0x77 | 0x6F | 0x7F | 0x7B | 0x63 | 0x73 => {
+                    self.rra(&op_code_data.addressing_mode);
                 }
 
                 0x47 | 0x57 | 0x4F | 0x5F | 0x5B | 0x43 | 0x53 => {

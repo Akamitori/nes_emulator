@@ -321,6 +321,14 @@ impl OPCodes{
             OpCode::new(0x23,"RLA",2,8,AddressingMode::Indirect_X),
             OpCode::new(0x33,"RLA",2,8,AddressingMode::Indirect_Y),
 
+            OpCode::new(0x67,"RRA",2,5,AddressingMode::ZeroPage),
+            OpCode::new(0x77,"RRA",2,6,AddressingMode::ZeroPage_X),
+            OpCode::new(0x6F,"RRA",3,6,AddressingMode::Absolute),
+            OpCode::new(0x7F,"RRA",3,7,AddressingMode::Absolute_X),
+            OpCode::new(0x7B,"RRA",3,7,AddressingMode::Absolute_Y),
+            OpCode::new(0x63,"RRA",2,8,AddressingMode::Indirect_X),
+            OpCode::new(0x73,"RRA",2,8,AddressingMode::Indirect_Y),
+
             OpCode::new(0x47,"SRE",2,5,AddressingMode::ZeroPage),
             OpCode::new(0x57,"SRE",2,6,AddressingMode::ZeroPage_X),
             OpCode::new(0x4F,"SRE",3,6,AddressingMode::Absolute),
