@@ -752,6 +752,11 @@ impl CPU {
         self.eor(mode);
     }
 
+    fn slo(&mut self, mode: &AddressingMode) {
+        self.asl(mode);
+        self.ora(mode);
+    }
+
     fn tas(&mut self, mode: &AddressingMode) {
         let addr = self.get_operand_address(mode);
         let high_byte = self.mem_read(self.program_counter + 1 as u16);
@@ -1087,6 +1092,10 @@ impl CPU {
 
                 0x47 | 0x57 | 0x4F | 0x5F | 0x5B | 0x43 | 0x53 => {
                     self.sre(&op_code_data.addressing_mode);
+                }
+
+                0x07 | 0x17 | 0x0F | 0x1F | 0x1B | 0x03 | 0x13 => {
+                    self.slo(&op_code_data.addressing_mode);
                 }
 
                 0x9B => {
