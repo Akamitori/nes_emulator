@@ -47,6 +47,8 @@ impl Mem for Bus {
                 panic!("Attempt to read from write-only PPU address {:x}", addr);
             }
             
+            //0x2002 => self.ppu.read_status(),
+            
             0x2007 => self.ppu.read_data(),
             
             PPU_REGISTERS..=PPU_REGISTERS_MIRRORS_END => {
@@ -73,10 +75,16 @@ impl Mem for Bus {
             0x2000 => {
                 self.ppu.write_to_ctrl(data);
             }
+            
+            0x2005 =>{
+                self.ppu.write_to_scroll_register(data);
+            }
 
             0x2006 => {
                 self.ppu.write_to_ppu_addr(data);
             }
+            
+            
             0x2007 => {
                 self.ppu.write_to_data(data);
             }

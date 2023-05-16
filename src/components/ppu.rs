@@ -1,8 +1,12 @@
 ﻿use crate::components::cartridge::Mirroring;
-use crate::components::ppu::registers::AddrRegister::AddrRegister;
-use crate::components::ppu::registers::ControlRegister::ControlRegister;
 
 pub mod registers;
+use registers::AddrRegister::AddrRegister;
+use registers::ControlRegister::ControlRegister;
+use registers::ScrollRegister::ScrollRegister;
+
+
+
 
 pub struct NesPPU {
     pub chr_rom: Vec<u8>,
@@ -12,6 +16,7 @@ pub struct NesPPU {
     pub mirroring: Mirroring,
     addr: AddrRegister,
     pub ctrl: ControlRegister,
+    scrl: ScrollRegister,
     internal_data_buf: u8,
 }
 
@@ -25,6 +30,7 @@ impl NesPPU {
             palette_table: [0; 32],
             addr: AddrRegister::new(),
             ctrl: ControlRegister::new(),
+            scrl: ScrollRegister::new(),
             internal_data_buf: 0,
         }
     }
@@ -35,6 +41,10 @@ impl NesPPU {
 
     pub fn write_to_ctrl(&mut self, value: u8) {
         self.ctrl.update(value);
+    }
+
+    pub fn write_to_scroll_register(&mut self, value:u8){
+        self.scrl.write(value);
     }
 
     fn increment_vram_addr(&mut self) {
