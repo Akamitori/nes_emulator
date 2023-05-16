@@ -28,6 +28,6 @@ fn test_0x48_pha() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, memory_of_first_stack_pos, value_a);
-    cpu_test_helper::assert_address_contains_value(&cpu, memory_of_first_stack_pos - 1, value_b);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, memory_of_first_stack_pos, value_a);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, memory_of_first_stack_pos - 1, value_b);
 }

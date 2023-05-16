@@ -29,5 +29,5 @@ fn test_0x08_php() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, memory_of_first_stack_pos, result);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, memory_of_first_stack_pos, result);
 }

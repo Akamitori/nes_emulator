@@ -12,7 +12,7 @@ const BREAK_COMMAND_FLAG_2: u8 = 0b0010_0000;
 const OVERFLOW_FLAG: u8 = 0b0100_0000;
 const NEGATIVE_FLAG: u8 = 0b1000_0000;
 
-pub fn assert_address_contains_value(cpu: &CPU, address: u16, value: u8) {
+pub fn assert_address_contains_value(cpu: &mut CPU, address: u16, value: u8) {
     assert_eq!(cpu.mem_read(address), value);
 }
 

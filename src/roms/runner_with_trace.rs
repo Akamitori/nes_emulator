@@ -19,17 +19,17 @@ pub fn run() {
 
 fn mytrace(cpu: &mut CPU) ->String{
     let pc = cpu.program_counter;
-    let pc_hex = format!("{:04X}", pc);
+    let pc_hex = format!("{:04X}{}", pc, generate_padding(2));
 
     let code = cpu.mem_read(cpu.program_counter);
     let op_code_data = cpu.op_codes.get(code);
     let mut operands = get_machine_code(cpu, pc, op_code_data.bytes as u16);
 
-    let command_hex = get_command_hex(&operands);
+    let command_hex =get_command_hex(&operands);
     let command_assembly = get_command_assembly(cpu, op_code_data, &mut operands);
     let register_values = get_register_status(cpu);
 
-    return format!("{}  {}  {}{}{} \t", pc_hex, command_hex, command_assembly, generate_padding(18), register_values);
+    return format!("{}{}{}{}", pc_hex, command_hex, command_assembly, register_values);
 }
 
 fn get_register_status(p0: &mut CPU) -> String {
@@ -38,7 +38,7 @@ fn get_register_status(p0: &mut CPU) -> String {
 
 fn get_command_hex(machine_code: &Vec<u8>) -> String {
     let mut command_hex = String::from("");
-    let expected_length = 8 as i32;
+    let expected_length = 10 as i32;
     for (i, operand) in machine_code.iter().enumerate() {
         let formatted_operand = format!("{:02X}", operand);
         command_hex.push_str(&formatted_operand);
@@ -107,7 +107,7 @@ fn get_command_assembly(cpu: &mut CPU, op_code: OpCode, machine_code: &mut Vec<u
         }
 
         (AddressingMode::Indirect_Y, _) => {
-            format!(" (${:02X}),Y", machine_code_to_work_on[0])
+            format!(" (${:02X}),Y = {:04X} @ {:04X} = {:02X}", machine_code_to_work_on[0], mem_addr, mem_addr,stored_value)
         }
         (AddressingMode::NoneAddressing, 2..=3) => {
             let address_to_operate = match op_code.command_name {
@@ -133,7 +133,7 @@ fn get_command_assembly(cpu: &mut CPU, op_code: OpCode, machine_code: &mut Vec<u
 
     command_string.push_str(&formatted_operands);
 
-    let expected_length = 14 as i32;
+    let expected_length = 32 as i32;
     let padding = expected_length - command_string.len() as i32;
 
     if padding > 0 {

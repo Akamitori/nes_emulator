@@ -114,7 +114,7 @@ fn test_0x26_rol_zero_page_base() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value);
     cpu_test_helper::assert_inactive_zero_negative_carry_flag(&cpu);
 }
 
@@ -129,7 +129,7 @@ fn test_0x26_rol_zero_page_carry_flag_zero_flag() {
     cpu.mem_write(mem_to_shift, value);
     cpu.load_and_run(vec![0x26, mem_to_shift as u8, 0x00]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_zero_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
     cpu_test_helper::assert_inactive_negative_flag(&cpu);
@@ -146,7 +146,7 @@ fn test_0x26_rol_zero_page_carry_flag_negative_flag() {
     cpu.mem_write(mem_to_shift, value);
     cpu.load_and_run(vec![0x26, mem_to_shift as u8, 0x00]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_inactive_zero_flag(&cpu);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
@@ -163,7 +163,7 @@ fn test_0x26_rol_zero_page_negative_flag() {
     cpu.mem_write(mem_to_shift, value);
     cpu.load_and_run(vec![0x26, mem_to_shift as u8, 0x00]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_inactive_zero_carry_flags(&cpu);
 }
@@ -200,7 +200,7 @@ fn test_0x36_rol_zero_page_x_base() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value);
     cpu_test_helper::assert_inactive_zero_negative_carry_flag(&cpu);
 }
 
@@ -220,7 +220,7 @@ fn test_0x36_rol_zero_page_x_carry_flag_zero_flag() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_zero_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
     cpu_test_helper::assert_inactive_negative_flag(&cpu);
@@ -242,7 +242,7 @@ fn test_0x36_rol_zero_page_x_carry_flag_negative_flag() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_inactive_zero_flag(&cpu);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
@@ -264,7 +264,7 @@ fn test_0x36_rol_zero_page_x_negative_flag() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_inactive_zero_carry_flags(&cpu);
 }
@@ -311,7 +311,7 @@ fn test_0x2e_rol_absolute_base() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value);
     cpu_test_helper::assert_inactive_zero_negative_carry_flag(&cpu);
 }
 
@@ -328,7 +328,7 @@ fn test_0x2e_rol_absolute_carry_flag_zero_flag() {
     let mem_to_load_bytes = mem_to_shift.to_le_bytes();
     cpu.load_and_run(vec![0x2e, mem_to_load_bytes[0], mem_to_load_bytes[1], 0x00]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_zero_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
     cpu_test_helper::assert_inactive_negative_flag(&cpu);
@@ -347,7 +347,7 @@ fn test_0x2e_rol_absolute_carry_flag_negative_flag() {
     let mem_to_load_bytes = mem_to_shift.to_le_bytes();
     cpu.load_and_run(vec![0x2e, mem_to_load_bytes[0], mem_to_load_bytes[1], 0x00]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_inactive_zero_flag(&cpu);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
@@ -366,7 +366,7 @@ fn test_0x2e_rol_absolute_negative_flag() {
     let mem_to_load_bytes = mem_to_shift.to_le_bytes();
     cpu.load_and_run(vec![0x2e, mem_to_load_bytes[0], mem_to_load_bytes[1], 0x00]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_inactive_zero_carry_flags(&cpu);
 }
@@ -413,7 +413,7 @@ fn test_0x3e_rol_absolute_x_base() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value);
     cpu_test_helper::assert_inactive_zero_negative_carry_flag(&cpu);
 }
 
@@ -435,7 +435,7 @@ fn test_0x3e_rol_absolute_x_carry_flag_zero_flag() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_zero_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
     cpu_test_helper::assert_inactive_negative_flag(&cpu);
@@ -459,7 +459,7 @@ fn test_0x3e_rol_absolute_x_carry_flag_negative_flag() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_inactive_zero_flag(&cpu);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_active_carry_flag(&cpu);
@@ -483,7 +483,7 @@ fn test_0x3e_rol_absolute_x_negative_flag() {
         0x00,
     ]);
 
-    cpu_test_helper::assert_address_contains_value(&cpu, mem_to_shift, value << 1);
+    cpu_test_helper::assert_address_contains_value(&mut cpu, mem_to_shift, value << 1);
     cpu_test_helper::assert_active_negative_flag(&cpu);
     cpu_test_helper::assert_inactive_zero_carry_flags(&cpu);
 }
