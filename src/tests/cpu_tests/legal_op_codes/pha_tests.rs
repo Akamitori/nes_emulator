@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x48_pha() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let memory_of_first_stack_pos = 0x01FD;
@@ -15,8 +15,8 @@ fn test_0x48_pha() {
     let value_a = 0x30;
     let value_b = 0xF2;
 
-    let load_value_a_to_a = cpu_test_helper::set_register_a_to_value(value_a);
-    let load_value_b_to_a = cpu_test_helper::set_register_a_to_value(value_b);
+    let load_value_a_to_a = cpu_test_helper::set_accumulator_to_value(value_a);
+    let load_value_b_to_a = cpu_test_helper::set_accumulator_to_value(value_b);
 
     cpu.load_and_run(vec![
         load_value_a_to_a[0],

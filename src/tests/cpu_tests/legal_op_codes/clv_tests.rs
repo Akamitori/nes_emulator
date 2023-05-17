@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xb8_clv() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
@@ -15,7 +15,7 @@ fn test_0xb8_clv() {
     let push_accumulator_to_stack = 0x48;
     let pull_stack_into_status = 0x28;
 
-    let load_value_a_to_a = cpu_test_helper::set_register_a_to_value(value_a);
+    let load_value_a_to_a = cpu_test_helper::set_accumulator_to_value(value_a);
 
     cpu.load_and_run(vec![
         load_value_a_to_a[0],

@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x9f_ahx_absolute_y() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos: u16 = 0x1000;
@@ -17,7 +17,7 @@ fn test_0x9f_ahx_absolute_y() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value);
 
-    let prep_1 = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep_1 = cpu_test_helper::set_accumulator_to_value(accum_value);
     let prep_2 = cpu_test_helper::set_register_x_to_value(x_value);
 
     cpu.load_and_run(vec![
@@ -37,7 +37,7 @@ fn test_0x9f_ahx_absolute_y() {
 
 #[test]
 fn test_0x93_ahx_indirect_y() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -48,7 +48,7 @@ fn test_0x93_ahx_indirect_y() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect + 1, mem_value);
 
-    let prep_1 = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep_1 = cpu_test_helper::set_accumulator_to_value(accum_value);
     let prep_2 = cpu_test_helper::set_register_x_to_value(x_value);
 
     cpu.load_and_run(vec![

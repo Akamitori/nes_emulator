@@ -7,14 +7,14 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xcb_axs_immediate_carry_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 0x80;
     let x_value = 0x81;
     let immediate_value = 0x5;
 
-    let prep_1 = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep_1 = cpu_test_helper::set_accumulator_to_value(accum_value);
     let prep_2 = cpu_test_helper::set_register_x_to_value(x_value);
 
     cpu.load_and_run(vec![
@@ -36,14 +36,14 @@ fn test_0xcb_axs_immediate_carry_flag() {
 
 #[test]
 fn test_0xcb_axs_immediate_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 0x80;
     let x_value = 0x81;
     let immediate_value = accum_value & x_value;
 
-    let prep_1 = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep_1 = cpu_test_helper::set_accumulator_to_value(accum_value);
     let prep_2 = cpu_test_helper::set_register_x_to_value(x_value);
 
     cpu.load_and_run(vec![
@@ -65,14 +65,14 @@ fn test_0xcb_axs_immediate_zero_flag() {
 
 #[test]
 fn test_0xcb_axs_immediate_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 0x80;
     let x_value = 0x81;
     let immediate_value = (accum_value & x_value) +10;
 
-    let prep_1 = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep_1 = cpu_test_helper::set_accumulator_to_value(accum_value);
     let prep_2 = cpu_test_helper::set_register_x_to_value(x_value);
 
     cpu.load_and_run(vec![

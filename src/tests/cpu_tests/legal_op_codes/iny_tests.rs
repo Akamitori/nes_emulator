@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xc8_iny_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.register_y = 0xFE;
@@ -25,7 +25,7 @@ fn test_0xc8_iny_negative_flag() {
 
 #[test]
 fn test_0xc8_iny_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let set_y_to_max = cpu_test_helper::set_register_y_to_value(0xff);
@@ -42,7 +42,7 @@ fn test_0xc8_iny_zero_flag() {
 
 #[test]
 fn test_0xc8_iny_overflow() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let set_y_to_max = cpu_test_helper::set_register_y_to_value(0xff);

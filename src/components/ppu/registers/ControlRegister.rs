@@ -40,9 +40,9 @@ impl ControlRegister {
 
     pub fn vram_addr_increment(&self) -> u8 {
         if self.status & ControlRegister::VRAM_ADD_INCREMENT != 0 {
-            1
-        } else {
             32
+        } else {
+            1
         }
     }
 

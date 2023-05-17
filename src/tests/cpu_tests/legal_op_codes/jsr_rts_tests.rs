@@ -11,8 +11,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 #[test]
 fn test_0x20_jsr_0x60_rts_subroutines() {
     let pc_counter_start = 0x0600;
-    let bus = Bus::new(test_rom(pc_counter_start));
-
+    let bus = Bus::new(test_rom(pc_counter_start,None));
     let mut cpu = CPU::new(bus);
     let target_value = 5;
 

@@ -7,12 +7,12 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x24_bit_from_memory_zero_page() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x55);
 
-    let prep = cpu_test_helper::set_register_a_to_value(0x55);
+    let prep = cpu_test_helper::set_accumulator_to_value(0x55);
     cpu.load_and_run(vec![prep[0], prep[1], 0x24, 0x10, 0x00]);
 
     cpu_test_helper::assert_inactive_zero_flag(&cpu);
@@ -20,7 +20,7 @@ fn test_0x24_bit_from_memory_zero_page() {
 
 #[test]
 fn test_0x24_bit_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0b1000_0000);
@@ -32,12 +32,12 @@ fn test_0x24_bit_negative_flag() {
 
 #[test]
 fn test_0x24_bit_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x80);
 
-    let prep = cpu_test_helper::set_register_a_to_value(0);
+    let prep = cpu_test_helper::set_accumulator_to_value(0);
 
     cpu.load_and_run(vec![prep[0], prep[1], 0x24, 0x10, 0x00]);
 
@@ -46,7 +46,7 @@ fn test_0x24_bit_zero_flag() {
 
 #[test]
 fn test_0x24_bit_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0b0100_0000);
@@ -58,14 +58,14 @@ fn test_0x24_bit_overflow_flag() {
 
 #[test]
 fn test_0x2c_bit_from_memory_absolute() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u16 = 0x1000;
     let mem_to_access_bytes = mem_to_access.to_le_bytes();
     cpu.mem_write(0x1000, 0x55);
 
-    let prep = cpu_test_helper::set_register_a_to_value(0x55);
+    let prep = cpu_test_helper::set_accumulator_to_value(0x55);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -80,7 +80,7 @@ fn test_0x2c_bit_from_memory_absolute() {
 
 #[test]
 fn test_0x2c_bit_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u16 = 0x1000;
@@ -99,7 +99,7 @@ fn test_0x2c_bit_zero_flag() {
 
 #[test]
 fn test_0x2c_bit_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u16 = 0x1000;
@@ -118,7 +118,7 @@ fn test_0x2c_bit_negative_flag() {
 
 #[test]
 fn test_0x2c_bit_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u16 = 0x1000;

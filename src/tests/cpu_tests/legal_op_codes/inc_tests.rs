@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xe6_inc_zero_page() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0x05;
@@ -22,7 +22,7 @@ fn test_0xe6_inc_zero_page() {
 
 #[test]
 fn test_0xe6_inc_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xFF;
@@ -37,7 +37,7 @@ fn test_0xe6_inc_zero_flag() {
 
 #[test]
 fn test_0xe6_inc_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xF1;
@@ -52,7 +52,7 @@ fn test_0xe6_inc_negative_flag() {
 
 #[test]
 fn test_0xf6_inc_zero_page_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0x05;
@@ -72,7 +72,7 @@ fn test_0xf6_inc_zero_page_x() {
 
 #[test]
 fn test_0xf6_inc_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xFF;
@@ -92,7 +92,7 @@ fn test_0xf6_inc_zero_flag() {
 
 #[test]
 fn test_0xf6_inc_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xF1;
@@ -112,7 +112,7 @@ fn test_0xf6_inc_negative_flag() {
 
 #[test]
 fn test_0xee_inc_absolute() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0x2;
@@ -128,7 +128,7 @@ fn test_0xee_inc_absolute() {
 
 #[test]
 fn test_0xee_inc_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xFF;
@@ -144,7 +144,7 @@ fn test_0xee_inc_zero_flag() {
 
 #[test]
 fn test_0xee_inc_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xF1;
@@ -160,7 +160,7 @@ fn test_0xee_inc_negative_flag() {
 
 #[test]
 fn test_0xfe_inc_absolute_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0x2;
@@ -182,7 +182,7 @@ fn test_0xfe_inc_absolute_x() {
 
 #[test]
 fn test_0xfe_inc_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xFF;
@@ -204,7 +204,7 @@ fn test_0xfe_inc_zero_flag() {
 
 #[test]
 fn test_0xfe_inc_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let value_to_write = 0xF1;

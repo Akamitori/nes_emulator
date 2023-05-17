@@ -7,11 +7,11 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x0a_asl_accumulator() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
-    let prep = cpu_test_helper::set_register_a_to_value(0x1);
+    let prep = cpu_test_helper::set_accumulator_to_value(0x1);
     cpu.load_and_run(vec![prep[0], prep[1], 0x0a, 0x00]);
 
     assert_eq!(cpu.register_a, 0x1 << 1);
@@ -20,11 +20,11 @@ fn test_0x0a_asl_accumulator() {
 
 #[test]
 fn test_0x0a_asl_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
-    let prep = cpu_test_helper::set_register_a_to_value(0x80);
+    let prep = cpu_test_helper::set_accumulator_to_value(0x80);
     cpu.load_and_run(vec![prep[0], prep[1], 0x0a, 0x00]);
 
     cpu_test_helper::assert_active_zero_flag(&cpu);
@@ -32,11 +32,11 @@ fn test_0x0a_asl_zero_flag() {
 
 #[test]
 fn test_0x0a_asl_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
-    let prep = cpu_test_helper::set_register_a_to_value(0x7F);
+    let prep = cpu_test_helper::set_accumulator_to_value(0x7F);
     cpu.load_and_run(vec![prep[0], prep[1], 0x0a, 0x00]);
 
     cpu_test_helper::assert_active_negative_flag(&cpu);
@@ -44,7 +44,7 @@ fn test_0x0a_asl_negative_flag() {
 
 #[test]
 fn test_0x06_asl_from_memory_zero_page() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x55);
@@ -56,7 +56,7 @@ fn test_0x06_asl_from_memory_zero_page() {
 
 #[test]
 fn test_0x06_asl_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x7F);
@@ -68,7 +68,7 @@ fn test_0x06_asl_negative_flag() {
 
 #[test]
 fn test_0x06_asl_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x80);
@@ -80,7 +80,7 @@ fn test_0x06_asl_zero_flag() {
 
 #[test]
 fn test_0x16_asl_from_memory_zero_page_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access = 0x10;
@@ -98,7 +98,7 @@ fn test_0x16_asl_from_memory_zero_page_x() {
 
 #[test]
 fn test_0x16_asl_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u8 = 0x10;
@@ -116,7 +116,7 @@ fn test_0x16_asl_zero_flag() {
 
 #[test]
 fn test_0x16_asl_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u8 = 0x10;
@@ -134,7 +134,7 @@ fn test_0x16_asl_negative_flag() {
 
 #[test]
 fn test_0x0e_asl_from_memory_absolute() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
     let mut cpu = CPU::new(bus);
 
     let mem_to_access: u16 = 0x1000;
@@ -157,7 +157,7 @@ fn test_0x0e_asl_from_memory_absolute() {
 
 #[test]
 fn test_0x0e_asl_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u16 = 0x1000;
@@ -176,7 +176,7 @@ fn test_0x0e_asl_zero_flag() {
 
 #[test]
 fn test_0x0e_asl_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_access: u16 = 0x1000;
@@ -195,7 +195,7 @@ fn test_0x0e_asl_negative_flag() {
 
 #[test]
 fn test_0x1e_asl_from_memory_absolute_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_write = 0x1000;
@@ -215,7 +215,7 @@ fn test_0x1e_asl_from_memory_absolute_x() {
 
 #[test]
 fn test_0x1e_asl_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_write = 0x1000;
@@ -235,7 +235,7 @@ fn test_0x1e_asl_zero_flag() {
 
 #[test]
 fn test_0x1e_asl_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_write = 0x1000;

@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x08_php() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let memory_of_first_stack_pos = 0x01FD;
@@ -17,7 +17,7 @@ fn test_0x08_php() {
     let pull_stack_into_status = 0x28;
 
     let value_a = 0b1100_1111;
-    let load_value_a_to_a = cpu_test_helper::set_register_a_to_value(value_a);
+    let load_value_a_to_a = cpu_test_helper::set_accumulator_to_value(value_a);
     let result = 0xFF;
 
     cpu.load_and_run(vec![

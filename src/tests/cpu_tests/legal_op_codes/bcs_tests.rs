@@ -7,14 +7,14 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xb0_bcs_negative_offset() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
     let value_to_add = 1;
     let offset = (4 as u8).wrapping_neg();
 
-    let set_a_to_value = cpu_test_helper::set_register_a_to_value(accum_value);
+    let set_a_to_value = cpu_test_helper::set_accumulator_to_value(accum_value);
     let add_value_from_address_to_a =
         cpu_test_helper::add_with_carry_to_register_a(value_to_add);
 
@@ -34,14 +34,14 @@ fn test_0xb0_bcs_negative_offset() {
 
 #[test]
 fn test_0xb0_bcs_positive_offset() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 20;
     let offset = 2;
 
-    let set_a_to_expected_value = cpu_test_helper::set_register_a_to_value(accum_value);
-    let set_a_to_a_wrong_value = cpu_test_helper::set_register_a_to_value(accum_value * 2);
+    let set_a_to_expected_value = cpu_test_helper::set_accumulator_to_value(accum_value);
+    let set_a_to_a_wrong_value = cpu_test_helper::set_accumulator_to_value(accum_value * 2);
 
     let set_carry = 0x38;
     cpu.load_and_run(vec![

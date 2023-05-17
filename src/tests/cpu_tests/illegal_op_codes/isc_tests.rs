@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xe7_sbc_zero_page() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -16,7 +16,7 @@ fn test_0xe7_sbc_zero_page() {
 
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -36,7 +36,7 @@ fn test_0xe7_sbc_zero_page() {
 
 #[test]
 fn test_0xe7_sbc_zero_page_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -45,7 +45,7 @@ fn test_0xe7_sbc_zero_page_zero_flag() {
 
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0xe7, mem_pos as u8, 0x00]);
 
     assert_eq!(cpu.register_a, 0);
@@ -58,7 +58,7 @@ fn test_0xe7_sbc_zero_page_zero_flag() {
 
 #[test]
 fn test_0xe7_sbc_zero_page_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -67,7 +67,7 @@ fn test_0xe7_sbc_zero_page_negative_flag() {
 
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0xe7, mem_pos as u8, 0x00]);
 
     assert_eq!(
@@ -83,7 +83,7 @@ fn test_0xe7_sbc_zero_page_negative_flag() {
 
 #[test]
 fn test_0xe7_sbc_zero_page_without_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -92,7 +92,7 @@ fn test_0xe7_sbc_zero_page_without_carry_flag_overflow_flag() {
 
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0xe7, mem_pos as u8, 0x00]);
 
     assert_eq!(
@@ -108,7 +108,7 @@ fn test_0xe7_sbc_zero_page_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe7_sbc_zero_page_with_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -117,7 +117,7 @@ fn test_0xe7_sbc_zero_page_with_carry_flag_overflow_flag() {
 
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -137,7 +137,7 @@ fn test_0xe7_sbc_zero_page_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf7_sbc_zero_page_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -146,7 +146,7 @@ fn test_0xf7_sbc_zero_page_x() {
 
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -168,7 +168,7 @@ fn test_0xf7_sbc_zero_page_x() {
 
 #[test]
 fn test_0xf7_sbc_zero_page_x_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -176,7 +176,7 @@ fn test_0xf7_sbc_zero_page_x_zero_flag() {
     let mem_value = accum_value - 1;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -197,7 +197,7 @@ fn test_0xf7_sbc_zero_page_x_zero_flag() {
 
 #[test]
 fn test_0xf7_sbc_zero_page_x_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -205,7 +205,7 @@ fn test_0xf7_sbc_zero_page_x_negative_flag() {
     let mem_value = 20;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -229,7 +229,7 @@ fn test_0xf7_sbc_zero_page_x_negative_flag() {
 
 #[test]
 fn test_0xf7_sbc_zero_page_x_without_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -237,7 +237,7 @@ fn test_0xf7_sbc_zero_page_x_without_carry_flag_overflow_flag() {
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -261,7 +261,7 @@ fn test_0xf7_sbc_zero_page_x_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf7_sbc_zero_page_x_with_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x10;
@@ -269,7 +269,7 @@ fn test_0xf7_sbc_zero_page_x_with_carry_flag_overflow_flag() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
 
     cpu.load_and_run(vec![
         prep[0],
@@ -291,7 +291,7 @@ fn test_0xf7_sbc_zero_page_x_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xef_sbc_absolute() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -299,7 +299,7 @@ fn test_0xef_sbc_absolute() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = mem_pos.to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -321,7 +321,7 @@ fn test_0xef_sbc_absolute() {
 
 #[test]
 fn test_0xef_sbc_absolute_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -329,7 +329,7 @@ fn test_0xef_sbc_absolute_zero_flag() {
     let mem_value = accum_value - 1;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = mem_pos.to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -350,7 +350,7 @@ fn test_0xef_sbc_absolute_zero_flag() {
 
 #[test]
 fn test_0xef_sbc_absolute_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -358,7 +358,7 @@ fn test_0xef_sbc_absolute_negative_flag() {
     let mem_value = 20;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = mem_pos.to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -382,7 +382,7 @@ fn test_0xef_sbc_absolute_negative_flag() {
 
 #[test]
 fn test_0xef_sbc_absolute_without_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -390,7 +390,7 @@ fn test_0xef_sbc_absolute_without_carry_flag_overflow_flag() {
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = mem_pos.to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -414,7 +414,7 @@ fn test_0xef_sbc_absolute_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xef_sbc_absolute_with_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -422,7 +422,7 @@ fn test_0xef_sbc_absolute_with_carry_flag_overflow_flag() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = mem_pos.to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -444,7 +444,7 @@ fn test_0xef_sbc_absolute_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xff_sbc_absolute_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -452,7 +452,7 @@ fn test_0xff_sbc_absolute_x() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -475,7 +475,7 @@ fn test_0xff_sbc_absolute_x() {
 
 #[test]
 fn test_0xff_sbc_absolute_x_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -483,7 +483,7 @@ fn test_0xff_sbc_absolute_x_zero_flag() {
     let mem_value = accum_value - 1;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -505,7 +505,7 @@ fn test_0xff_sbc_absolute_x_zero_flag() {
 
 #[test]
 fn test_0xff_sbc_absolute_x_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -513,7 +513,7 @@ fn test_0xff_sbc_absolute_x_negative_flag() {
     let mem_value = 20;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -538,7 +538,7 @@ fn test_0xff_sbc_absolute_x_negative_flag() {
 
 #[test]
 fn test_0xff_sbc_absolute_x_without_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -546,7 +546,7 @@ fn test_0xff_sbc_absolute_x_without_carry_flag_overflow_flag() {
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -571,7 +571,7 @@ fn test_0xff_sbc_absolute_x_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xff_sbc_absolute_x_with_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -579,7 +579,7 @@ fn test_0xff_sbc_absolute_x_with_carry_flag_overflow_flag() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -602,7 +602,7 @@ fn test_0xff_sbc_absolute_x_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xfb_sbc_absolute_y() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -610,7 +610,7 @@ fn test_0xfb_sbc_absolute_y() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -633,7 +633,7 @@ fn test_0xfb_sbc_absolute_y() {
 
 #[test]
 fn test_0xfb_sbc_absolute_y_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -641,7 +641,7 @@ fn test_0xfb_sbc_absolute_y_zero_flag() {
     let mem_value = accum_value - 1;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -663,7 +663,7 @@ fn test_0xfb_sbc_absolute_y_zero_flag() {
 
 #[test]
 fn test_0xfb_sbc_absolute_y_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -671,7 +671,7 @@ fn test_0xfb_sbc_absolute_y_negative_flag() {
     let mem_value = 20;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -696,7 +696,7 @@ fn test_0xfb_sbc_absolute_y_negative_flag() {
 
 #[test]
 fn test_0xfb_sbc_absolute_y_without_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -704,7 +704,7 @@ fn test_0xfb_sbc_absolute_y_without_carry_flag_overflow_flag() {
     let mem_value = (accum_value + 1 as u8).wrapping_neg();
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -729,7 +729,7 @@ fn test_0xfb_sbc_absolute_y_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xfb_sbc_absolute_y_with_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_pos = 0x1000;
@@ -737,7 +737,7 @@ fn test_0xfb_sbc_absolute_y_with_carry_flag_overflow_flag() {
     let mem_value = 112;
     cpu.mem_write(mem_pos, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     let mem_bytes = (mem_pos - 1).to_le_bytes();
     cpu.load_and_run(vec![
         prep[0],
@@ -760,7 +760,7 @@ fn test_0xfb_sbc_absolute_y_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe3_sbc_indirect_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -770,7 +770,7 @@ fn test_0xe3_sbc_indirect_x() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -791,7 +791,7 @@ fn test_0xe3_sbc_indirect_x() {
 
 #[test]
 fn test_0xe3_sbc_indirect_x_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -801,7 +801,7 @@ fn test_0xe3_sbc_indirect_x_zero_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -821,7 +821,7 @@ fn test_0xe3_sbc_indirect_x_zero_flag() {
 
 #[test]
 fn test_0xe3_sbc_indirect_x_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -831,7 +831,7 @@ fn test_0xe3_sbc_indirect_x_negative_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -854,7 +854,7 @@ fn test_0xe3_sbc_indirect_x_negative_flag() {
 
 #[test]
 fn test_0xe3_sbc_indirect_x_without_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -864,7 +864,7 @@ fn test_0xe3_sbc_indirect_x_without_carry_flag_overflow_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -887,7 +887,7 @@ fn test_0xe3_sbc_indirect_x_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xe3_sbc_indirect_x_with_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -897,7 +897,7 @@ fn test_0xe3_sbc_indirect_x_with_carry_flag_overflow_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -918,7 +918,7 @@ fn test_0xe3_sbc_indirect_x_with_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xf3_sbc_indirect_y() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -928,7 +928,7 @@ fn test_0xf3_sbc_indirect_y() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect + 1, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -949,7 +949,7 @@ fn test_0xf3_sbc_indirect_y() {
 
 #[test]
 fn test_0xf3_sbc_indirect_y_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -959,7 +959,7 @@ fn test_0xf3_sbc_indirect_y_zero_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect + 1, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -979,7 +979,7 @@ fn test_0xf3_sbc_indirect_y_zero_flag() {
 
 #[test]
 fn test_0xf3_sbc_indirect_y_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -989,7 +989,7 @@ fn test_0xf3_sbc_indirect_y_negative_flag() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect + 1, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -1012,7 +1012,7 @@ fn test_0xf3_sbc_indirect_y_negative_flag() {
 
 #[test]
 fn test_0xf3_sbc_indirect_y_without_carry_flag_overflow_fla() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -1022,7 +1022,7 @@ fn test_0xf3_sbc_indirect_y_without_carry_flag_overflow_fla() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect + 1, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -1045,7 +1045,7 @@ fn test_0xf3_sbc_indirect_y_without_carry_flag_overflow_fla() {
 
 #[test]
 fn test_0xf3_sbc_indirect_y_with_carry_flag_overflow_fla() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_to_load: u8 = 0x40;
@@ -1055,7 +1055,7 @@ fn test_0xf3_sbc_indirect_y_with_carry_flag_overflow_fla() {
     cpu.mem_write_u16(mem_to_load as u16, mem_pos_indirect);
     cpu.mem_write(mem_pos_indirect + 1, mem_value - 1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],

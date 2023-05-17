@@ -7,10 +7,10 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xaa_tax_move_a_to_x() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
-    let set_a_to_value = cpu_test_helper::set_register_a_to_value(10);
+    let set_a_to_value = cpu_test_helper::set_accumulator_to_value(10);
 
     cpu.load_and_run(vec![
         set_a_to_value[0],
@@ -24,7 +24,7 @@ fn test_0xaa_tax_move_a_to_x() {
 
 #[test]
 fn test_0xaa_tax_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
@@ -35,11 +35,11 @@ fn test_0xaa_tax_zero_flag() {
 
 #[test]
 fn test_0xaa_tax_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
-    let set_a_to_max = cpu_test_helper::set_register_a_to_value(0xff);
+    let set_a_to_max = cpu_test_helper::set_accumulator_to_value(0xff);
 
     cpu.load_and_run(vec![set_a_to_max[0], set_a_to_max[1], 0xaa, 0x00]);
     cpu_test_helper::assert_active_negative_flag(&cpu);

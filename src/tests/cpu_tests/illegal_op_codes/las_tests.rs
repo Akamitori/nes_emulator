@@ -6,7 +6,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xbb_las_absolute_y() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_value = 0x55;
@@ -33,7 +33,7 @@ fn test_0xbb_las_absolute_y() {
 
 #[test]
 fn test_0xbb_las_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_value = 0x00;
@@ -60,7 +60,7 @@ fn test_0xbb_las_zero_flag() {
 
 #[test]
 fn test_0xbb_las_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_value = 0xF1;

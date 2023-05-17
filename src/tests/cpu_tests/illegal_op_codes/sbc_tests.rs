@@ -7,13 +7,13 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xeb_sbc_immediate() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 80;
     let value = 112;
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -32,13 +32,13 @@ fn test_0xeb_sbc_immediate() {
 
 #[test]
 fn test_0xeb_sbc_immediate_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 10;
     let value = accum_value - 1;
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0xeb, value, 0x00]);
 
     assert_eq!(cpu.register_a, 0);
@@ -50,13 +50,13 @@ fn test_0xeb_sbc_immediate_zero_flag() {
 
 #[test]
 fn test_0xeb_sbc_immediate_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 10;
     let value = 20;
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0xeb, value, 0x00]);
 
     assert_eq!(
@@ -71,13 +71,13 @@ fn test_0xeb_sbc_immediate_negative_flag() {
 
 #[test]
 fn test_0xeb_sbc_immediate_without_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 80;
     let value = (accum_value + 1 as u8).wrapping_neg();
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![prep[0], prep[1], 0xeb, value, 0x00]);
 
     assert_eq!(
@@ -92,13 +92,13 @@ fn test_0xeb_sbc_immediate_without_carry_flag_overflow_flag() {
 
 #[test]
 fn test_0xeb_sbc_immediate_with_carry_flag_overflow_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = (48 as u8).wrapping_neg();
     let value = 112;
 
-    let prep = cpu_test_helper::set_register_a_to_value(accum_value);
+    let prep = cpu_test_helper::set_accumulator_to_value(accum_value);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],

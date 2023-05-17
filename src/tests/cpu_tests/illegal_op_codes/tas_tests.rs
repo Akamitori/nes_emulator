@@ -6,7 +6,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x9b_tas_absolute_y() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem_value = 0x55;
@@ -18,7 +18,7 @@ fn test_0x9b_tas_absolute_y() {
     cpu.mem_write(mem_pos, mem_value);
 
 
-    let set_accumulator_to_value = cpu_test_helper::set_register_a_to_value(accum_value);
+    let set_accumulator_to_value = cpu_test_helper::set_accumulator_to_value(accum_value);
     let set_x_to_value = cpu_test_helper::set_register_x_to_value(x_value);
     cpu.load_and_run(vec![
         set_accumulator_to_value[0],

@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0x86_stx_zero_page() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let set_x_to_5 = cpu_test_helper::set_register_x_to_value(0x05);
@@ -20,7 +20,7 @@ fn test_0x86_stx_zero_page() {
 
 #[test]
 fn test_0x96_stx_zero_page_y() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let set_x_to_5 = cpu_test_helper::set_register_x_to_value(0x05);
@@ -42,7 +42,7 @@ fn test_0x96_stx_zero_page_y() {
 
 #[test]
 fn test_0x8e_stx_absolute() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let set_x_to_5 = cpu_test_helper::set_register_x_to_value(0x05);

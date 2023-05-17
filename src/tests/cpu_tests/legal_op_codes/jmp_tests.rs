@@ -8,14 +8,14 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 #[test]
 fn test_0x4c_jmp_absolute() {
     let initial_program_counter = 0x0600;
-    let bus = Bus::new(test_rom(initial_program_counter));
+    let bus = Bus::new(test_rom(initial_program_counter, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
     let address = (initial_program_counter + 7 as u16).to_le_bytes();
 
-    let set_a_to_expected_value = cpu_test_helper::set_register_a_to_value(accum_value);
-    let set_a_to_a_wrong_value = cpu_test_helper::set_register_a_to_value(0);
+    let set_a_to_expected_value = cpu_test_helper::set_accumulator_to_value(accum_value);
+    let set_a_to_a_wrong_value = cpu_test_helper::set_accumulator_to_value(0);
 
     cpu.load_and_run(vec![
         set_a_to_expected_value[0],
@@ -34,7 +34,7 @@ fn test_0x4c_jmp_absolute() {
 #[test]
 fn test_0x6c_jmp_indirect() {
     let initial_program_counter = 0x0600;
-    let bus = Bus::new(test_rom(initial_program_counter));
+    let bus = Bus::new(test_rom(initial_program_counter, None));
 
     let mut cpu = CPU::new(bus);
     let accum_value = 0xFF;
@@ -45,8 +45,8 @@ fn test_0x6c_jmp_indirect() {
     cpu.mem_write(address_pointing_to_address, address[0]);
     cpu.mem_write(address_pointing_to_address + 1, address[1]);
 
-    let set_a_to_expected_value = cpu_test_helper::set_register_a_to_value(accum_value);
-    let set_a_to_a_wrong_value = cpu_test_helper::set_register_a_to_value(0);
+    let set_a_to_expected_value = cpu_test_helper::set_accumulator_to_value(accum_value);
+    let set_a_to_a_wrong_value = cpu_test_helper::set_accumulator_to_value(0);
 
     cpu.load_and_run(vec![
         set_a_to_expected_value[0],
@@ -65,7 +65,7 @@ fn test_0x6c_jmp_indirect() {
 #[test]
 fn test_0x6c_jmp_indirect_page_boundary() {
     let initial_program_counter = 0x0600;
-    let bus = Bus::new(test_rom(initial_program_counter));
+    let bus = Bus::new(test_rom(initial_program_counter, None));
 
     let mut cpu = CPU::new(bus);
     let accum_initial_value = 0xFF;
@@ -79,9 +79,9 @@ fn test_0x6c_jmp_indirect_page_boundary() {
     cpu.mem_write(address_pointing_to_address_lsb, address[0]);
     cpu.mem_write(address_pointing_to_address_msb, address[1]);
 
-    let set_a_to_initial_value = cpu_test_helper::set_register_a_to_value(accum_initial_value);
-    let set_a_to_final_value = cpu_test_helper::set_register_a_to_value(accum_final_value);
-    let set_a_to_a_wrong_value = cpu_test_helper::set_register_a_to_value(0);
+    let set_a_to_initial_value = cpu_test_helper::set_accumulator_to_value(accum_initial_value);
+    let set_a_to_final_value = cpu_test_helper::set_accumulator_to_value(accum_final_value);
+    let set_a_to_a_wrong_value = cpu_test_helper::set_accumulator_to_value(0);
 
     cpu.load_and_run(vec![
         set_a_to_initial_value[0],

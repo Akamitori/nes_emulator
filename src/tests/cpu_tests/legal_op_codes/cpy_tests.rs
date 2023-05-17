@@ -7,7 +7,7 @@ use crate::tests::test_helpers::rom_test_helper::test_rom;
 
 #[test]
 fn test_0xc0_cpy_immediate_access() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
@@ -18,7 +18,7 @@ fn test_0xc0_cpy_immediate_access() {
 
 #[test]
 fn test_0xc0_cpy_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
@@ -29,7 +29,7 @@ fn test_0xc0_cpy_zero_flag() {
 
 #[test]
 fn test_0xc0_cpy_carry_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
@@ -40,7 +40,7 @@ fn test_0xc0_cpy_carry_flag() {
 
 #[test]
 fn test_0xc0_cpy_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
 
@@ -51,7 +51,7 @@ fn test_0xc0_cpy_negative_flag() {
 
 #[test]
 fn test_0xc4_cpy_zero_page() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x1);
@@ -63,7 +63,7 @@ fn test_0xc4_cpy_zero_page() {
 
 #[test]
 fn test_0xc4_cpy_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x1);
@@ -75,7 +75,7 @@ fn test_0xc4_cpy_zero_flag() {
 
 #[test]
 fn test_0xc4_cpy_carry_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x1);
@@ -87,7 +87,7 @@ fn test_0xc4_cpy_carry_flag() {
 
 #[test]
 fn test_0xc4_cpy_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     cpu.mem_write(0x10, 0x5);
@@ -99,14 +99,14 @@ fn test_0xc4_cpy_negative_flag() {
 
 #[test]
 fn test_0xcc_cpy_absolute() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
     let mem_bytes = mem.to_le_bytes();
     cpu.mem_write(mem, 0x1);
 
-    let prep = cpu_test_helper::set_register_a_to_value(4);
+    let prep = cpu_test_helper::set_accumulator_to_value(4);
     cpu.load_and_run(vec![
         prep[0],
         prep[1],
@@ -121,7 +121,7 @@ fn test_0xcc_cpy_absolute() {
 
 #[test]
 fn test_0xcc_cpy_zero_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
@@ -141,7 +141,7 @@ fn test_0xcc_cpy_zero_flag() {
 
 #[test]
 fn test_0xcc_cpy_carry_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
@@ -161,7 +161,7 @@ fn test_0xcc_cpy_carry_flag() {
 
 #[test]
 fn test_0xcc_cpy_negative_flag() {
-    let bus = Bus::new(test_rom(0x0600));
+    let bus = Bus::new(test_rom(0x0600, None));
 
     let mut cpu = CPU::new(bus);
     let mem: u16 = 0x1000;
