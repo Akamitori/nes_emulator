@@ -4,3 +4,5 @@ pub mod AddrRegister;
 pub mod ControlRegister;
 #[allow(non_snake_case)]
 pub mod ScrollRegister;
+#[allow(non_snake_case)]
+pub mod MaskRegister;
